@@ -1,0 +1,74 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create .env.prod file
+        run: |
+          cat > .env.prod << EOF
+          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
+          JWT_SECRET=${{ secrets.JWT_SECRET }}
+          EOF
+
+      - name: Prepare deploy directory on server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          debug: true
+          script: |
+            mkdir -p ${{ secrets.DEPLOY_PATH }}
+            chmod 755 ${{ secrets.DEPLOY_PATH }}
+
+      - name: Copy files to server via SSH
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          source: "mes_fe/,mes_op/,mes_tab/,mes_dashboard/,mes_db/,mes_backend/,docker-compose.yml,.env.prod"
+          target: ${{ secrets.DEPLOY_PATH }}
+          overwrite: true
+
+      - name: Deploy with Docker Compose
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          debug: true
+          command_timeout: 30m
+          script: |
+            set -euo pipefail
+            cd ${{ secrets.DEPLOY_PATH }}
+
+            cp .env.prod .env
+
+            docker-compose build --no-cache mes-db mes-fe
+            docker-compose build mes-backend mes-op mes-tab mes-dashboard
+
+            # docker-compose v1 + 새 Docker 데몬의 'ContainerConfig' KeyError 회피.
+            # recreate 경로가 깨지므로, 옛 컨테이너를 stop+rm 후 신규로 띄움.
+            # mes-db, mes-redis 는 운영 데이터·세션 보존을 위해 건드리지 않음.
+            docker-compose stop mes-backend mes-fe mes-op mes-tab mes-dashboard 2>/dev/null || true
+            docker-compose rm -f mes-backend mes-fe mes-op mes-tab mes-dashboard 2>/dev/null || true
+            docker-compose up -d --no-deps mes-backend mes-fe mes-op mes-tab mes-dashboard
+
+            docker image prune -f
+
+            echo "Deployment completed successfully!"

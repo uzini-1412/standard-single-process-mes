@@ -1,0 +1,27 @@
+# 의존성
+node_modules/
+
+# 빌드 결과물 
+dist/
+
+# 환경 변수
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.production
+
+# 로그 및 시스템 파일
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# 에디터 설정
+.vscode/
+.idea/
+
+#md파일
+*.md
+# Next.js (실수로 생성된 잔재 방지 — 이 프로젝트는 Vite)
+.next/

@@ -1,0 +1,29 @@
+# Normalize line endings: store text as LF in the repo
+* text=auto eol=lf
+
+# Windows scripts must keep CRLF
+*.bat   text eol=crlf
+*.cmd   text eol=crlf
+
+# Unix shell scripts / gradle wrapper must keep LF
+*.sh    text eol=lf
+gradlew text eol=lf
+
+# Binary files (never normalize)
+*.jar   binary
+*.war   binary
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.ico   binary
+*.svg   text eol=lf
+*.pdf   binary
+*.zip   binary
+*.gz    binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.eot   binary
+*.xlsx  binary
+*.xls   binary

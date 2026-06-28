@@ -1,0 +1,18 @@
+/* Common validation styles */
+
+.validation-error-input {
+  border-color: #ef4444 !important;
+  border-width: 2px !important;
+}
+
+.validation-error-input:focus {
+  border-color: #ef4444 !important;
+  --tw-ring-color: #ef4444 !important;
+}
+
+.validation-error-message {
+  color: #ef4444;
+  font-size: 0.7rem;
+  margin-top: 2px;
+  line-height: 1.2;
+}

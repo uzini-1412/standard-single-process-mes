@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    # NON_KEYWORDS=VALUE: 운영 MySQL 에선 정상인 'value' 컬럼을 H2 2.x 가 예약어로 거부하는 것을 막는다(테스트 전용).
+    url: jdbc:h2:mem:testdb;MODE=MYSQL;DB_CLOSE_DELAY=-1;NON_KEYWORDS=VALUE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration
+
+app:
+  cors:
+    allowed-origin-patterns:
+      - "http://localhost:*"
+  upload:
+    dir: ${java.io.tmpdir}/mes-test-upload
+
+# 테스트 컨텍스트 로딩용 더미 시크릿 (운영 값과 무관, 32바이트 이상이면 됨).
+jwt:
+  secret: "test-only-dummy-jwt-secret-please-do-not-use-in-prod-0123456789"

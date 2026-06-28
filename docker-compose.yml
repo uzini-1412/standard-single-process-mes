@@ -1,0 +1,110 @@
+version: "2.4"
+
+services:
+  mes-db:
+    build:
+      context: ./mes_db
+      dockerfile: Dockerfile
+    container_name: mes-db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: mes_db
+      TZ: Asia/Seoul
+    command:
+      - --max-connections=300
+      - --innodb-buffer-pool-size=1G
+      - --innodb-log-file-size=256M
+    ports:
+      - "7085:3306"
+    volumes:
+      - mes-db-data:/var/lib/mysql
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  mes-redis:
+    image: redis:7-alpine
+    container_name: mes-redis-local
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    ports:
+      - "7086:6379"
+    volumes:
+      - mes-redis-data:/data
+    restart: always
+
+  mes-backend:
+    build:
+      context: ./mes_backend/mes
+      dockerfile: Dockerfile
+    container_name: mes-backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mes-db:3306/mes_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      SPRING_DATA_REDIS_HOST: mes-redis
+      SPRING_DATA_REDIS_PORT: 6379
+      SPRING_DATA_REDIS_PASSWORD: ${REDIS_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      APP_UPLOAD_DIR: /app/uploads
+      TZ: Asia/Seoul
+    ports:
+      - "7081:8080"
+    volumes:
+      - ./uploads:/app/uploads
+    depends_on:
+      mes-db:
+        condition: service_healthy
+      mes-redis:
+        condition: service_started
+    restart: always
+
+  mes-fe:
+    build:
+      context: ./mes_fe
+      dockerfile: Dockerfile
+    container_name: mes-fe
+    ports:
+      - "7082:80"
+    depends_on:
+      - mes-backend
+    restart: always
+
+  mes-op:
+    build:
+      context: ./mes_op
+      dockerfile: Dockerfile
+    container_name: mes-op
+    ports:
+      - "7083:80"
+    depends_on:
+      - mes-backend
+    restart: always
+
+  mes-tab:
+    build:
+      context: ./mes_tab
+      dockerfile: Dockerfile
+    container_name: mes-tab
+    ports:
+      - "7084:80"
+    depends_on:
+      - mes-backend
+    restart: always
+
+  mes-dashboard:
+    build:
+      context: ./mes_dashboard
+      dockerfile: Dockerfile
+    container_name: mes-dashboard
+    ports:
+      - "7087:80"
+    depends_on:
+      - mes-backend
+    restart: always
+
+volumes:
+  mes-db-data:
+  mes-redis-data:
