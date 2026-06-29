@@ -19,15 +19,6 @@ Java 21 · Spring Boot · JPA · React 18 · TypeScript · MySQL 8 · Redis · D
 
 ---
 
-## 스크린샷
-
-<!-- 데모 화면을 docs/screenshots/ 에 추가한 뒤 아래 표를 채우세요. -->
-
-| 관리(mes_fe) | 대시보드(mes_dashboard) | 현장(mes_op) |
-|---|---|---|
-| _(준비 중)_ | _(준비 중)_ | _(준비 중)_ |
-
----
 
 ## 아키텍처
 
@@ -125,7 +116,3 @@ mes-portfolio/
 └── docker-compose.yml # 전체 스택 오케스트레이션
 ```
 
-## 문서
-
-- [아키텍처 & 설계 노트](docs/ARCHITECTURE.md) — 레이어 규약, 표준화 지점, 인증/캐싱 전략, 새 기능 추가 체크리스트
-- [DB 설계](docs/db-design/) — 도메인별 테이블 설계 상세
