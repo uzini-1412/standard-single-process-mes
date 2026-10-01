@@ -1,6 +1,11 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { fetchInventoryAuditTargetsPage, lookupInventoryAuditTargets, saveInventoryAudit } from '../api/stockApi';
+import {
+  fetchInventoryAuditTargetsPage,
+  lookupInventoryAuditTargets,
+  saveInventoryAudit,
+  type InventoryAuditTargetRes,
+} from '../api/stockApi';
 import { fetchDetailContentsByItemName } from '../api/commonInfoApi';
 import { ScanActionProvider, useScanAction } from '../context/ScanActionContext';
 import { ToastProvider } from '../context/ToastContext';
@@ -20,8 +25,8 @@ const saveMock = vi.mocked(saveInventoryAudit);
 const accountTypesMock = vi.mocked(fetchDetailContentsByItemName);
 
 // 케이스들이 공유하는 실사 대상 한 줄. 필요한 필드만 spread로 덮어 쓴다.
-const baseTarget = {
-  stockType: 'PRODUCT' as const,
+const baseTarget: InventoryAuditTargetRes = {
+  stockType: 'PRODUCT',
   stockSq: 1,
   itemCode: 'ITEM-001',
   itemName: '제품',
@@ -29,7 +34,7 @@ const baseTarget = {
   itemType: '제품',
   lotNo: 'LOT-001',
   currentQty: 2,
-  unit: 'ea' as const,
+  unit: 'ea',
   width: 1000,
   warehouseLoc: 'A-01',
   storageLoc: 'A-01',
@@ -37,7 +42,7 @@ const baseTarget = {
   auditedToday: false,
 };
 
-const onePage = (rows: Array<typeof baseTarget>) => ({
+const onePage = (rows: InventoryAuditTargetRes[]) => ({
   content: rows,
   page: 0,
   size: 100,

@@ -3,7 +3,7 @@ import axios from 'axios';
 const TOKEN_KEY = 'tab_token';
 const USER_KEY = 'tab_userInfo';
 
-const apiHost = import.meta.env.VITE_API_BASE_URL;
+const apiHost = import.meta.env.VITE_API_BASE_URL ?? '/api';
 
 const apiClient = axios.create({
   baseURL: apiHost,

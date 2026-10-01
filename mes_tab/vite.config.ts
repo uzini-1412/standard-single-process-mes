@@ -11,5 +11,9 @@ export default defineConfig({
   },
   server: {
     port: 5175,
+    // dev 서버에서도 배포(nginx)와 같은 상대경로 '/api' 를 쓰도록 프록시한다.
+    proxy: {
+      '/api': { target: 'http://localhost:7081', changeOrigin: true },
+    },
   },
 })

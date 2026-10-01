@@ -15,8 +15,8 @@ export interface UploadedImage {
 
 // apiClient.baseURL 은 이미 "/api" 로 끝남(VITE_API_BASE_URL). 정적 파일(/files/**)은
 // /api 하위가 아니라 백엔드 루트에서 서빙되므로, /api 를 떼어낸 origin 기준으로 URL 을 만든다.
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL as string;
-const fileBaseUrl = (apiBaseUrl ?? "").replace(/\/api\/?$/, "");
+const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? "/api";
+const fileBaseUrl = apiBaseUrl.replace(/\/api\/?$/, "");
 
 const resolveImageSrc = (value: string | null | undefined): string => {
   if (!value) return "";

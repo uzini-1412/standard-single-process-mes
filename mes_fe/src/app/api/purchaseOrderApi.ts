@@ -79,7 +79,7 @@ export async function uploadPurchaseAttachment(file: File): Promise<{ filePath: 
 
 // 다운로드 주소 생성
 export function buildPurchaseDownloadUrl(filePath: string, fileNm?: string): string {
-  const baseURL = import.meta.env.VITE_API_BASE_URL;
+  const baseURL = import.meta.env.VITE_API_BASE_URL ?? '/api';
   const params = new URLSearchParams({ filePath });
   if (fileNm) params.append('fileNm', fileNm);
   return `${baseURL}/purchase-order/download?${params.toString()}`;

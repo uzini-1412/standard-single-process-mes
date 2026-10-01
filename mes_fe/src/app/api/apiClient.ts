@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const baseURL = import.meta.env.VITE_API_BASE_URL;
+// 백엔드 컨트롤러가 전부 /api 하위이고 nginx·vite 프록시도 /api 를 넘긴다.
+// .env 가 없는 새 클론에서도 그대로 동작하도록 기본값을 '/api' 로 둔다.
+const baseURL = import.meta.env.VITE_API_BASE_URL ?? '/api';
 
 const apiClient = axios.create({
   baseURL: baseURL,

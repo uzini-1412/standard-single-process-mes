@@ -5,14 +5,22 @@ import tailwindcss from '@tailwindcss/vite'
 
 // Vite 빌드/개발 서버 설정.
 export default defineConfig({
-  // React + Tailwind 플러그인은 Make 환경에서 둘 다 필수다.
-  // Tailwind를 직접 쓰지 않더라도 제거하면 안 된다.
+  // React + Tailwind 플러그인.
   plugins: [react(), tailwindcss()],
 
   resolve: {
     // "@" → src 디렉터리 별칭
     alias: {
       '@': path.resolve(__dirname, './src'),
+    },
+  },
+
+  // dev 서버에서도 배포(nginx)와 같은 상대경로 '/api' 를 쓰도록 프록시한다.
+  // /files 는 업로드 이미지 정적 서빙 경로라 /api 하위가 아니므로 따로 넘긴다.
+  server: {
+    proxy: {
+      '/api': { target: 'http://localhost:7081', changeOrigin: true },
+      '/files': { target: 'http://localhost:7081', changeOrigin: true },
     },
   },
 

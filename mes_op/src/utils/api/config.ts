@@ -5,7 +5,8 @@
  * 바로 내려오기도 한다. 호출부가 매번 분기하지 않도록 여기서 한 번에 풀어준다.
  */
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '';
+// 호출부 경로는 '/production/...' 처럼 /api 가 빠져 있으므로 기본값에 /api 가 있어야 한다.
+const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '/api';
 
 /** 기본 JSON 헤더에 호출부가 넘긴 헤더를 덧씌운다. */
 function withJsonHeaders(extra?: HeadersInit): HeadersInit {
