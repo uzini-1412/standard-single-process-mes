@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { cn } from "../ui/utils";
 import { MENU_STRUCTURE } from "../../constants/menu-structure";
-import logoImage from "../../../assets/logo.png";
+import logoImage from "../../../assets/logo.svg";
 import { useUserContext } from "../../context/UserContext";
 import { useSystemConfig } from "../../context/SystemConfigContext";
 

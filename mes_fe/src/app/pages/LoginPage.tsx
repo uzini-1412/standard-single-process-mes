@@ -4,7 +4,7 @@ import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Card, CardContent, CardHeader } from "../components/ui/card";
 import { Eye, EyeOff } from "lucide-react";
-import logoImage from "../../assets/logo.png";
+import logoImage from "../../assets/logo.svg";
 import apiClient from "../api/apiClient";
 import { UserInfo, MenuPermission } from "../context/UserContext";
 
@@ -94,13 +94,11 @@ export function LoginPage({ onLogin }: LoginPageProps) {
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center relative">
-      {/* Background Image */}
+      {/* 배경 — 외부 이미지 대신 CSS 그라디언트. 사내망/오프라인에서도 동일하게 렌더된다. */}
       <div
         className="absolute inset-0 z-0"
         style={{
-          backgroundImage: `url('https://images.unsplash.com/photo-1769778674824-e69f58d7c55d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBmYWN0b3J5JTIwYnVpbGRpbmclMjBleHRlcmlvcnxlbnwxfHx8fDE3NzAxODI1NDR8MA&ixlib=rb-4.1.0&q=80&w=1080')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          background: 'linear-gradient(135deg, #1E2A78 0%, #4A5CC7 45%, #7C8FE0 100%)',
         }}
       >
         <div className="absolute inset-0 bg-black/20" />

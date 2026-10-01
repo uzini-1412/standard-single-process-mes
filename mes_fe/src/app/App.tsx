@@ -26,7 +26,6 @@ const IncomingPrepEntryPage = lazyPage(() => import("./pages/material/pre-receiv
 const MaterialReceiptListPage = lazyPage(() => import("./pages/material/receiving/MaterialReceiptListPage"), "MaterialReceiptListPage");
 const MaterialStockListPage = lazyPage(() => import("./pages/material/inventory/MaterialStockListPage"), "MaterialStockListPage");
 const MaterialDefectBoardPage = lazyPage(() => import("./pages/material/defect/MaterialDefectBoardPage"), "MaterialDefectBoardPage");
-const ProductionOrderPage = lazyPage(() => import("./pages/ProductionOrderPage"), "ProductionOrderPage");
 const ProductionPlanWorkbenchPage = lazyPage(() => import("./pages/production/plan/ProductionPlanWorkbenchPage"), "ProductionPlanWorkbenchPage");
 const WorkOrderBoardPage = lazyPage(() => import("./pages/production/work-order/WorkOrderBoardPage"), "WorkOrderBoardPage");
 const ProductionResultListPage = lazyPage(() => import("./pages/production/work-performance/ProductionResultListPage"), "ProductionResultListPage");
@@ -86,14 +85,10 @@ function PageLoadingFallback() {
 }
 
 type Page = 
-  | "dashboard" 
-  | "production-order" 
-  | "material" 
   | "order" 
   | "order-register" 
   | "order-detail"
   | "order-edit"
-  | "production" 
   | "sales"
   | "purchase-order-status"
   | "purchase-order-register"
@@ -102,8 +97,6 @@ type Page =
   | "material-inventory-status"
   | "material-defect-status"
   | "raw-material-usage"
-  //| "raw-material-input-opc"
- // | "raw-material-input-status"
   | "production-plan"
   | "work-order"
   | "work-performance-status"
@@ -123,7 +116,6 @@ type Page =
   // shipping-plan 은 출하지시(ShipmentBoardPage) 탭으로 통합됨
   | "shipping-performance"
   | "product-inventory"
-  | "shipping-plan"
   | "equipment-info"
   | "equipment-info-register"
   | "equipment-info-detail"
@@ -151,7 +143,6 @@ type Page =
   | "collection-management-edit"
   | "warehouse-info"
   | "lot-trace"
-  | "decision-dashboard"
   | "system-config"
   | "admin-activity-log";
 
@@ -362,7 +353,6 @@ export default function App() {
     >
       <Suspense fallback={<PageLoadingFallback />}>
       {/* Page Content */}
-      {currentPage === "production-order" && <ProductionOrderPage />}
       
       {/* Sales - Order */}
       {currentPage === "order" && (
@@ -418,8 +408,6 @@ export default function App() {
       {currentPage === "material-inventory-status" && <MaterialStockListPage />}
       {currentPage === "material-defect-status" && <MaterialDefectBoardPage />}
       {currentPage === "raw-material-usage" && <RawMaterialConsumptionPage />}
-      {/*{currentPage === "raw-material-input-opc" && <RawMaterialInputOpcPage />}
-      {currentPage === "raw-material-input-status" && <RawMaterialInputListPage />}*/}
       
       {currentPage === "sales" && (
         <SalesOrderBoardPage
