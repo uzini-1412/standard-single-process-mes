@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,6 +39,7 @@ public class StaffController {
   }
 
   @Operation(summary = "직원 일괄 등록", description = "여러 직원의 정보를 한 번에 등록합니다.")
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/save")
   public ApiCommonResponse<Void> saveStaffList(@RequestBody @Valid List<StaffDto.SaveReq> requestDtos) {
     requireNonEmpty(requestDtos, "저장할 데이터가 없습니다.");
@@ -46,6 +48,7 @@ public class StaffController {
   }
 
   @Operation(summary = "직원 일괄 수정", description = "체크된 직원의 정보를 일괄 수정합니다.")
+  @PreAuthorize("hasRole('ADMIN')")
   @PutMapping("/update")
   public ApiCommonResponse<Void> updateStaffList(@RequestBody @Valid List<StaffDto.UpdateReq> requestDtos) {
     requireNonEmpty(requestDtos, "수정할 데이터가 없습니다.");
@@ -54,6 +57,7 @@ public class StaffController {
   }
 
   @Operation(summary = "직원 일괄 삭제", description = "선택한 직원을 삭제합니다.")
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/delete")
   public ApiCommonResponse<Void> deleteStaffList(@RequestBody StaffDto.DeleteReq requestDto) {
     staffService.deleteStaffList(requestDto);

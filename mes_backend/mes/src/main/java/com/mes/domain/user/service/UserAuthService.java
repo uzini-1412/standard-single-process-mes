@@ -10,6 +10,9 @@ import com.mes.domain.user.repository.StaffMenuAuthRepository;
 import com.mes.global.exception.CustomException;
 import com.mes.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +28,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UserAuthService {
+
+  private static final String ADMIN_ROLE = "ROLE_ADMIN";
 
   private final StaffRepository staffRepository;
   private final MenuRepository menuRepository;
@@ -53,9 +58,12 @@ public class UserAuthService {
   }
 
   /**
-   * 사용자 정보 및 권한 목록 조회
+   * 사용자 정보 및 권한 목록 조회.
+   * 로그인 직후·세션 복원 때 일반 사용자가 자기 권한을 읽어야 해서 컨트롤러를 ADMIN 전용으로
+   * 막을 수 없다. 대신 여기서 "본인 또는 ADMIN" 을 검사해 타인 계정 열람을 차단한다.
    */
   public UserAuthDto.Res getUserAuthDetail(Long staffSq) {
+    requireSelfOrAdmin(staffSq);
 
     // 1. 직원 정보 조회
     Staff staff = staffRepository.findById(staffSq)
@@ -197,5 +205,36 @@ public class UserAuthService {
     for (Staff staff : staffRepository.findAllById(req.getStaffIds())) {
       staff.updateAccount(null, null, null);
     }
+  }
+
+  /**
+   * ADMIN 이 아니면 자기 자신의 staffSq 만 조회할 수 있다. 그 외에는 403(AUTH_FORBIDDEN).
+   * 토큰 subject 는 userId 라서 AuthService 와 동일하게 가장 최근 staff 행을 본인으로 본다.
+   */
+  private void requireSelfOrAdmin(Long staffSq) {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    if (auth == null || !auth.isAuthenticated()) {
+      throw new CustomException(ErrorCode.AUTH_FORBIDDEN);
+    }
+    if (auth.getAuthorities().stream().anyMatch(a -> ADMIN_ROLE.equals(a.getAuthority()))) {
+      return;
+    }
+
+    String userId = currentUserId(auth);
+    Long mySq = StringUtils.hasText(userId)
+        ? staffRepository.findFirstByUserIdOrderByStaffSqDesc(userId).map(Staff::getStaffSq).orElse(null)
+        : null;
+    if (mySq == null || !mySq.equals(staffSq)) {
+      throw new CustomException(ErrorCode.AUTH_FORBIDDEN);
+    }
+  }
+
+  /** 인증 주체에서 로그인 아이디를 꺼낸다. 익명이면 null. */
+  private static String currentUserId(Authentication auth) {
+    Object principal = auth.getPrincipal();
+    if (principal instanceof UserDetails ud) {
+      return ud.getUsername();
+    }
+    return (principal instanceof String s && !"anonymousUser".equals(s)) ? s : null;
   }
 }

@@ -6,6 +6,7 @@ import com.mes.global.response.ApiCommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,8 +21,9 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api/admin")
+@PreAuthorize("hasRole('ADMIN')")
 @RequiredArgsConstructor
-@Tag(name = "99. 관리자 마이그레이션", description = "운영자 일회성 호출. JWT 인증 필요.")
+@Tag(name = "99. 관리자 마이그레이션", description = "운영자 일회성 호출. ROLE_ADMIN 필요.")
 public class AdminMigrationController {
 
   private final UploadReconcileService uploadReconciler;

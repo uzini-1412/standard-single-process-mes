@@ -4,6 +4,7 @@ import com.mes.domain.system.service.SystemConfigService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,8 +34,9 @@ public class SystemConfigController {
 
   /**
    * 설정 저장(관리자). 조회용 /config 는 permitAll 이지만 저장은 별도 경로로 두어 인증을 요구한다.
-   * (SecurityConfig 의 anyRequest().authenticated() 적용 — OP_PUBLIC 화이트리스트에 없음)
+   * (OP_PUBLIC 화이트리스트에 없어 인증이 필요하고, 여기에 ROLE_ADMIN 까지 요구한다)
    */
+  @PreAuthorize("hasRole('ADMIN')")
   @PutMapping("/config/save")
   @Operation(summary = "시스템 설정 저장",
       description = "기능 플래그를 일괄 upsert 한다. 화이트리스트에 없는 키는 무시. 저장 후 전체 설정을 반환.")
