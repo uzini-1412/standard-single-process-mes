@@ -10,12 +10,13 @@ Java 21 · Spring Boot · JPA · React 18 · TypeScript · MySQL 8 · Redis · D
 
 ### 이 프로젝트로 보여주려는 것
 
-- **실무 규모의 도메인 설계** — 수주·생산·품질·자재·설비·출하까지 24개 도메인, 64개 테이블의 일관된 모노레포.
-- **횡단 관심사의 단일화** — 응답 포맷·예외 처리·인증·감사필드를 각 한 곳에 모아 *한 곳만 고치면 전 도메인에 전파*되는 구조.
+- **실무 규모의 도메인 설계** — 수주·생산·품질·자재·설비·출하까지 24개 도메인, 61개 테이블의 일관된 모노레포.
+- **횡단 관심사의 단일화** — 응답 포맷·예외 처리·에러 코드·페이징 계약을 각 한 곳에 모아 *한 곳만 고치면 전 도메인에 전파*되는 구조. 감사필드(reg_dt/mod_dt)는 JPA Auditing 이 자동으로 채웁니다.
 - **멀티 클라이언트 아키텍처** — 백엔드 1개를 사무/현장/태블릿/대시보드 4개 프론트가 공유. 사용 환경별로 UX만 분리.
 - **운영을 고려한 선택** — 핫 리드 선별 캐싱(Caffeine/Redis), LOT 추적성, 도메인 값의 데이터화(공통코드 마스터).
 
-> 설계 의사결정과 "여기서 이렇게 하면 저기서 저게 된다"의 근거는 **[아키텍처 & 설계 노트](docs/ARCHITECTURE.md)** 에 정리했습니다.
+> 설계 의사결정과 "여기서 이렇게 하면 저기서 저게 된다"의 근거는 **[아키텍처 & 설계 노트](docs/ARCHITECTURE.md)** 에,
+> 일반화 규약(기능 플래그·BOM·LOT 채번)은 **[표준화 규약](docs/STANDARDIZATION.md)** 에 정리했습니다.
 
 ---
 
@@ -64,6 +65,7 @@ cp .env.example .env
 
 # 2) 전체 스택 빌드 & 기동
 docker compose up -d --build
+#   프론트 4개는 build arg 로 VITE_API_BASE_URL=/api 를 받아 nginx 프록시를 태운다.
 ```
 
 기동 후 접속 포트:
@@ -79,6 +81,25 @@ docker compose up -d --build
 
 > DB 는 최초 기동 시 `mes_db/schema.sql` 로 스키마가 생성됩니다. (샘플 데이터는 포함하지 않음)
 
+### 첫 실행 확인
+
+빈 DB로 뜨므로 초기 관리자 계정 1개만 자동 시딩됩니다 (`DataInitializer`).
+
+| 항목 | 값 |
+|---|---|
+| ID | `mesadmin` (`ADMIN_DEFAULT_ID` 로 변경) |
+| PW | `ChangeMe!2026` (`ADMIN_DEFAULT_PASSWORD` 로 변경) |
+
+로그인 후 아래 순서로 등록하면 수주부터 출하까지 한 바퀴를 돌 수 있습니다.
+
+```
+공통코드 → 품목 → 거래처 → 품목구성(BOM)
+      → 수주 → 생산계획 → 작업지시(LOT 채번)
+      → [mes_op] 작업 시작·실적 등록 → 완제품재고 증가
+      → 출하계획/지시 → [mes_tab] LOT 스캔 → 출하실적 → 재고 차감
+```
+
+
 ## 로컬 개발
 
 ```bash
@@ -89,7 +110,10 @@ cd mes_backend/mes
 # Frontend (각 앱 공통)
 cd mes_fe                    # or mes_op / mes_tab / mes_dashboard
 npm install
-npm run dev
+npm run dev                  # vite dev server 가 /api 를 http://localhost:7081 로 프록시
+
+# API 주소는 기본값 /api 로 동작한다. 백엔드를 다른 호스트에서 띄웠을 때만
+# .env.example 을 .env 로 복사해 VITE_API_BASE_URL 을 바꾼다.
 ```
 
 ## 환경 변수
@@ -99,6 +123,7 @@ npm run dev
 | `DB_PASSWORD` | MySQL root 비밀번호 |
 | `REDIS_PASSWORD` | Redis 비밀번호 |
 | `JWT_SECRET` | JWT 서명 키 (긴 랜덤 문자열) |
+| `VITE_API_BASE_URL` | 프론트가 호출할 API 주소. 기본값 `/api` (Docker·로컬 dev 모두 그대로 동작). 백엔드가 다른 호스트에 있으면 `http://<host>:<port>/api` |
 
 각 모듈의 `.env.example` 참고. 실제 `.env` 와 빌드 산출물은 `.gitignore` 로 커밋에서 제외됩니다.
 
@@ -112,7 +137,16 @@ mes-portfolio/
 ├── mes_tab/           # 태블릿용 프론트엔드
 ├── mes_dashboard/     # 현황 대시보드
 ├── mes_db/            # schema.sql + DB Dockerfile
-├── docs/db-design/    # 도메인별 DB 설계 문서
+├── docs/              # 아키텍처 & 표준화 규약 문서
 └── docker-compose.yml # 전체 스택 오케스트레이션
 ```
 
+
+## 문서
+
+| 문서 | 내용 |
+|---|---|
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | 설계 의사결정의 근거, 업무 흐름(수주→출하 / 자재→투입 / LOT 추적), 재고 정합성 장치, 인증·인가 정책과 알려진 한계 |
+| [docs/STANDARDIZATION.md](docs/STANDARDIZATION.md) | 코드 주석이 `§N` 으로 참조하는 규약 — 명명 규칙, API·에러 표준, BOM 표준, LOT 채번, 기능 플래그 |
+| [mes_db/schema.sql](mes_db/schema.sql) | 61개 테이블 정의 |
+| Swagger UI | 백엔드 기동 후 http://localhost:7081/swagger-ui.html |
