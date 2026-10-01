@@ -15,6 +15,7 @@ import { showError } from "@/app/utils/toast";
 import { ensureSpecRange } from "@/app/utils/specRangeGuard";
 import { useAccountTypes } from "@/app/hooks/useAccountTypes";
 import { ensureImagePath } from "@/app/api/imageUploadApi";
+import { todayYmd } from "@/app/utils/dateToday";
 
 interface IncomingInspectionRegisterPageProps {
   mode?: Extract<InspectionPageMode, "create" | "edit">;
@@ -50,7 +51,7 @@ const REQUIRED_ITEM_FIELDS: ReadonlyArray<readonly [keyof InspectionItemData, st
 ];
 
 export function IncomingInspectionRegisterPage({ mode = "create", selectedId, onBack, onSave }: IncomingInspectionRegisterPageProps) {
-  const today = new Date().toISOString().split("T")[0];
+  const today = todayYmd();
   const { matchRaw, matchSub } = useAccountTypes();
   const { saving, runSave } = useCrudForm();
 

@@ -6,6 +6,7 @@ import {
 import { ProductInventoryAnalysisData } from "@/types/shipping/inventory.interface";
 import { showError } from "@/app/utils/toast";
 import { mapAnalysisRow, matchesTextFilters } from "./stockAnalysisUtils";
+import { todayYm } from "@/app/utils/dateToday";
 
 interface AnalysisFilterState {
   itemCode: string;
@@ -16,7 +17,7 @@ interface AnalysisFilterState {
 const initialFilters = (): AnalysisFilterState => ({
   itemCode: "",
   itemName: "",
-  baseMonth: new Date().toISOString().slice(0, 7), // yyyy-MM
+  baseMonth: todayYm(), // yyyy-MM
 });
 
 // 적용 필터를 서버 조회 파라미터로 변환 (빈 값은 undefined)

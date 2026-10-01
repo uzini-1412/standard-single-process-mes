@@ -13,6 +13,7 @@ import { PERIODIC_EQUIPMENT_COLUMNS, PERIODIC_REGISTER_HISTORY_COLUMNS } from "@
 import { showWarning, showError } from "@/app/utils/toast";
 import { ensureDateOrder } from "@/app/utils/dateGuard";
 import { usePermission } from "../../../context/UserContext";
+import { todayYmd } from "@/app/utils/dateToday";
 
 const G = FOUR_COLUMN_GRID_STYLES;
 const CHECK_TYPE_OPTIONS = ["주간", "월간", "분기", "반기", "년간"];
@@ -56,9 +57,6 @@ const HISTORY_EDIT_FIELDS: HistoryEditField[] = [
   { key: "remark", type: "text" },
 ];
 
-// 오늘 날짜를 YYYY-MM-DD 로 반환
-const getTodayDate = () => new Date().toLocaleDateString("sv-SE");
-
 // 4열 그리드 입력 초기값. 설비 선택 시/추가 후 이 형태로 되돌린다.
 type GridForm = {
   imgPaths: string | null;
@@ -82,7 +80,7 @@ const emptyGrid = (): GridForm => ({
   facilitySq: null,
   checkType: "",
   checkerNm: "",
-  planDate: getTodayDate(),
+  planDate: todayYmd(),
   planContent: "",
   execDate: "",
   execContent: "",

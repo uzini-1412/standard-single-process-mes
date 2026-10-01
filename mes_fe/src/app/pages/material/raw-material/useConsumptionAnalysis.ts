@@ -1,7 +1,8 @@
 /** [원소재투입분석] 라인·측정일 기준 PLC raw 조회 + 호기 컬럼/회차 행 가공 훅. */
 import { useEffect, useMemo, useState } from "react";
 import * as plcRawApi from "../../../api/plcRawApi";
-import { ConsumptionTab, resolveTodayKst } from "./consumptionTypes";
+import { ConsumptionTab } from "./consumptionTypes";
+import { todayYmd } from "@/app/utils/dateToday";
 import { LineOption } from "./useLineMachineOptions";
 
 export function useConsumptionAnalysis(
@@ -10,7 +11,7 @@ export function useConsumptionAnalysis(
   machineNameList: string[],
 ) {
   const [lineCode, setLineCode] = useState("");
-  const [measureDate, setMeasureDate] = useState(resolveTodayKst());
+  const [measureDate, setMeasureDate] = useState(todayYmd());
   const [rawList, setRawList] = useState<plcRawApi.PlcRawRes[]>([]);
   const [analysisLoading, setAnalysisLoading] = useState(false);
   const [analysisPage, setAnalysisPage] = useState(0);

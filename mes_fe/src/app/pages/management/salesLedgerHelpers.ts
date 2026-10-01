@@ -1,6 +1,7 @@
 import type { TradeStatementData, TradeStatementItem } from "../../api/tradeStatementApi";
 import type { SalesStatusGroupRes, SalesStatusItem } from "@/types/management/sales.interface";
 import { ceilMoney } from "@/app/utils/numberFormat";
+import { todayYmd } from "@/app/utils/dateToday";
 
 // 정렬 토글이 가능한 컬럼 키 집합
 export const ORDERABLE_FIELDS = new Set([
@@ -45,7 +46,7 @@ export function composeTradeStatementDraft(
 
   return {
     shipOrderSq: group.shipOrderSq || 0,
-    statementDate: group.shipDate || new Date().toISOString().slice(0, 10),
+    statementDate: group.shipDate || todayYmd(),
     buyerCompany: group.customerName || "",
     shipAmount: String(supplySum + vatSum),
     sourceType: "SALES",

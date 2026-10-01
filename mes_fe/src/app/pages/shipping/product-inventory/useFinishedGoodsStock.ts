@@ -7,8 +7,9 @@ import { fetchDetailNamesByGroupName } from "../../../api/commonInfoApi";
 import { ProductInventoryData } from "@/types/shipping/inventory.interface";
 import { showError } from "@/app/utils/toast";
 import { mapStockRow } from "./stockHistoryUtils";
+import { todayYm } from "@/app/utils/dateToday";
 
-const currentMonthValue = () => new Date().toISOString().slice(0, 7);
+const currentMonthValue = () => todayYm();
 
 interface StockFilterState {
   itemCode: string;

@@ -15,6 +15,7 @@ import {
 import { useUserContext } from "../../../context/UserContext";
 import { showSuccess, showError } from "@/app/utils/toast";
 import { showApiError } from "@/app/utils/apiError";
+import { todayYmd } from "@/app/utils/dateToday";
 
 const toThousands = (n: number | null | undefined) =>
   n == null ? "" : Number(n).toLocaleString();
@@ -29,7 +30,7 @@ const auditDiff = (audit: InventoryAuditDiffRes) =>
 const AUDIT_CELL = "px-4 py-2 text-xs text-gray-700 text-center whitespace-nowrap border-r border-gray-200";
 
 export function InventoryAdjustmentRegisterPage({ onBack, onSave }: InventoryAdjustmentRegisterPageProps) {
-  const today = new Date().toISOString().split('T')[0];
+  const today = todayYmd();
   const { userInfo } = useUserContext();
 
   const [formData, setFormData] = useState<InventoryAdjustmentFormData>(INVENTORY_ADJUSTMENT_FORM_INITIAL_DATA(today));

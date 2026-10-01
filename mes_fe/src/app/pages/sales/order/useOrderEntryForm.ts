@@ -8,8 +8,8 @@ import type { OrderItem } from "@/types/sales/order.interface";
 import {
   buildLineFromProduct,
   recomputeLineMetrics,
-  resolveTodayIso,
 } from "./orderEntryCalc";
+import { todayYmd } from "@/app/utils/dateToday";
 
 interface UseOrderEntryFormParams {
   mode: "create" | "edit";
@@ -75,7 +75,7 @@ export function useOrderEntryForm({
   const [paymentTerms, setPaymentTerms] = useState("");
   const [paymentTermsList, setPaymentTermsList] = useState<string[]>([]);
   const [orderNumber, setOrderNumber] = useState(AUTO_ORDER_NO);
-  const [orderDate, setOrderDate] = useState(resolveTodayIso());
+  const [orderDate, setOrderDate] = useState(todayYmd());
   const [deliveryDate, setDeliveryDate] = useState("");
   const [deliveryLocation, setDeliveryLocation] = useState("");
   const [note, setNote] = useState("");
@@ -107,7 +107,7 @@ export function useOrderEntryForm({
     setClientName(data.customerName || "");
     setCustomerSq(data.customerSq);
     setCustomerCode(data.customerCode || "");
-    setOrderDate(data.orderDate || resolveTodayIso());
+    setOrderDate(data.orderDate || todayYmd());
     setDeliveryDate(data.deliveryReqDate || "");
     setDeliveryLocation(data.deliveryPlace || "");
     setPaymentTerms(data.paymentTerms || "");
@@ -117,7 +117,7 @@ export function useOrderEntryForm({
 
   // 등록 모드: 오늘 날짜를 세팅하고 새 수주번호를 발번한다.
   const prepareNewOrder = async () => {
-    setOrderDate(resolveTodayIso());
+    setOrderDate(todayYmd());
     try {
       const nextOrderNo = await orderApi.generateOrderNo();
       setOrderNumber(nextOrderNo || AUTO_ORDER_NO);
@@ -166,7 +166,7 @@ export function useOrderEntryForm({
   const handleOrderDateChange = (value: string) => {
     setOrderDate(value);
     // 과거 날짜여도 등록은 허용하되 하단에 안내만 표기.
-    const isPast = !!(value && value < resolveTodayIso());
+    const isPast = !!(value && value < todayYmd());
     setErrors((prev) => ({
       ...prev,
       orderDate: isPast,
@@ -242,7 +242,7 @@ export function useOrderEntryForm({
   const collectValidation = (): OrderFormErrors => ({
     customerName: !customerSq,
     // 과거 수주일자는 표기만, 저장은 막지 않는다.
-    orderDate: !!(orderDate && orderDate < resolveTodayIso()),
+    orderDate: !!(orderDate && orderDate < todayYmd()),
     deliveryDate: !!(deliveryDate && orderDate && deliveryDate < orderDate),
   });
 

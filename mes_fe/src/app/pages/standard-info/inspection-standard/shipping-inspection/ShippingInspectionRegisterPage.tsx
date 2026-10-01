@@ -15,6 +15,7 @@ import { useAccountTypes } from "@/app/hooks/useAccountTypes";
 import { ensureImagePath } from "@/app/api/imageUploadApi";
 import { FormActions } from "../../../../components/common/FormActions";
 import { useCrudForm } from "../../../../hooks/useCrudForm";
+import { todayYmd } from "@/app/utils/dateToday";
 
 interface ShippingInspectionRegisterPageProps {
   mode?: Extract<InspectionPageMode, "create" | "edit">;
@@ -87,7 +88,7 @@ function highestStdSeq(list: any[]): number {
 
 export function ShippingInspectionRegisterPage({ mode = "create", selectedId, onBack, onSave }: ShippingInspectionRegisterPageProps) {
   const isEdit = mode === "edit";
-  const today = new Date().toISOString().split('T')[0];
+  const today = todayYmd();
   const { matchFinished } = useAccountTypes();
   const { saving, runSave } = useCrudForm();
 

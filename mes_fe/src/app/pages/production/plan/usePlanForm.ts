@@ -1,7 +1,7 @@
 /** [생산관리 > 생산계획] 등록/수정 폼이 공유하는 입력 상태·자동계산 로직. */
 import { useState, useCallback } from "react";
 import { ProductionPlanData } from "@/types/production/plan.interface";
-import { resolveToday } from "./planBoardHelpers";
+import { todayYmd } from "@/app/utils/dateToday";
 
 /** 계획량(m) ÷ 생산속도 = 예상소요시간(분, 소수 2자리). 무효값이면 빈 문자열. */
 export function deriveEstimatedTime(planQty: number, productionSpeed: string): string {
@@ -15,7 +15,7 @@ export function deriveEstimatedTime(planQty: number, productionSpeed: string): s
 export function makeEmptyPlanForm(): ProductionPlanData {
   return {
     lineName: "",
-    planDate: resolveToday(),
+    planDate: todayYmd(),
     itemCode: "",
     itemName: "",
     basisWeight: "",

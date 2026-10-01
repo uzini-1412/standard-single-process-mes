@@ -6,6 +6,7 @@ import { useUserContext, usePermission } from "../../../context/UserContext";
 import { useCrudForm } from "../../../hooks/useCrudForm";
 import { applyReceivableTotals, shipResultToDetailRow } from "./receivablesCalc";
 import type { CollectionData, CollectionDetail, ShipResultOption } from "@/types/management/collection.interface";
+import { todayYmd } from "@/app/utils/dateToday";
 
 export type ViewMode = "create" | "edit" | "detail";
 
@@ -33,7 +34,7 @@ export function useReceivableForm({ mode, collectionSq, onBack, onSave }: Args) 
 
   const [form, setForm] = useState<CollectionData>({
     customerSq: 0, customerCode: "", customerName: "",
-    collectionDate: new Date().toISOString().slice(0, 10),
+    collectionDate: todayYmd(),
     paymentTerms: "", supplyAmt: 0, vatAmt: 0, totalAmt: 0,
     totalCollectionAmt: 0, balance: 0,
     registrant: userInfo?.staffName || "",

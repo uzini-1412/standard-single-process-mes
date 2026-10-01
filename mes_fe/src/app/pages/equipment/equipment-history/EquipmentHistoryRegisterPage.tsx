@@ -10,6 +10,7 @@ import { HistoryEquipmentInfo, EquipmentHistoryRecord, EquipmentHistoryRegisterP
 import { HISTORY_EQUIPMENT_COLUMNS, HISTORY_REGISTER_COLUMNS } from "@/app/constants/eqipment";
 import { showWarning } from "@/app/utils/toast";
 import { ensureDateOrder } from "@/app/utils/dateGuard";
+import { todayYmd } from "@/app/utils/dateToday";
 
 const ACTION_TYPE_OPTIONS = ["수리", "교체", "폐기"];
 
@@ -19,14 +20,6 @@ const withComma = (value: string) => {
   const digits = value.replace(/[^0-9]/g, "");
   return digits ? parseInt(digits).toLocaleString() : "";
 };
-
-// 오늘 날짜 YYYY-MM-DD
-function todayString() {
-  const d = new Date();
-  const mm = String(d.getMonth() + 1).padStart(2, "0");
-  const dd = String(d.getDate()).padStart(2, "0");
-  return `${d.getFullYear()}-${mm}-${dd}`;
-}
 
 // 하단 "저장/조회 현황" 테이블의 편집 가능한 컬럼 정의(체크박스/No 제외).
 // kind 에 따라 텍스트·날짜텍스트·셀렉트·시간·금액 입력을 렌더한다.
@@ -76,7 +69,7 @@ export default function EquipmentHistoryRegisterPage({ onBack, onSave }: Equipme
   const [actionType, setActionType] = useState("");
   const [occurDate, setOccurDate] = useState("");
   const [occurContent, setOccurContent] = useState("");
-  const [actionDate, setActionDate] = useState(todayString());
+  const [actionDate, setActionDate] = useState(todayYmd());
   const [actionManager, setActionManager] = useState("");
   const [actionContent, setActionContent] = useState("");
   const [actionTime, setActionTime] = useState("");
@@ -122,7 +115,7 @@ export default function EquipmentHistoryRegisterPage({ onBack, onSave }: Equipme
     setSelectedRegDt(selectedEquipment.regDt ? selectedEquipment.regDt.substring(0, 10) : "");
     setOccurDateError(false);
     setActionDateError(false);
-    setActionDate(todayString());
+    setActionDate(todayYmd());
   };
 
   const handleOccurDateChange = (value: string) => {
@@ -214,7 +207,7 @@ export default function EquipmentHistoryRegisterPage({ onBack, onSave }: Equipme
     setActionType("");
     setOccurDate("");
     setOccurContent("");
-    setActionDate(todayString());
+    setActionDate(todayYmd());
     setActionManager("");
     setActionContent("");
     setActionTime("");

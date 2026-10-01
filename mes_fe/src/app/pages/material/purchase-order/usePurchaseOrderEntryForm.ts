@@ -13,8 +13,8 @@ import {
   hasMixedImportInspection,
   materialsToOrderItems,
   recomputeLineAmounts,
-  todayDateString,
 } from "./purchaseOrderEntryCalc";
+import { todayYmd } from "@/app/utils/dateToday";
 
 interface UseEntryFormArgs {
   mode: "create" | "edit";
@@ -32,7 +32,7 @@ export function usePurchaseOrderEntryForm({ mode, selectedId, onRegister }: UseE
   const [customerSq, setCustomerSq] = useState<number | null>(null);
   const [customerName, setCustomerName] = useState("");
   const [customerCode, setCustomerCode] = useState("");
-  const [orderDate, setOrderDate] = useState(todayDateString());
+  const [orderDate, setOrderDate] = useState(todayYmd());
   const [inReqDate, setInReqDate] = useState("");
   const [paymentTerms, setPaymentTerms] = useState("");
   const [remark, setRemark] = useState("");

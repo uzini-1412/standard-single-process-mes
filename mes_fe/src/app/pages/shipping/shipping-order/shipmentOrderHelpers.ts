@@ -13,15 +13,6 @@ export function deriveRollCount(planQty: number, length: number): number {
   return Math.ceil(planQty / length);
 }
 
-// 오늘 날짜를 YYYY-MM-DD 형식 문자열로.
-export function todayIsoDate(): string {
-  const now = new Date();
-  const y = now.getFullYear();
-  const m = String(now.getMonth() + 1).padStart(2, "0");
-  const d = String(now.getDate()).padStart(2, "0");
-  return `${y}-${m}-${d}`;
-}
-
 // 출하상태 enum 코드를 화면 표기용 한글로. 알 수 없는 값은 대기로 간주.
 export function describeShipStatus(code?: string): string {
   return code === "SHIPPED" ? "출하완료" : "출하대기";

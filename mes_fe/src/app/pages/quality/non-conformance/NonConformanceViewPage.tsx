@@ -9,6 +9,7 @@ import { showSuccess, showWarning, showError } from "@/app/utils/toast";
 import { showConfirm } from "@/app/utils/confirm";
 import { resolveOccurTypeText, isManualNcr } from "./ncrLabels";
 import { NcrActionEditor, NcrActionHistory, type ActionDraft } from "./NcrActionSection";
+import { todayYmd } from "@/app/utils/dateToday";
 
 // 읽기 전용 셀 입력 — 상세 표의 값 칸에 반복 사용
 function ReadonlyCell({ text }: { text: string | number }) {
@@ -57,7 +58,7 @@ export function NonConformanceViewPage({ selectedItem, onBack, onEdit, onDelete 
 
   // 신규 조치 입력 시작 — 조치일자 기본값으로 오늘을 채움
   const openActionEditor = () => {
-    const today = new Date().toISOString().split("T")[0];
+    const today = todayYmd();
     setActionDraft({ ...actionDraft, actionDate: today });
     setActionEditorOpen(true);
   };

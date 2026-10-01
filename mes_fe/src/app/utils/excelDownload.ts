@@ -1,5 +1,6 @@
 import { saveAs } from "file-saver";
 import apiClient from "../api/apiClient";
+import { todayYmd } from "./dateToday";
 
 const XLSX_MIME =
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
@@ -21,10 +22,9 @@ export async function downloadExcel(
   saveAs(new Blob([data], { type: XLSX_MIME }), fileName);
 }
 
-/** 오늘 날짜를 YYYYMMDD(로컬)로. 엑셀 파일명 앞머리에 쓰는 표준 포맷. */
-export function todayYmd(): string {
-  const now = new Date();
-  return `${now.getFullYear()}${pad2(now.getMonth() + 1)}${pad2(now.getDate())}`;
+/** 오늘 날짜를 YYYYMMDD 로. 엑셀 파일명 앞머리에 쓰는 표준 포맷(구분자 없음). */
+export function todayYmdCompact(): string {
+  return todayYmd().replace(/-/g, "");
 }
 
 /** 현재 시각을 HHmm(로컬, 시·분만)로. 예: 오후 1시 9분 → "1309". */
@@ -59,7 +59,7 @@ export function buildExcelFileName(
   conditions: (string | number | null | undefined)[] = [],
 ): string {
   const segments = [
-    todayYmd(),
+    todayYmdCompact(),
     nowHm(),
     ...usableConditions(conditions),
     menuName,

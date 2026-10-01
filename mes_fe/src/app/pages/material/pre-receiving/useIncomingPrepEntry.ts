@@ -6,7 +6,8 @@ import * as itemApi from "../../../api/itemApi";
 import { AvailableOrderItem, PreReceivingTableItem } from "@/types/material/prereceive.interface";
 import { showSuccess, showWarning, showError } from "@/app/utils/toast";
 import { ensureDateOrder } from "@/app/utils/dateGuard";
-import { buildAvailableOrders, todayYmd, validateInboundQty } from "./incomingPrepHelpers";
+import { buildAvailableOrders, validateInboundQty } from "./incomingPrepHelpers";
+import { todayYmd } from "@/app/utils/dateToday";
 
 type FieldErrors = { [rowNo: number]: { inboundQty: string; inboundDate: string } };
 type AdjustDirection = "plus" | "minus";

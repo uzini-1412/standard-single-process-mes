@@ -9,8 +9,8 @@ import {
   computeRollCount,
   flattenOrderDetails,
   keepUnplannedDetails,
-  resolveTodayStamp,
 } from "./dispatchPlanHelpers";
+import { todayYmd } from "@/app/utils/dateToday";
 
 interface UseDispatchPlanFormArgs {
   mode: "create" | "edit";
@@ -36,7 +36,7 @@ const buildEditDraft = (item?: ShippingPlanData | null): ShippingPlanData => ({
   planQtyEa: item?.planQtyEa ?? 0,
   lotNo: item?.lotNo || "",
   orderNo: item?.orderNo || "",
-  expectedShipDate: item?.expectedShipDate || resolveTodayStamp(),
+  expectedShipDate: item?.expectedShipDate || todayYmd(),
   storageLocation: item?.storageLocation || "",
   remark: item?.remark || "",
 });
@@ -137,7 +137,7 @@ export function useDispatchPlanForm({ mode, item, onBack, onSave }: UseDispatchP
       storageLocation: "",
       planQty: "",
       planQtyEa: 0,
-      expectedShipDate: resolveTodayStamp(),
+      expectedShipDate: todayYmd(),
       remark: "",
     };
 

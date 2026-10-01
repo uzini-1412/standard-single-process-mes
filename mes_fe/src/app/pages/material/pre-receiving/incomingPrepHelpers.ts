@@ -1,11 +1,6 @@
-/** 가입고 등록 화면 순수 헬퍼: 발주·품목·입고 데이터를 합쳐 후보 행 구성, 수량 유효성 검증, 오늘 날짜. */
+/** 가입고 등록 화면 순수 헬퍼: 발주·품목·입고 데이터를 합쳐 후보 행 구성, 수량 유효성 검증. */
 import * as preReceivingApi from "../../../api/preReceivingApi";
 import { AvailableOrderItem } from "@/types/material/prereceive.interface";
-
-/** 시스템 오늘 날짜를 YYYY-MM-DD로 반환 */
-export function todayYmd(): string {
-  return new Date().toISOString().split("T")[0];
-}
 
 /**
  * 발주 목록을 상세 단위로 펼쳐 가입고 후보 행을 만든다.

@@ -13,6 +13,7 @@ import {
   buildBlankStatementRows,
   computeTax,
 } from "./tradeStatementHelpers";
+import { todayYmd } from "@/app/utils/dateToday";
 
 interface TradeStatementViewProps {
   shipOrderSq: number;
@@ -27,7 +28,7 @@ export function TradeStatementView({ shipOrderSq, onBack, initialForm }: TradeSt
   const [form, setForm] = useState<TradeStatementData>(() => {
     const base: TradeStatementData = {
       shipOrderSq,
-      statementDate: new Date().toISOString().slice(0, 10),
+      statementDate: todayYmd(),
       supplierRegNo: "", supplierCompany: "", supplierCeo: "", supplierAddress: "", supplierBizType: "", supplierBizItem: "",
       buyerRegNo: "", buyerCompany: "", buyerCeo: "", buyerAddress: "", buyerBizType: "", buyerBizItem: "",
       prevBalance: "", shipAmount: "", depositAmount: "", currBalance: "",

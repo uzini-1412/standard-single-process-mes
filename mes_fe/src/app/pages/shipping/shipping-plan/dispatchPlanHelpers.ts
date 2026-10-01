@@ -23,15 +23,6 @@ export const dispatchPlanBoardColumns: ListColumn<ShippingPlanData>[] = shipping
   }),
 );
 
-// 오늘 날짜를 YYYY-MM-DD 문자열로 돌려준다(폼 기본 출하일 용).
-export const resolveTodayStamp = (): string => {
-  const now = new Date();
-  const yyyy = now.getFullYear();
-  const mm = String(now.getMonth() + 1).padStart(2, "0");
-  const dd = String(now.getDate()).padStart(2, "0");
-  return `${yyyy}-${mm}-${dd}`;
-};
-
 // 길이가 양수일 때만 출하량 / 길이를 올림하여 롤수(EA)를 산출한다.
 export const computeRollCount = (planQtyText: string, lengthText: string): number => {
   const qty = parseFloat(planQtyText);

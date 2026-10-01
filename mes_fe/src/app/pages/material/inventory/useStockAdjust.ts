@@ -3,6 +3,7 @@ import { useState } from "react";
 import * as preReceivingApi from "../../../api/preReceivingApi";
 import { MaterialInventoryData } from "@/types/material/inventory.interface";
 import { showSuccess, showWarning, showError } from "@/app/utils/toast";
+import { todayYmd } from "@/app/utils/dateToday";
 
 type AdjustDirection = "plus" | "minus";
 
@@ -63,7 +64,7 @@ export function useStockAdjust({ selectedItem, onAdjusted, onRefreshHistory }: U
           inboundSq: null,
           orderDtlSq: targetInbound.orderDtlSq,
           itemSq: targetInbound.itemSq,
-          inboundDate: new Date().toISOString().split("T")[0],
+          inboundDate: todayYmd(),
           inboundQty: signedQty,
           remark: `재고조정 (${direction === "plus" ? "추가" : "감소"} ${qty})`,
           writerId: "admin",

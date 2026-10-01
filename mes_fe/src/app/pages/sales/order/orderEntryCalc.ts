@@ -20,15 +20,6 @@ export function toWonText(value: string) {
   return `₩ ${numeric.toLocaleString()}`;
 }
 
-// 오늘 날짜를 YYYY-MM-DD 형태로 반환.
-export function resolveTodayIso() {
-  const now = new Date();
-  const yyyy = now.getFullYear();
-  const mm = String(now.getMonth() + 1).padStart(2, "0");
-  const dd = String(now.getDate()).padStart(2, "0");
-  return `${yyyy}-${mm}-${dd}`;
-}
-
 // 한 줄(품목)의 수주수량을 기준으로 EA/㎡/중량/금액을 다시 산출해 새 객체로 돌려준다.
 export function recomputeLineMetrics(item: OrderItem): OrderItem {
   const qty = parseFloat(item.orderQty) || 0;

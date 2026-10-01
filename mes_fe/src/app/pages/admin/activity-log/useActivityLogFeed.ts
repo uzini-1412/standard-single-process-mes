@@ -1,14 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { showError, showWarning } from "@/app/utils/toast";
+import { daysAgoYmd } from "@/app/utils/dateToday";
 import { useUserContext } from "../../../context/UserContext";
 import { searchActivityLogs, fetchActivityLogsForExport, type ActivityLogRes } from "../../../api/activityLogApi";
 import { downloadActivityLogExcel } from "./activityLogExcel";
 
 const AUTO_REFRESH_MS = 5000;
-
-function isoDaysAgo(days: number): string {
-  return new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
-}
 
 export interface ActivityLogFilters {
   dateFrom: string;
@@ -34,8 +31,8 @@ export function useActivityLogFeed() {
   const [lastSyncedAt, setLastSyncedAt] = useState<Date | null>(null);
   const [autoSync, setAutoSync] = useState(true);
 
-  const [dateFrom, setDateFrom] = useState(isoDaysAgo(7));
-  const [dateTo, setDateTo] = useState(isoDaysAgo(0));
+  const [dateFrom, setDateFrom] = useState(daysAgoYmd(7));
+  const [dateTo, setDateTo] = useState(daysAgoYmd(0));
   const [userId, setUserId] = useState("");
   const [staffName, setStaffName] = useState("");
   const [actionType, setActionType] = useState("");

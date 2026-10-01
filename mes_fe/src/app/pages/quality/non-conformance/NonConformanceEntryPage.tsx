@@ -11,6 +11,7 @@ import * as ncrApi from "../../../api/nonConformanceApi";
 import { NonConformanceRegisterPageProps } from "@/types/quality/nonConformance.interface";
 import { ensureDateOrder } from "@/app/utils/dateGuard";
 import { useDefectTypeOptions } from "./useDefectTypeOptions";
+import { todayYmd } from "@/app/utils/dateToday";
 
 // 셀 라벨 공통 스타일
 const HEAD_CELL = "border-r border-gray-300 bg-gray-100 text-[#4A5CC7] text-xs font-semibold px-4 py-3 w-32";
@@ -19,7 +20,7 @@ const HEAD_CELL = "border-r border-gray-300 bg-gray-100 text-[#4A5CC7] text-xs f
 function buildInitialDraft() {
   return {
     occurType: "",
-    occurDate: new Date().toISOString().split("T")[0],
+    occurDate: todayYmd(),
     itemCode: "",
     itemName: "",
     occurPlace: "",

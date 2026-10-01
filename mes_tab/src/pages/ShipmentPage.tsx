@@ -10,6 +10,7 @@ import {
   type ScanLotRes,
 } from '../api/shipmentApi';
 import { extractLotNoFromScan } from '../utils/lotScan';
+import { todayYmd } from '../utils/dateToday';
 
 interface ShipOrderRow {
   id: number;
@@ -65,11 +66,6 @@ function getStatusLabel(status: string) {
 
 function getStatusClass(status: string) {
   return status === 'SHIPPED' ? 'st-done' : 'st-wait';
-}
-
-// 오늘 날짜를 YYYY-MM-DD 형태로 반환
-function todayStamp(): string {
-  return new Date().toISOString().slice(0, 10);
 }
 
 // 한 행에 스캔된 LOT들의 출하량(m) 합계
@@ -156,7 +152,7 @@ export default function ShipmentPage({ onBadgeUpdate }: { onBadgeUpdate: (count:
     try {
       // BE에서 OK 판정 / 출하LOT 부여 / 미출하 / 활성품목 조건을 모두 필터링한 결과만 내려온다
       const pendingList = await fetchTabletShipPending();
-      const fallbackDate = todayStamp();
+      const fallbackDate = todayYmd();
       const mapped = pendingList.map((item, idx) => toOrderRow(item, idx, fallbackDate));
       setOrderList(mapped);
       onBadgeUpdate(mapped.length);
@@ -265,7 +261,7 @@ export default function ShipmentPage({ onBadgeUpdate }: { onBadgeUpdate: (count:
     }
     setIsSubmitting(true);
     try {
-      const stamp = todayStamp();
+      const stamp = todayYmd();
       // 스캔된 LOT 한 건마다 출하실적을 따로 등록해 각 LOT 재고를 차감한다
       const payload = row.scannedLots.map(item => ({
         shipDtlSq: row.shipDtlSq,
@@ -525,7 +521,7 @@ export default function ShipmentPage({ onBadgeUpdate }: { onBadgeUpdate: (count:
                     {shippedMeters}m
                   </span>
                 </p>
-                <p><strong>납품일:</strong> {todayStamp()}</p>
+                <p><strong>납품일:</strong> {todayYmd()}</p>
                 {underShipped && (
                   <div style={{
                     marginTop: 10, padding: '10px 12px',

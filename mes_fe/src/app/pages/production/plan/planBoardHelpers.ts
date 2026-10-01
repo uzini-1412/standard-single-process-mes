@@ -1,5 +1,6 @@
 /** [생산관리 > 생산계획] 보드 화면에서 쓰는 순수 계산/포맷 유틸 모음. 외부 노출 없음. */
 import { buildExcelFileName } from "@/app/utils/excelDownload";
+import { toYmd } from "@/app/utils/dateToday";
 
 /** 우측 정렬 + 천단위 콤마가 필요한 수량성 컬럼 키 (금액 컬럼은 존재하지 않음). */
 export const QUANTITY_COLUMN_KEYS = new Set<string>([
@@ -16,19 +17,6 @@ export const QUANTITY_ROW_KEYS = new Set<string>([
   "productionSpeed",
   "estimatedProductionTime",
 ]);
-
-/** Date 객체를 YYYY-MM-DD 문자열로 직렬화. */
-function toYmd(d: Date): string {
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  return `${y}-${m}-${day}`;
-}
-
-/** 오늘 일자를 YYYY-MM-DD 형태로 돌려준다. */
-export function resolveToday(): string {
-  return toYmd(new Date());
-}
 
 /** 헤더에 노출할 "YYYY. M. D(요일)" 표기를 만든다. */
 export function describeDateHeader(dateStr: string): string {

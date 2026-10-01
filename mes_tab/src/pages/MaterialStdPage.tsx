@@ -2,6 +2,7 @@ import { Fragment, useState, useEffect, useCallback, useMemo } from 'react';
 import { useToast } from '../context/ToastContext';
 import { fetchWorkOrderList } from '../api/workOrderApi';
 import { fetchRecipeList } from '../api/recipeApi';
+import { todayYmd } from '../utils/dateToday';
 
 interface MaterialChildRow {
   id: string;
@@ -70,7 +71,7 @@ export default function MaterialStdPage() {
   const { toast } = useToast();
 
   // 조회 조건 상태
-  const [selectedDate, setSelectedDate] = useState(() => new Date().toISOString().slice(0, 10));
+  const [selectedDate, setSelectedDate] = useState(() => todayYmd());
   const [lineChoice, setLineChoice] = useState('all');
   const [productChoice, setProductChoice] = useState('all');
 

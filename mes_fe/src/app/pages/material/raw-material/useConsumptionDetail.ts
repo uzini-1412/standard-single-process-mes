@@ -3,7 +3,8 @@ import { useEffect, useMemo, useState } from "react";
 import * as plcRawApi from "../../../api/plcRawApi";
 import * as workOrderApi from "../../../api/workOrderApi";
 import * as bomApi from "../../../api/bomApi";
-import { ConsumptionTab, resolveTodayKst } from "./consumptionTypes";
+import { ConsumptionTab } from "./consumptionTypes";
+import { todayYmd } from "@/app/utils/dateToday";
 import { LineOption } from "./useLineMachineOptions";
 
 export interface DetailMaterial {
@@ -18,7 +19,7 @@ export interface DetailMaterial {
 
 export function useConsumptionDetail(activeTab: ConsumptionTab, lineList: LineOption[]) {
   const [lineCode, setLineCode] = useState("");
-  const [targetDate, setTargetDate] = useState(resolveTodayKst());
+  const [targetDate, setTargetDate] = useState(todayYmd());
   const [lotChoices, setLotChoices] = useState<workOrderApi.WorkOrderRes[]>([]);
   const [chosenLot, setChosenLot] = useState<workOrderApi.WorkOrderRes | null>(null);
   const [recipeList, setRecipeList] = useState<bomApi.BomRes[]>([]);

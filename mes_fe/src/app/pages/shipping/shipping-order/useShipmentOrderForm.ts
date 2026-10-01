@@ -8,12 +8,13 @@ import { showWarning, showError } from "@/app/utils/toast";
 import { ensureDateOrder } from "@/app/utils/dateGuard";
 import type { LotAllocation } from "../../../components/features/shipping/LotSelectModal";
 import { useCrudForm } from "../../../hooks/useCrudForm";
-import { deriveRollCount, todayIsoDate } from "./shipmentOrderHelpers";
+import { deriveRollCount } from "./shipmentOrderHelpers";
+import { todayYmd } from "@/app/utils/dateToday";
 
 // 비어있는 폼 초기값. 출하일만 오늘 날짜로 채워 둔다.
 function blankFormState(): ShippingOrderData {
   return {
-    expectedShipDate: todayIsoDate(),
+    expectedShipDate: todayYmd(),
     customerCode: "",
     customerName: "",
     itemCode: "",
@@ -110,7 +111,7 @@ export function useShipmentOrderForm({ onBack, onSave }: FormHookArgs) {
     setFormData({
       planSq: plan.planSq,
       salesOrderDtlSq: plan.salesOrderDtlSq,
-      expectedShipDate: plan.expectedShipDate || todayIsoDate(),
+      expectedShipDate: plan.expectedShipDate || todayYmd(),
       customerCode: plan.customerCode || "",
       customerName: plan.customerName || "",
       itemCode: plan.itemCode || "",

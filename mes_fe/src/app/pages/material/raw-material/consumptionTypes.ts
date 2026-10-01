@@ -1,4 +1,4 @@
-/** [원소재사용현황] 화면 전반에서 공유하는 타입·상수·날짜 유틸. */
+/** [원소재사용현황] 화면 전반에서 공유하는 타입·상수. */
 
 export type ConsumptionTab = "input-status" | "input-analysis" | "input-analysis-detail";
 
@@ -12,11 +12,3 @@ export interface ConsumptionMatrixRow {
   [key: string]: any;
 }
 
-// KST 기준 오늘 날짜 문자열. toISOString()은 UTC라 새벽에 하루 밀리는 문제를 피한다.
-export function resolveTodayKst(): string {
-  const now = new Date();
-  const y = now.getFullYear();
-  const m = String(now.getMonth() + 1).padStart(2, "0");
-  const d = String(now.getDate()).padStart(2, "0");
-  return `${y}-${m}-${d}`;
-}

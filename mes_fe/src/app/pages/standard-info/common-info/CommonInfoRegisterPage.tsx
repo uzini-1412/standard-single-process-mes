@@ -6,6 +6,7 @@ import { X } from "lucide-react";
 import { CommonInfoForm, CommonInfoHistoryItem } from "@/types/standard-info/common.interface";
 import { showWarning } from "@/app/utils/toast";
 import { usePermission } from "../../../context/UserContext";
+import { todayYmd } from "@/app/utils/dateToday";
 
 interface CommonInfoRegisterPageProps {
   mode?: "create" | "edit";
@@ -30,7 +31,7 @@ function collectMissing(form: CommonInfoForm): ErrorMap {
 
 export function CommonInfoRegisterPage({ mode = "create", initialData, onBack, onSave }: CommonInfoRegisterPageProps) {
   const perm = usePermission("common-info");
-  const today = new Date().toISOString().split("T")[0];
+  const today = todayYmd();
 
   // 빈 폼 한 벌 — 초기 상태/등록 후 리셋에서 공유
   const emptyForm = (): CommonInfoForm => ({

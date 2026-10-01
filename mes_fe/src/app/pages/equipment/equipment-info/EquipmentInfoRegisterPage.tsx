@@ -15,6 +15,7 @@ import { showApiError } from "@/app/utils/apiError";
 import { ACCEPT, ALLOWED_EXTENSIONS, validateUploadFile } from "@/app/utils/fileUpload";
 import { usePermission } from "../../../context/UserContext";
 import { useFacilityCommonInfo } from "../../../hooks/useFacilityCommonInfo";
+import { todayYmd } from "@/app/utils/dateToday";
 
 // 금액 포맷 함수 (천단위 콤마)
 const formatCurrency = (value: string | number): string => {
@@ -56,7 +57,7 @@ export default function EquipmentInfoRegisterPage({ onBack, onRegister }: Equipm
 
   // 오늘 날짜를 기본값으로 설정
   useEffect(() => {
-    const today = new Date().toISOString().split('T')[0];
+    const today = todayYmd();
     setRegDt(today);
   }, []);
 
@@ -131,7 +132,7 @@ export default function EquipmentInfoRegisterPage({ onBack, onRegister }: Equipm
     // 4열 GRID 초기화
     setFacilityType("");
     setLineNm("");
-    const today = new Date().toISOString().split('T')[0];
+    const today = todayYmd();
     setRegDt(today);
     setManageNo("");
     setFacilityNm("");

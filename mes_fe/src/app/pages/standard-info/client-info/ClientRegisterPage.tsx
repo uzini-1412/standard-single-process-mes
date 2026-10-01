@@ -16,6 +16,7 @@ import { showApiError } from "@/app/utils/apiError";
 import { ACCEPT, ALLOWED_EXTENSIONS, validateUploadFiles } from "@/app/utils/fileUpload";
 import { FormActions } from "../../../components/common/FormActions";
 import { useCrudForm } from "../../../hooks/useCrudForm";
+import { todayYmd } from "@/app/utils/dateToday";
 
 interface ClientRegisterPageProps {
   mode?: "create" | "edit";
@@ -27,13 +28,6 @@ interface ClientRegisterPageProps {
 export function ClientRegisterPage({ mode = "create", clientId, onBack, onSave }: ClientRegisterPageProps) {
   const perm = usePermission("client-info");
 
-  // 오늘 날짜를 YYYY-MM-DD 로 — 등록일자 기본값
-  const getTodayDate = () => {
-    const pad = (n: number) => String(n).padStart(2, '0');
-    const d = new Date();
-    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-  };
-
   const emptyForm = (): Client => {
     const blank = "";
     return {
@@ -42,7 +36,7 @@ export function ClientRegisterPage({ mode = "create", clientId, onBack, onSave }
       ownerName: blank,
       businessNo: blank,
       customerType: blank,
-      regDate: getTodayDate(),
+      regDate: todayYmd(),
       managerName: blank,
       tel: blank,
       email: blank,
@@ -79,7 +73,7 @@ export function ClientRegisterPage({ mode = "create", clientId, onBack, onSave }
         ownerName: data.ownerName || "",
         businessNo: data.businessNo || "",
         customerType: data.customerType || "",
-        regDate: data.regDate || getTodayDate(),
+        regDate: data.regDate || todayYmd(),
         managerName: data.managerName || "",
         tel: data.tel || "",
         email: data.email || "",

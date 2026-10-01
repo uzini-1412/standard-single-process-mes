@@ -4,6 +4,7 @@ import type {
   PurchaseStatusItem,
   PurchaseStatusGroupRes,
 } from "@/types/management/purchase.interface";
+import { todayYmd } from "@/app/utils/dateToday";
 
 // 화면 표시에 쓰는 행 번호(no)를 그룹 데이터에 덧붙인 타입
 export interface NumberedPurchaseGroup extends PurchaseStatusGroupRes {
@@ -57,7 +58,7 @@ export function composeTradeStatementForm(
 
   return {
     shipOrderSq: 0,
-    statementDate: group.inboundDate || new Date().toISOString().slice(0, 10),
+    statementDate: group.inboundDate || todayYmd(),
     supplierCompany: group.customerName || "",
     shipAmount: String(supplySum + vatSum),
     sourceType: "PURCHASE",

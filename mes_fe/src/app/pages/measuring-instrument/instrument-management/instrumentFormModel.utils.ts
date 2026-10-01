@@ -1,5 +1,6 @@
 import type { InstrumentSaveData } from "@/app/api/instrumentApi";
 import type { InstrumentData } from "@/types/measuring-instrument/instrumentManager.interface";
+import { toYmd } from "@/app/utils/dateToday";
 
 export type CalibCycleUnit = "일" | "주" | "달" | "년";
 
@@ -108,7 +109,7 @@ export function computeNextCalibDate(
       break;
   }
 
-  return target.toISOString().split("T")[0];
+  return toYmd(target);
 }
 
 // 오늘부터 다음 교정 예정일까지 남은 일수를 계산한다(없으면 null).

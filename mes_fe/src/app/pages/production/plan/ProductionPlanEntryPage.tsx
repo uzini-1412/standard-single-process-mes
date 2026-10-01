@@ -24,7 +24,7 @@ import { productionPlanColumns, requirementColumnsForPlan } from "@/app/constant
 import { UNITS, withUnit } from "@/app/utils/unitConvert";
 import { useCrudForm } from "../../../hooks/useCrudForm";
 import { usePlanForm, makeEmptyPlanForm } from "./usePlanForm";
-import { resolveToday } from "./planBoardHelpers";
+import { todayYmd } from "@/app/utils/dateToday";
 import { useRequirementList } from "./useRequirementList";
 
 interface ProductionPlanEntryPageProps {
@@ -77,7 +77,7 @@ export function ProductionPlanEntryPage({ onBack }: ProductionPlanEntryPageProps
       setDateInvalid(false);
 
       setForm({
-        planDate: resolveToday(),
+        planDate: todayYmd(),
         itemSq: requirement.itemSq ?? matched?.itemSq,
         itemCode: requirement.itemCode || "",
         itemName: requirement.itemName || "",

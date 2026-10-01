@@ -15,6 +15,7 @@ import { ensureDateOrder } from "@/app/utils/dateGuard";
 import { UNITS, withUnit } from "@/app/utils/unitConvert";
 // 시료수 1 고정 + x1 자동 채움 + 자동 합부판정.
 import { FIXED_SAMPLE_CNT, autoJudgeFromX1, autoX1String, x1ToNumber } from "@/app/utils/shippingInspection";
+import { todayYmd } from "@/app/utils/dateToday";
 
 interface OutgoingInspectionEntryPageProps {
   onBack: () => void;
@@ -121,7 +122,7 @@ function makeResultRow(
   // x1에는 DB 호환상 생산 롤중량(kg)을 채우되,
   // 합부판정 비교는 생산평량(g/m²) vs 평량 표준의 상/하한치로 한다.
   const row: EntryResultRow = {
-    no: 0, shipDtlSq: target.shipDtlSq, inspectDate: new Date().toISOString().split("T")[0],
+    no: 0, shipDtlSq: target.shipDtlSq, inspectDate: todayYmd(),
     itemCode: target.itemCode, itemName: target.itemName, basisWeight: target.basisWeight,
     width: target.width, length: target.length, weight, rollBasis,
     maxVal: std.maxVal, minVal: std.minVal, sampleCnt: FIXED_SAMPLE_CNT,

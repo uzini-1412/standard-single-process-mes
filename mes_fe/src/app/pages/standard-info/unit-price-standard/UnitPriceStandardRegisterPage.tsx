@@ -13,6 +13,7 @@ import { UNITS, withUnit } from "@/app/utils/unitConvert";
 import { useAccountTypes } from "@/app/hooks/useAccountTypes";
 import { FormActions } from "../../../components/common/FormActions";
 import { useCrudForm } from "../../../hooks/useCrudForm";
+import { todayYmd } from "@/app/utils/dateToday";
 
 interface Props {
   selectedId?: number;
@@ -22,7 +23,7 @@ interface Props {
 
 export function UnitPriceStandardRegisterPage({ selectedId, onBack, onSave }: Props) {
   const isEditMode = !!selectedId;
-  const today = new Date().toISOString().split('T')[0];
+  const today = todayYmd();
   const { matchFinished, matchRaw, matchSub } = useAccountTypes();
   const { saving, runSave } = useCrudForm();
 

@@ -7,6 +7,7 @@ import { NOTICE_STATUS_OPTIONS } from "@/app/constants/notice";
 import { NoticeFormData } from "@/types/standard-info/notice.interface";
 import { showError } from "@/app/utils/toast";
 import { usePermission } from "../../../context/UserContext";
+import { todayYmd } from "@/app/utils/dateToday";
 
 interface NoticeRegisterPageProps {
   mode?: "create" | "edit";
@@ -17,7 +18,7 @@ interface NoticeRegisterPageProps {
 
 export function NoticeRegisterPage({ mode = "create", selectedId, onBack, onSave }: NoticeRegisterPageProps) {
   const perm = usePermission("notice-info");
-  const today = new Date().toISOString().split('T')[0];
+  const today = todayYmd();
 
   const [formData, setFormData] = useState<NoticeFormData>({
     noticeStatus: "O",

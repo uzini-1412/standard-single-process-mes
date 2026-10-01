@@ -12,16 +12,12 @@ import { RESULT_INSPECTION_COLUMNS } from "@/app/constants/eqipment";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { showWarning } from "@/app/utils/toast";
+import { todayYmd } from "@/app/utils/dateToday";
 import { buildExcelFileName } from "@/app/utils/excelDownload";
 import { TableStateRow } from "../../../components/common/TableStateRow";
 
 // 두 자리 0 패딩 (일/월 표기 공통)
 const pad2 = (n: number | string) => String(n).padStart(2, "0");
-
-const getTodayDate = () => {
-  const t = new Date();
-  return `${t.getFullYear()}-${pad2(t.getMonth() + 1)}-${pad2(t.getDate())}`;
-};
 
 const getDaysInMonth = (year: number, month: number) => new Date(year, month, 0).getDate();
 
@@ -42,7 +38,7 @@ const resultColorClass = (value: string, emphasis = false) => {
 };
 
 export default function DailyInspectionResultPage() {
-  const [checkDate, setCheckDate] = useState(getTodayDate());
+  const [checkDate, setCheckDate] = useState(todayYmd());
   const [lineNm, setLineNm] = useState("");
   const [facilityName, setFacilityNm] = useState("");
   const [loading, setLoading] = useState(false);

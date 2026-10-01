@@ -12,6 +12,7 @@ import {
   evaluateRowResult,
   buildChildLots,
 } from "./incomingInspectionHelpers";
+import { todayYmd } from "@/app/utils/dateToday";
 
 // 파일 업로드 실패를 저장 실패와 분리하기 위한 식별 토큰(토스트는 이미 노출된 상태)
 const UPLOAD_FAILED = Symbol("upload-failed");
@@ -30,7 +31,7 @@ export function useIncomingInspectionEntry({ mode, initialData, onRegister }: En
     orderNo: "", customerCode: "", accountType: "", itemCode: "", itemName: "",
     inboundQty: "", packingQty: "", packingUnit: "", lotQty: "",
     lotNo: "", inspectLotNo: "", inspectNo: "", inspectorName: "",
-    inspectDate: new Date().toISOString().split("T")[0],
+    inspectDate: todayYmd(),
     remark: "", inspectStatus: "",
     customerName: "", orderQty: "", inReqDate: "", inboundDate: "",
     // 발주 reqMaterialCertYn 와 품목 importInspGb 둘 다 참이면 공급사성적서 첨부 필수
@@ -78,7 +79,7 @@ export function useIncomingInspectionEntry({ mode, initialData, onRegister }: En
         inspectLotNo: initialData.inspectLotNo || "",
         inspectNo: initialData.inspectNo || "",
         inspectorName: initialData.inspectorName || "",
-        inspectDate: initialData.inspectDate || new Date().toISOString().split("T")[0],
+        inspectDate: initialData.inspectDate || todayYmd(),
         remark: initialData.remark || "",
         inspectStatus: initialData.inspectStatus || "",
         orderQty: initialData.orderQty || "",
@@ -177,7 +178,7 @@ export function useIncomingInspectionEntry({ mode, initialData, onRegister }: En
     } catch (err) {
       console.error("[IncomingInspectionRegister] Error generating LOT No:", err);
       // 서버 실패 시 프론트에서 기본 LOT 생성
-      const baseDate = inspectDate || formState.inspectDate || new Date().toISOString().split("T")[0];
+      const baseDate = inspectDate || formState.inspectDate || todayYmd();
       const fallback = `IS-${baseDate.replace(/-/g, "")}-01`;
       setFormState((prev) => ({ ...prev, inspectLotNo: fallback, inspectNo: fallback }));
     }

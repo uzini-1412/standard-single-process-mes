@@ -5,15 +5,15 @@ import * as commonInfoApi from "../../../api/commonInfoApi";
 import { useClientPagedList } from "../../../hooks/useClientPagedList";
 import { showSuccess, showWarning } from "@/app/utils/toast";
 import {
-  resolveToday,
   enumerateDays,
   normalizePlanRow,
 } from "./planBoardHelpers";
+import { todayYmd } from "@/app/utils/dateToday";
 
 type EditTarget = { planSq: number; field: "startTime" | "endTime" } | null;
 
 export function usePlanBoard() {
-  const today = useMemo(() => resolveToday(), []);
+  const today = useMemo(() => todayYmd(), []);
 
   const [rows, setRows] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);

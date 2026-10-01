@@ -16,11 +16,6 @@ export function buildOrderNoPlaceholder(): string {
   return `PO-${yearMonth}-001`;
 }
 
-// 오늘 날짜(YYYY-MM-DD).
-export function todayDateString(): string {
-  return new Date().toISOString().split("T")[0];
-}
-
 // 수량×단가로 공급가액(올림)을 다시 계산. 부가세는 현재 미적용이라 0으로 둔다.
 // 수량/단가가 0 이하면 금액 필드를 모두 비운다.
 export function recomputeLineAmounts(item: PurchaseOrderItem): PurchaseOrderItem {

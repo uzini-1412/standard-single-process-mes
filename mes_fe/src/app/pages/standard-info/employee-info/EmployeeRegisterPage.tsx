@@ -7,6 +7,7 @@ import { EmployeeForm, EmployeeHistoryItem } from "@/types/standard-info/employe
 import { fetchNextStaffNo } from "@/app/api/employeeApi";
 import { fetchDetailContentsByItemName } from "@/app/api/commonInfoApi";
 import { showWarning } from "@/app/utils/toast";
+import { todayYmd } from "@/app/utils/dateToday";
 
 interface EmployeeRegisterPageProps {
   mode?: "create" | "edit";
@@ -17,14 +18,6 @@ interface EmployeeRegisterPageProps {
 
 const G = FOUR_COLUMN_GRID_STYLES;
 const STAFF_PREFIX = "SW-";
-
-// 오늘 날짜를 YYYY-MM-DD 형식으로 반환
-function todayYmd(): string {
-  const d = new Date();
-  const mm = String(d.getMonth() + 1).padStart(2, "0");
-  const dd = String(d.getDate()).padStart(2, "0");
-  return `${d.getFullYear()}-${mm}-${dd}`;
-}
 
 // 직원번호 문자열에서 숫자 부분을 추출 (접두사 미일치 시 0)
 function parseStaffSeq(no: string): number {
