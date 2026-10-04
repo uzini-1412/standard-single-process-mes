@@ -28,7 +28,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-  private static final String[] OP_PUBLIC_API_ENDPOINTS = {
+  // mes_dashboard(관제판, 로그인 없음) / 부팅 시 기능플래그 / 외부 PLC 하드웨어처럼
+  // 애초에 로그인 세션을 들고 올 수 없는 호출자만 공개한다.
+  // mes_op, mes_tab, mes_fe가 쓰는 나머지 엔드포인트는 전부 JWT 인증을 요구한다.
+  private static final String[] PUBLIC_API_ENDPOINTS = {
       "/api/dashboard/process/status",
       "/api/dashboard/shipment/monthly",
       "/api/dashboard/line-trend/monthly",
@@ -40,37 +43,8 @@ public class SecurityConfig {
       "/api/dashboard/notice/list",
       "/api/dashboard/quality/customer-claim",
       "/api/dashboard/kpi",
-      "/api/common-info/list",
-      "/api/facility/check-item/list",
-      "/api/facility/daily-check/list",
-      "/api/facility/daily-check/save",
-      "/api/facility/list",
-      "/api/inspect/list",
-      "/api/inspect/result/list",
-      "/api/inspect/result/save",
-      "/api/item/list",
-      "/api/material/inbound/list",
-      "/api/material/input/plc/ingest",
-      "/api/material/input/plc/raw-list",
-      "/api/material/stock/list",
-      "/api/production/material-input/confirm",
-      "/api/production/material-input/list",
-      "/api/production/material-input/save",
-      "/api/production/result/downtime/list",
-      "/api/production/result/downtime/save",
-      "/api/production/result/list",
-      "/api/production/result/save",
-      "/api/production/work-order/list",
-      "/api/production/work-order/update-status",
-      "/api/product-stock/audit/save",
-      "/api/product-stock/audit/today",
-      "/api/product-stock/lot-list",
-      "/api/bom/list",
-      "/api/shipment/order/list",
-      "/api/shipment/result/save",
-      "/api/shipment/result/scan",
-      "/api/staff/list",
-      "/api/system/config"
+      "/api/system/config",
+      "/api/material/input/plc/ingest"
   };
 
   private final JwtTokenProvider jwtTokenProvider;
@@ -92,7 +66,7 @@ public class SecurityConfig {
             .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
             .requestMatchers("/files/**").permitAll()
             .requestMatchers("/api/auth/**").permitAll()
-            .requestMatchers(OP_PUBLIC_API_ENDPOINTS).permitAll()
+            .requestMatchers(PUBLIC_API_ENDPOINTS).permitAll()
             .anyRequest().authenticated())
         .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 

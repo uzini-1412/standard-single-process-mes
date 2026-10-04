@@ -13,6 +13,8 @@ import { fetchProcessInspectResults } from "../utils/api/api";
 import type { WorkAssignmentRow, WorkOrderResponse } from "../types/workOrder.interface";
 import { Toaster } from "./components/ui/sonner";
 import { showSuccess, showWarning, showError } from "../utils/toast";
+import { useAuth } from "./context/AuthContext";
+import LoginPage from "./pages/LoginPage";
 
 const RECENT_WINDOW_DAYS = 60;
 const AUTO_REFRESH_MS = 30_000;
@@ -140,6 +142,7 @@ function buildVisibleRows(
 }
 
 function App() {
+  const auth = useAuth();
   const [pageIndex, setPageIndex] = useState(1);
   const [inWorkSession, setInWorkSession] = useState(false);
   const [progressOpen, setProgressOpen] = useState(false);
@@ -271,6 +274,21 @@ function App() {
     setTimeout(reloadOrders, 1000);
   };
 
+  const handleLogout = () => {
+    if (confirm("로그아웃 하시겠습니까?")) {
+      auth.logout();
+    }
+  };
+
+  if (!auth.isLoggedIn) {
+    return (
+      <>
+        <Toaster />
+        <LoginPage />
+      </>
+    );
+  }
+
   if (progressOpen) {
     return (
       <>
@@ -308,7 +326,14 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Toaster />
-      <Header helpKey="op-work-list" />
+      <Header
+        helpKey="op-work-list"
+        extraButtons={
+          <Button onClick={handleLogout} className="bg-slate-600 hover:bg-slate-700 text-white px-6">
+            로그아웃
+          </Button>
+        }
+      />
 
       <div className="p-6 space-y-4">
         <div className="flex gap-4" data-help="op-work-list-info">
