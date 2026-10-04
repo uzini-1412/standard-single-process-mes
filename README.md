@@ -18,6 +18,19 @@ Java 21 · Spring Boot · JPA · React 18 · TypeScript · MySQL 8 · Redis · D
 > 설계 의사결정과 "여기서 이렇게 하면 저기서 저게 된다"의 근거는 **[아키텍처 & 설계 노트](docs/ARCHITECTURE.md)** 에,
 > 일반화 규약(기능 플래그·BOM·LOT 채번)은 **[표준화 규약](docs/STANDARDIZATION.md)** 에 정리했습니다.
 
+## 라이브 데모
+
+| 서비스 | 링크 |
+|---|---|
+| mes_fe (사무/관리) | http://8.230.7.222:7082 |
+| mes_op (현장/작업) | http://8.230.7.222:7083 |
+| mes_tab (태블릿) | http://8.230.7.222:7084 |
+| mes_dashboard (현황) | http://8.230.7.222:7087 |
+
+데모 계정: `mesadmin` / `ChangeMe!2026` (mes_op는 로그인 화면의 "데모로 둘러보기" 버튼으로 바로 체험 가능)
+
+> 포트폴리오 평가 기간 한정으로 띄워 둔 인스턴스입니다. 직접 재현하려면 아래 "빠른 시작(Docker)"을 따라 하세요.
+
 ---
 
 
@@ -115,6 +128,21 @@ npm run dev                  # vite dev server 가 /api 를 http://localhost:708
 # API 주소는 기본값 /api 로 동작한다. 백엔드를 다른 호스트에서 띄웠을 때만
 # .env.example 을 .env 로 복사해 VITE_API_BASE_URL 을 바꾼다.
 ```
+
+## 배포
+
+클라우드 VM에 Docker Compose로 띄워 둔 구조입니다. 코드를 수정한 뒤 반영하는 순서:
+
+```bash
+# 1) 로컬에서 변경사항을 GitHub에 push
+git add -A && git commit -m "..." && git push origin main
+
+# 2) 배포 서버(VM)에 SSH 접속 후, 저장소 루트에서
+./deploy.sh
+#   = git pull + docker compose up -d --build + 오래된 이미지 정리
+```
+
+서버 최초 세팅(OS, Docker 설치, 방화벽 등)은 1회성 작업이라 별도로 관리합니다.
 
 ## 환경 변수
 
