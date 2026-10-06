@@ -6,6 +6,9 @@ import com.mes.domain.commoninfo.entity.CommonGroup;
 import com.mes.domain.commoninfo.entity.CommonValue;
 import com.mes.domain.commoninfo.repository.CommonDetailRepository;
 import com.mes.domain.commoninfo.repository.CommonGroupRepository;
+import com.mes.domain.commoninfo.repository.CommonValueRepository;
+import com.mes.global.exception.CustomException;
+import com.mes.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -27,6 +30,7 @@ public class CommonInfoService {
 
   private final CommonDetailRepository commonDetailRepository;
   private final CommonGroupRepository commonGroupRepository;
+  private final CommonValueRepository commonValueRepository;
 
   // ──────────────────────────────────────────────
   //  조회
@@ -69,6 +73,82 @@ public class CommonInfoService {
 
       commonDetailRepository.save(detail);
     }
+  }
+
+  /**
+   * 그룹명 기준으로 값을 찾고, 있으면 재사용(created=false) 없으면 새로 등록(created=true)한다.
+   * 일반 화면(직원등록 등)에서 공통정보에 없는 값을 즉석 입력했을 때 쓴다.
+   * 공백/대소문자 차이로 인한 중복·오타 등록을 막기 위해 비교 전 정규화한다.
+   */
+  @Transactional
+  public CommonInfoDto.FindOrCreateValueRes findOrCreateValue(String groupName, String rawContent) {
+    String trimmed = rawContent == null ? "" : rawContent.trim();
+    if (trimmed.isEmpty()) {
+      throw new CustomException(ErrorCode.COMMON_BAD_REQUEST, "값을 입력해주세요.");
+    }
+
+    List<CommonDetail> details = commonDetailRepository.findByGroupNameAndUseYn(groupName, true);
+
+    String normalizedTarget = normalize(trimmed);
+    for (CommonDetail detail : details) {
+      for (CommonValue value : detail.getValues()) {
+        if (normalize(value.getValueContent()).equals(normalizedTarget)) {
+          return new CommonInfoDto.FindOrCreateValueRes(value.getValueSq(), value.getValueContent(), false);
+        }
+      }
+    }
+
+    // 붙여 넣을 detail이 없으면(그룹은 있는데 활성 세부항목이 하나도 없는 엣지케이스) 기본 detail을 만든다.
+    CommonDetail targetDetail = details.isEmpty() ? createDefaultDetail(groupName) : details.get(0);
+
+    int nextOrder = targetDetail.getValues().stream()
+        .mapToInt(v -> v.getSortOrder() == null ? 0 : v.getSortOrder())
+        .max().orElse(0) + 1;
+
+    CommonValue newValue = CommonValue.builder()
+        .valueContent(trimmed)
+        .sortOrder(nextOrder)
+        .build();
+    targetDetail.addValue(newValue);
+    // targetDetail은 이미 영속 상태라 commonDetailRepository.save(detail)은 merge로 처리되는데,
+    // merge는 cascade로 딸려 들어간 신규 자식을 복사본으로 영속화해 생성된 PK가 원본 newValue엔
+    // 채워지지 않는다. 신규 값은 자신의 레포지토리로 직접 persist해 원본 객체에 PK가 반영되게 한다.
+    commonValueRepository.save(newValue);
+
+    return new CommonInfoDto.FindOrCreateValueRes(newValue.getValueSq(), newValue.getValueContent(), true);
+  }
+
+  /** 비교용 정규화 — 앞뒤 공백 제거, 내부 연속 공백 압축, 대소문자 무시. */
+  private String normalize(String s) {
+    return s == null ? "" : s.trim().replaceAll("\\s+", " ").toLowerCase();
+  }
+
+  /**
+   * 그룹에 활성 세부항목이 하나도 없을 때, 값을 붙일 기본 detail을 하나 만든다.
+   * 그룹 자체가 아직 없으면(예: 국적분류처럼 한 번도 등록된 적 없는 신규 그룹) 함께 만든다 —
+   * groupCode는 admin 화면처럼 별도로 입력받지 않으므로 groupName을 그대로 쓴다(자동생성 전용 fallback).
+   */
+  private CommonDetail createDefaultDetail(String groupName) {
+    CommonGroup group = commonGroupRepository.findByGroupName(groupName)
+        .orElseGet(() -> {
+          try {
+            return commonGroupRepository.saveAndFlush(
+                CommonGroup.builder().groupCode(groupName).groupName(groupName).build());
+          } catch (DataIntegrityViolationException e) {
+            // 동시 요청으로 groupCode(=groupName) unique 충돌 시 재조회로 복구.
+            return commonGroupRepository.findByGroupName(groupName)
+                .orElseThrow(() -> new IllegalStateException("그룹 생성 중 충돌이 발생했습니다: " + groupName));
+          }
+        });
+
+    // detail_code는 DB에 NOT NULL 제약이 있다(엔티티 선언과 달리) — 별도로 받는 코드가 없으니 groupName을 그대로 쓴다.
+    CommonDetail detail = CommonDetail.builder()
+        .commonGroup(group)
+        .detailCode(groupName)
+        .detailName(groupName)
+        .useYn(Boolean.TRUE)
+        .build();
+    return commonDetailRepository.save(detail);
   }
 
   // ──────────────────────────────────────────────

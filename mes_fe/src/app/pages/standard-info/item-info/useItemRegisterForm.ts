@@ -38,10 +38,8 @@ const optionsOrEmpty = (promise: Promise<string[]>): Promise<string[]> =>
 const EMPTY_OPTIONS: ItemFormOptions = {
   itemTypeOptions: [],
   accountTypeOptions: [],
-  colorOptions: [],
   clientOptions: [],
   warehouseLocationOptions: [],
-  packingUnitOptions: [],
 };
 
 interface UseItemRegisterFormParams {
@@ -59,43 +57,25 @@ export function useItemRegisterForm({
   const [options, setOptions] = useState<ItemFormOptions>(EMPTY_OPTIONS);
   const [isLoading, setIsLoading] = useState(mode === "edit");
 
-  // 색상 옵션: "색상분류"가 있으면 우선, 없으면 "색상" 그룹으로 폴백.
-  const loadColorOptions = async (): Promise<string[]> => {
-    try {
-      const classified =
-        await commonInfoApi.fetchDetailContentsByItemName("색상분류");
-      if (classified.length > 0) return classified;
-      return await commonInfoApi.fetchDetailContentsByItemName("색상");
-    } catch {
-      return [];
-    }
-  };
-
   const loadOptions = async () => {
     const [
       itemTypeOptions,
       accountTypeOptions,
-      colorOptions,
       clientOptions,
       warehouseLocationOptions,
-      packingUnitOptions,
     ] = await Promise.all([
-      // 품목구분: 공통정보 "공정분류" 그룹의 detailName 목록 (공정 A/공정 B 등)
-      optionsOrEmpty(commonInfoApi.fetchDetailNamesByGroupName("공정분류")),
+      // 품목구분: 공통정보 "제품구분" 그룹의 detailName 목록
+      optionsOrEmpty(commonInfoApi.fetchDetailNamesByGroupName("제품구분")),
       optionsOrEmpty(commonInfoApi.fetchDetailContentsByItemName("계정구분")),
-      loadColorOptions(),
       optionsOrEmpty(clientApi.fetchClientNames()),
       optionsOrEmpty(commonInfoApi.fetchDetailContentsByItemName("창고구분")),
-      optionsOrEmpty(commonInfoApi.fetchDetailContentsByItemName("포장분류")),
     ]);
 
     setOptions({
       itemTypeOptions,
       accountTypeOptions,
-      colorOptions,
       clientOptions,
       warehouseLocationOptions,
-      packingUnitOptions,
     });
   };
 

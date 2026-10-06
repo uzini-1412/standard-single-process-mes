@@ -5,7 +5,7 @@ import { BUTTON_STYLES, FOUR_COLUMN_GRID_STYLES } from "../../../styles/button-s
 import { EMPLOYEE_COLUMNS } from "@/app/constants/employee";
 import { EmployeeForm, EmployeeHistoryItem } from "@/types/standard-info/employee.interface";
 import { fetchNextStaffNo } from "@/app/api/employeeApi";
-import { fetchDetailContentsByItemName } from "@/app/api/commonInfoApi";
+import { CommonCodeCombobox } from "../../../components/common/CommonCodeCombobox";
 import { showWarning } from "@/app/utils/toast";
 import { todayYmd } from "@/app/utils/dateToday";
 
@@ -63,11 +63,6 @@ export function EmployeeRegisterPage({ mode = "create", initialData, onBack, onS
   const [formData, setFormData] = useState<EmployeeForm>(() => makeInitialForm(initialData));
   const [inquiryData, setInquiryData] = useState<EmployeeHistoryItem[]>([]);
 
-  // 공통정보 드롭다운 옵션 (부서분류, 직종분류, 직급분류)
-  const [deptOptions, setDeptOptions] = useState<string[]>([]);
-  const [jobTypeOptions, setJobTypeOptions] = useState<string[]>([]);
-  const [positionOptions, setPositionOptions] = useState<string[]>([]);
-
   // 등록 모드: 마운트 시 다음 직원번호 자동 세팅
   useEffect(() => {
     if (mode === "create") {
@@ -76,18 +71,6 @@ export function EmployeeRegisterPage({ mode = "create", initialData, onBack, onS
       });
     }
   }, [mode]);
-
-  // 공통정보에서 드롭다운 옵션 로드
-  useEffect(() => {
-    const loaders: Array<[string, (v: string[]) => void]> = [
-      ["부서분류", setDeptOptions],
-      ["직종분류", setJobTypeOptions],
-      ["직급분류", setPositionOptions],
-    ];
-    loaders.forEach(([itemName, setter]) => {
-      fetchDetailContentsByItemName(itemName).then(setter);
-    });
-  }, []);
 
   const handleChange = (field: keyof EmployeeForm, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -164,20 +147,6 @@ export function EmployeeRegisterPage({ mode = "create", initialData, onBack, onS
     });
   };
 
-  // 부서/직종/직급 셀렉트 한 칸 렌더
-  const renderSelect = (field: keyof EmployeeForm, options: string[]) => (
-    <select
-      value={formData[field] as string}
-      onChange={(e) => handleChange(field, e.target.value)}
-      className={`${G.input} w-full`}
-    >
-      <option value="">선택</option>
-      {options.map((opt) => (
-        <option key={opt} value={opt}>{opt}</option>
-      ))}
-    </select>
-  );
-
   const cellInput = `${G.input} w-full`;
 
   return (
@@ -220,15 +189,21 @@ export function EmployeeRegisterPage({ mode = "create", initialData, onBack, onS
               {/* Row 2: 부서명, 직종 */}
               <tr className={G.row}>
                 <td className={G.labelCell}>부서명</td>
-                <td className={G.valueCellWithBorder}>{renderSelect("dept", deptOptions)}</td>
+                <td className={G.valueCellWithBorder}>
+                  <CommonCodeCombobox groupName="부서분류" value={formData.dept} onChange={(v) => handleChange("dept", v)} />
+                </td>
                 <td className={G.labelCell}>직종</td>
-                <td className={G.valueCell}>{renderSelect("jobType", jobTypeOptions)}</td>
+                <td className={G.valueCell}>
+                  <CommonCodeCombobox groupName="직종분류" value={formData.jobType} onChange={(v) => handleChange("jobType", v)} />
+                </td>
               </tr>
 
               {/* Row 3: 직급, 연락처 */}
               <tr className={G.row}>
                 <td className={G.labelCell}>직급</td>
-                <td className={G.valueCellWithBorder}>{renderSelect("position", positionOptions)}</td>
+                <td className={G.valueCellWithBorder}>
+                  <CommonCodeCombobox groupName="직급분류" value={formData.position} onChange={(v) => handleChange("position", v)} />
+                </td>
                 <td className={G.labelCell}>연락처</td>
                 <td className={G.valueCell}>
                   <input
@@ -291,12 +266,7 @@ export function EmployeeRegisterPage({ mode = "create", initialData, onBack, onS
               <tr className={G.row}>
                 <td className={G.labelCell}>국적</td>
                 <td className={G.valueCellWithBorder}>
-                  <input
-                    type="text"
-                    value={formData.nationality}
-                    onChange={(e) => handleChange("nationality", e.target.value)}
-                    className={cellInput}
-                  />
+                  <CommonCodeCombobox groupName="국적분류" value={formData.nationality} onChange={(v) => handleChange("nationality", v)} />
                 </td>
                 <td className={G.labelCell}>성별</td>
                 <td className={G.valueCell}>

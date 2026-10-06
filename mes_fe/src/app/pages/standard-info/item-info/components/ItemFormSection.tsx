@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { CommonCodeCombobox } from "@/app/components/common/CommonCodeCombobox";
 import { ITEM_IMPORT_INSPECTION_OPTIONS } from "@/app/constants/item";
 import { FOUR_COLUMN_GRID_STYLES } from "@/app/styles/button-styles";
 import { handleNonNegativeNumberChange, preventNegativeKey } from "@/app/utils/numericInput";
@@ -95,12 +96,30 @@ export function ItemFormSection({
       { label: withUnit("평량", UNITS.basisWeight), field: renderNumber("basisWeight") },
     ],
     [
-      { label: "색상", field: renderSelect("color", asChoices(options.colorOptions)) },
+      {
+        label: "색상",
+        field: (
+          <CommonCodeCombobox
+            groupName="색상분류"
+            value={formData.color}
+            onChange={(v) => onChange("color", v)}
+          />
+        ),
+      },
       { label: withUnit("생산속도", UNITS.productionSpeed), field: renderNumber("productionSpeed") },
     ],
     [
       { label: "수입검사유무", field: renderSelect("importInspGb", inspectionChoices) },
-      { label: "포장단위", field: renderSelect("packingUnit", asChoices(options.packingUnitOptions)) },
+      {
+        label: "포장단위",
+        field: (
+          <CommonCodeCombobox
+            groupName="포장분류"
+            value={formData.packingUnit}
+            onChange={(v) => onChange("packingUnit", v)}
+          />
+        ),
+      },
     ],
   ];
 

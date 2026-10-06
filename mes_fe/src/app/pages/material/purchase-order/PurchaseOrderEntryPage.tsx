@@ -9,6 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../components/ui/select";
+import { CommonCodeCombobox } from "../../../components/common/CommonCodeCombobox";
 import { MaterialSelectDialog } from "../../../components/features/material/MaterialSelectDialog";
 import { ConfirmAlertModal } from "../../../components/common/ConfirmAlertModal";
 import { FormActions } from "../../../components/common/FormActions";
@@ -163,18 +164,11 @@ export function PurchaseOrderEntryPage({
                         결제조건
                       </td>
                       <td className="px-4 py-3 border-r border-gray-200">
-                        <select
+                        <CommonCodeCombobox
+                          groupName="결제조건"
                           value={form.paymentTerms}
-                          onChange={(e) => form.setPaymentTerms(e.target.value)}
-                          className="h-10 px-3 bg-white border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#5B6FD8] w-full"
-                        >
-                          <option value="">선택</option>
-                          {form.paymentTermsList.map((term) => (
-                            <option key={term} value={term}>
-                              {term}
-                            </option>
-                          ))}
-                        </select>
+                          onChange={form.setPaymentTerms}
+                        />
                       </td>
                     </>
                   ) : (

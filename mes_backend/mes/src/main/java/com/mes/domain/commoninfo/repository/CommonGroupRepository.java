@@ -15,4 +15,7 @@ public interface CommonGroupRepository extends JpaRepository<CommonGroup, Long> 
 
   /** 유일 코드로 분류 한 건을 찾는다(없으면 신규 생성 대상). */
   Optional<CommonGroup> findByGroupCode(String groupCode);
+
+  /** 항목명으로 분류 한 건을 찾는다 (값 찾기/등록 시 그룹 존재 여부 확인용). */
+  Optional<CommonGroup> findByGroupName(String groupName);
 }

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import * as clientApi from "@/app/api/clientApi";
-import * as commonInfoApi from "@/app/api/commonInfoApi";
 import * as orderApi from "@/app/api/orderApi";
 import { showError, showSuccess, showWarning } from "@/app/utils/toast";
 import { ensureDateOrder } from "@/app/utils/dateGuard";
@@ -73,7 +72,6 @@ export function useOrderEntryForm({
   const [customerCode, setCustomerCode] = useState("");
   const [clientList, setClientList] = useState<clientApi.ClientRes[]>([]);
   const [paymentTerms, setPaymentTerms] = useState("");
-  const [paymentTermsList, setPaymentTermsList] = useState<string[]>([]);
   const [orderNumber, setOrderNumber] = useState(AUTO_ORDER_NO);
   const [orderDate, setOrderDate] = useState(todayYmd());
   const [deliveryDate, setDeliveryDate] = useState("");
@@ -86,18 +84,10 @@ export function useOrderEntryForm({
     void bootstrap();
   }, [mode, selectedId]);
 
-  // 거래처 목록(공급사 제외)과 결제조건 옵션을 적재한다.
+  // 거래처 목록(공급사 제외)을 적재한다. 결제조건은 CommonCodeCombobox가 자체적으로 불러온다.
   const loadReferenceData = async () => {
-    // 거래처 목록과 결제조건 옵션은 독립적이라 동시에 조회한다.
-    const [clients, terms] = await Promise.all([
-      clientApi.fetchClientList(),
-      commonInfoApi.fetchDetailContentsByItemName("결제조건").catch((error) => {
-        console.error("Failed to load payment terms:", error);
-        return [] as string[];
-      }),
-    ]);
+    const clients = await clientApi.fetchClientList();
     setClientList(clients.filter((client) => client.customerType !== "공급사"));
-    setPaymentTermsList(terms);
   };
 
   // 수정 모드: 기존 수주 1건을 읽어 폼 상태를 채운다.
@@ -326,7 +316,6 @@ export function useOrderEntryForm({
     customerCode,
     clientList,
     paymentTerms,
-    paymentTermsList,
     orderNumber,
     orderDate,
     deliveryDate,

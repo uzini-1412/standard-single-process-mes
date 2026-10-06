@@ -55,7 +55,7 @@ export async function fetchValueIdMap(): Promise<Record<number, string>> {
 }
 
 // 7-1. 특정 그룹의 detailName 목록 조회 (드롭다운용)
-//      예) groupName="공정분류" → ["공정 A", "공정 B"]
+//      예) groupName="제품구분" → ["제품구분 A", "제품구분 B"]
 export async function fetchDetailNamesByGroupName(groupName: string): Promise<string[]> {
   try {
     const allData = await fetchCommonInfoList();
@@ -100,6 +100,16 @@ export async function fetchDetailContentValuesByItemName(itemName: string): Prom
     console.error(`Error fetching detail content values for ${itemName}:`, error);
     return [];
   }
+}
+
+// 8. 특정 항목(그룹)에 값을 찾거나 없으면 새로 등록 (예: 직원등록 화면의 신규 부서명 입력)
+export function findOrCreateDetailValue(groupName: string, valueContent: string) {
+  return withErrorLog("finding or creating common info value", () =>
+    postJson<{ valueSq: number; valueContent: string; created: boolean }>(
+      '/common-info/value/find-or-create',
+      { groupName, valueContent },
+    ),
+  );
 }
 
 // 7-2. 특정 항목의 세부내용 목록 조회 (드롭다운용)

@@ -1,4 +1,5 @@
 import { Input } from "@/app/components/ui/input";
+import { CommonCodeCombobox } from "@/app/components/common/CommonCodeCombobox";
 import type { ClientRes } from "@/app/api/clientApi";
 
 interface OrderHeaderFieldsProps {
@@ -16,7 +17,6 @@ interface OrderHeaderFieldsProps {
   orderDate: string;
   orderNumber: string;
   paymentTerms: string;
-  paymentTermsList: string[];
   /** ERP 계층(module.erp) 활성 여부. false면 결제조건 칸을 숨긴다. */
   erpEnabled: boolean;
   onClientSelect: (value: string) => void;
@@ -60,7 +60,6 @@ export function OrderHeaderFields({
   orderDate,
   orderNumber,
   paymentTerms,
-  paymentTermsList,
   erpEnabled,
   onClientSelect,
   onDeliveryDateChange,
@@ -176,18 +175,11 @@ export function OrderHeaderFields({
               <>
                 <LabelCell text="결제조건" />
                 <td className="border-r border-gray-300 px-2 py-2">
-                  <select
+                  <CommonCodeCombobox
+                    groupName="결제조건"
                     value={paymentTerms}
-                    onChange={(event) => onPaymentTermsChange(event.target.value)}
-                    className="h-10 px-3 bg-white border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#5B6FD8] w-full"
-                  >
-                    <option value="">선택</option>
-                    {paymentTermsList.map((term) => (
-                      <option key={term} value={term}>
-                        {term}
-                      </option>
-                    ))}
-                  </select>
+                    onChange={onPaymentTermsChange}
+                  />
                 </td>
               </>
             )}

@@ -6,7 +6,7 @@ import {
   applyInventoryAudit,
   InventoryAuditDiffRes,
 } from "../../../api/inventoryAdjustmentApi";
-import * as commonInfoApi from "../../../api/commonInfoApi";
+import { CommonCodeCombobox } from "../../../components/common/CommonCodeCombobox";
 import { InventoryAdjustmentRegisterPageProps, InventoryAdjustmentFormData } from "@/types/standard-info/inventory.interface";
 import {
   INVENTORY_ADJUSTMENT_FORM_INITIAL_DATA,
@@ -34,7 +34,6 @@ export function InventoryAdjustmentRegisterPage({ onBack, onSave }: InventoryAdj
   const { userInfo } = useUserContext();
 
   const [formData, setFormData] = useState<InventoryAdjustmentFormData>(INVENTORY_ADJUSTMENT_FORM_INITIAL_DATA(today));
-  const [warehouseOptions, setWarehouseOptions] = useState<string[]>([]);
   const [auditList, setAuditList] = useState<InventoryAuditDiffRes[]>([]);
   const [selectedAuditSq, setSelectedAuditSq] = useState<number | null>(null);
   const [auditLoading, setAuditLoading] = useState(false);
@@ -52,16 +51,7 @@ export function InventoryAdjustmentRegisterPage({ onBack, onSave }: InventoryAdj
     }
   };
 
-  const loadWarehouseOptions = async () => {
-    try {
-      setWarehouseOptions(await commonInfoApi.fetchDetailContentsByItemName("창고구분"));
-    } catch (error) {
-      console.error("Failed to load warehouse options:", error);
-    }
-  };
-
   useEffect(() => {
-    loadWarehouseOptions();
     loadAuditList();
   }, []);
 
@@ -247,19 +237,11 @@ export function InventoryAdjustmentRegisterPage({ onBack, onSave }: InventoryAdj
                 </td>
                 <td className={FOUR_COLUMN_GRID_STYLES.labelCell}>창고위치</td>
                 <td className={FOUR_COLUMN_GRID_STYLES.valueCell}>
-                  <select
+                  <CommonCodeCombobox
+                    groupName="창고구분"
                     value={formData.warehouseLoc}
-                    onChange={(e) => handleChange("warehouseLoc", e.target.value)}
-                    className={`${FOUR_COLUMN_GRID_STYLES.input} w-full px-3 py-2`}
-                  >
-                    <option value="">선택하세요</option>
-                    {warehouseOptions.map((option) => (
-                      <option key={option} value={option}>{option}</option>
-                    ))}
-                    {formData.warehouseLoc && !warehouseOptions.includes(formData.warehouseLoc) && (
-                      <option value={formData.warehouseLoc}>{formData.warehouseLoc}</option>
-                    )}
-                  </select>
+                    onChange={(v) => handleChange("warehouseLoc", v)}
+                  />
                 </td>
               </tr>
 

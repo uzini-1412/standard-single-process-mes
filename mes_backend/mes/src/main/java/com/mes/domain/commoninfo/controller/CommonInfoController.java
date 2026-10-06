@@ -43,6 +43,12 @@ public class CommonInfoController {
     return commonInfoService.getCommonDetail(requestDto.getDetailSq());
   }
 
+  @Operation(summary = "공통정보 값 찾기/등록", description = "그룹명 기준으로 값이 있으면 재사용하고 없으면 새로 등록합니다. (예: 직원등록 화면의 신규 부서명 입력)")
+  @PostMapping("/value/find-or-create")
+  public CommonInfoDto.FindOrCreateValueRes findOrCreateValue(@RequestBody @Valid CommonInfoDto.FindOrCreateValueReq requestDto) {
+    return commonInfoService.findOrCreateValue(requestDto.getGroupName(), requestDto.getValueContent());
+  }
+
   // ── 변경 ──────────────────────────────────────────────
 
   @Operation(summary = "공통정보 일괄 등록", description = "그리드 데이터를 한 번에 저장합니다.")

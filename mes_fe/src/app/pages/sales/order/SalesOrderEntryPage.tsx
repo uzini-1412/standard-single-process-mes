@@ -76,7 +76,6 @@ export function SalesOrderEntryPage({
             orderDate={form.orderDate}
             orderNumber={form.orderNumber}
             paymentTerms={form.paymentTerms}
-            paymentTermsList={form.paymentTermsList}
             erpEnabled={erpEnabled}
             onClientSelect={form.handleClientSelect}
             onDeliveryDateChange={form.handleDeliveryDateChange}

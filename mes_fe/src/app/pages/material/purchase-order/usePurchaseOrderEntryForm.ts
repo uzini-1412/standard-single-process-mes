@@ -1,7 +1,6 @@
 /** 발주 등록/수정 화면의 상태·로딩·검증·저장을 모은 폼 훅. UI는 PurchaseOrderEntryPage가 담당. */
 import { useEffect, useMemo, useState } from "react";
 import * as purchaseOrderApi from "../../../api/purchaseOrderApi";
-import * as commonInfoApi from "../../../api/commonInfoApi";
 import * as clientApi from "../../../api/clientApi";
 import type { PurchaseOrderItem } from "@/types/material/purchaseorder.intergace";
 import { showSuccess, showError } from "@/app/utils/toast";
@@ -42,7 +41,6 @@ export function usePurchaseOrderEntryForm({ mode, selectedId, onRegister }: UseE
   const [reqTransSpecYn, setReqTransSpecYn] = useState(false);
 
   // --- 보조 목록/품목 상태 ---
-  const [paymentTermsList, setPaymentTermsList] = useState<string[]>([]);
   const [clientList, setClientList] = useState<clientApi.ClientRes[]>([]);
   const [orderItems, setOrderItems] = useState<PurchaseOrderItem[]>([]);
   const [isMaterialSelectOpen, setIsMaterialSelectOpen] = useState(false);
@@ -95,17 +93,6 @@ export function usePurchaseOrderEntryForm({ mode, selectedId, onRegister }: UseE
     }
   };
 
-  // 결제조건 코드 목록 로드.
-  const loadPaymentTerms = async () => {
-    try {
-      const terms = await commonInfoApi.fetchDetailContentsByItemName("결제조건");
-      setPaymentTermsList(terms);
-    } catch (error) {
-      console.error("Error fetching payment terms:", error);
-      setPaymentTermsList([]);
-    }
-  };
-
   // 거래처 목록 로드(고객사 제외 = 매입처만).
   const loadClients = async () => {
     try {
@@ -119,7 +106,6 @@ export function usePurchaseOrderEntryForm({ mode, selectedId, onRegister }: UseE
 
   // 최초 진입 시: 공통목록 로드 + (수정이면 복원 / 신규면 채번).
   useEffect(() => {
-    void loadPaymentTerms();
     void loadClients();
     if (isEdit && selectedId) {
       void restoreOrder(selectedId);
@@ -286,7 +272,6 @@ export function usePurchaseOrderEntryForm({ mode, selectedId, onRegister }: UseE
     reqMaterialCertYn,
     reqTransSpecYn,
     // 목록/품목
-    paymentTermsList,
     clientList,
     orderItems,
     customerSq,

@@ -190,8 +190,6 @@ export type ItemSearchField = keyof ItemSearchForm;
 export interface ItemFormOptions {
   itemTypeOptions: string[];
   accountTypeOptions: string[];
-  colorOptions: string[];
   clientOptions: string[];
   warehouseLocationOptions: string[];
-  packingUnitOptions: string[];
 }

@@ -124,6 +124,48 @@ public class CommonInfoDto {
     private Long detailSq;
   }
 
+  /**
+   * [Request] 값 찾기/등록 요청.
+   * 일반 화면(예: 직원등록)에서 목록에 없는 값을 입력했을 때, 있으면 재사용하고
+   * 없으면 공통정보에 즉시 등록하기 위해 쓴다.
+   */
+  @Getter
+  @Setter
+  @NoArgsConstructor
+  @Schema(description = "공통정보 값 찾기/등록 요청")
+  public static class FindOrCreateValueReq {
+
+    @NotBlank(message = "그룹명은 필수입니다.")
+    @Schema(description = "항목명 (예: 부서분류)", example = "부서분류")
+    private String groupName;
+
+    @NotBlank(message = "값을 입력해주세요.")
+    @Schema(description = "등록/조회할 내용 값", example = "생산1팀")
+    private String valueContent;
+  }
+
+  /** [Response] 값 찾기/등록 결과 */
+  @Getter
+  @Setter
+  @NoArgsConstructor
+  @Schema(description = "공통정보 값 찾기/등록 응답")
+  public static class FindOrCreateValueRes {
+    @Schema(description = "값 ID")
+    private Long valueSq;
+
+    @Schema(description = "내용")
+    private String valueContent;
+
+    @Schema(description = "새로 등록되었으면 true, 기존 값을 재사용했으면 false")
+    private boolean created;
+
+    public FindOrCreateValueRes(Long valueSq, String valueContent, boolean created) {
+      this.valueSq = valueSq;
+      this.valueContent = valueContent;
+      this.created = created;
+    }
+  }
+
   /** [Response] 내용 값 한 건 (ID 포함) */
   @Getter
   @Setter
