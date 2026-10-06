@@ -49,9 +49,9 @@ export function useFinishedGoodsStock() {
     return params;
   }, [committedFilters]);
 
-  // 제품구분 셀렉트 옵션을 공통코드(공정분류)에서 1회 로드
+  // 제품구분 셀렉트 옵션을 공통코드(제품구분)에서 1회 로드
   useEffect(() => {
-    fetchDetailNamesByGroupName("공정분류")
+    fetchDetailNamesByGroupName("제품구분")
       .then(setProductTypeChoices)
       .catch(() => setProductTypeChoices([]));
   }, []);

@@ -31,7 +31,7 @@ public class ProductStockDto {
   public static class SearchReq {
     private String itemCode;
     private String itemName;
-    private String itemType;   // 제품구분 (공정분류 detailName)
+    private String itemType;   // 제품구분 (공통정보 "제품구분" 그룹의 detailName)
     private String baseDate;   // 기준일자(yyyy-MM-dd) — 해당 월 통계 기준
     private String dateFrom;   // 조회 시작일
     private String dateTo;     // 조회 종료일

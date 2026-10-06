@@ -2,17 +2,17 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { fetchCommonInfoList } from "../api/commonInfoApi";
 
 /**
- * 설비 등록/수정 화면이 공유하는 "공통정보(공정분류·라인구분)" 로딩 훅.
+ * 설비 등록/수정 화면이 공유하는 "공통정보(제품구분·라인구분)" 로딩 훅.
  *
  * 공통정보를 **1회** 조회한 뒤 한 번의 패스로
- *  - 공정분류 행 목록(processClassifications)·제품구분 목록(productTypeList)
+ *  - 제품구분 행 목록(processClassifications)·제품구분 목록(productTypeList)
  *  - 라인 목록(lineList)·라인↔제품구분 양방향 매핑(lineToType / typeToLines)
  * 를 도출한다. 제품구분으로 라인을 거르는 규칙은 {@link FacilityCommonInfo.linesForType} 로 노출한다.
  */
 export interface FacilityCommonInfo {
-  /** groupName="공정분류" 이고 useYn 인 원본 행들(사용공정 목록 도출용). */
+  /** groupName="제품구분" 이고 useYn 인 원본 행들(제품구분 목록 도출용). */
   processClassifications: any[];
-  /** 공정분류 detailName 의 distinct 목록 = 제품구분 셀렉트 옵션. */
+  /** 제품구분 detailName 의 distinct 목록 = 제품구분 셀렉트 옵션. */
   productTypeList: string[];
   /** 등장 순서를 보존한 전체 라인 목록. */
   lineList: string[];
@@ -37,7 +37,7 @@ export function useFacilityCommonInfo(): FacilityCommonInfo {
 
   const derived = useMemo(() => {
     const useYnOn = (it: any) => it.useYn === true;
-    const proc = rows.filter((it) => it.groupName === "공정분류" && useYnOn(it));
+    const proc = rows.filter((it) => it.groupName === "제품구분" && useYnOn(it));
     const lineRows = rows.filter((it) => it.groupName === "라인구분" && useYnOn(it));
 
     const productTypeList = [...new Set(proc.map((it) => it.detailName).filter(Boolean))] as string[];

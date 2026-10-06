@@ -61,7 +61,7 @@ export default function EquipmentInfoPage({ onNavigateToRegister, onNavigateToDe
   // 페이지 로드 시 데이터 + 공통정보 옵션 불러오기
   useEffect(() => {
     fetchEquipmentList();
-    fetchDetailNamesByGroupName("공정분류")
+    fetchDetailNamesByGroupName("제품구분")
       .then(setProductTypeList)
       .catch(() => setProductTypeList([]));
     fetchCommonInfoList()

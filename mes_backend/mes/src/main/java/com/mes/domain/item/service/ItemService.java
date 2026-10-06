@@ -34,10 +34,10 @@ public class ItemService {
   private final CommonDetailRepository commonDetailRepository;
   private final ObjectMapper objectMapper; // Spring Boot가 자동 주입
 
-  private static final String GROUP_PROCESS_TYPE = "공정분류"; // 제품구분이 참조하는 공통정보 그룹
+  private static final String GROUP_PROCESS_TYPE = "제품구분"; // 제품구분이 참조하는 공통정보 그룹
 
   /**
-   * 제품구분(공정분류) 이름 → 공통정보 detailCode 확정.
+   * 제품구분 이름 → 공통정보 detailCode 확정.
    * 등록/수정 시점에 한 번만 해석해 품목에 저장하므로, 이후 레시피 등 다른 로직은 조회 없이 코드를 읽기만 한다.
    */
   private String resolveItemTypeCode(String itemType) {

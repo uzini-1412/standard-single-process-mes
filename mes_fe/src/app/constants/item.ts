@@ -37,7 +37,7 @@ export const ITEM_FORM_INITIAL_DATA = (): ItemFormData => ({
   specs: [],
 });
 
-// 품목구분(itemType) 옵션은 공통정보 "공정분류" 그룹의 detailName 목록에서
+// 품목구분(itemType) 옵션은 공통정보 "제품구분" 그룹의 detailName 목록에서
 // 동적으로 가져옵니다 (mes_fe/src/app/pages/standard-info/item-info/useItemRegisterForm.ts 참조).
 // 분류 추가/변경 시 코드 수정 없이 공통정보관리 화면에서 처리하면 됩니다.
 

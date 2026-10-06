@@ -153,7 +153,7 @@ CREATE TABLE IF NOT EXISTS `mes_item_tb` (
   `item_cd` varchar(50) NOT NULL UNIQUE COMMENT '품번',
   `item_nm` varchar(100) NOT NULL COMMENT '품명',
   `item_type` varchar(50) DEFAULT NULL COMMENT '제품구분',
-  `item_type_code` varchar(20) DEFAULT NULL COMMENT '제품구분(공정분류) 코드 - 등록 시 공통정보 detailCode 확정 저장',
+  `item_type_code` varchar(20) DEFAULT NULL COMMENT '제품구분 코드 - 등록 시 공통정보 detailCode 확정 저장',
   `customer_sq` bigint DEFAULT NULL COMMENT '거래처 FK',
   `customer_nm` varchar(100) DEFAULT NULL COMMENT '거래처명',
   `account_type` varchar(50) DEFAULT NULL COMMENT '계정구분',

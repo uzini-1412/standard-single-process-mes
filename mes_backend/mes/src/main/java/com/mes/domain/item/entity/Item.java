@@ -47,7 +47,7 @@ public class Item {
   private String itemType; // 제품구분
 
   @Column(name = "item_type_code", length = 20)
-  private String itemTypeCode; // 제품구분(공정분류) 코드 — 등록 시 공통정보 detailCode를 확정 저장
+  private String itemTypeCode; // 제품구분 코드 — 등록 시 공통정보 detailCode를 확정 저장
 
   @Column(name = "account_type")
   private String accountType; // 계정구분
@@ -152,7 +152,7 @@ public class Item {
     this.useYn = useYn;
   }
 
-  /** 제품구분(공정분류) 코드 갱신 — 등록/수정 시 공통정보 detailCode를 확정해 저장한다. */
+  /** 제품구분 코드 갱신 — 등록/수정 시 공통정보 detailCode를 확정해 저장한다. */
   public void assignItemTypeCode(String itemTypeCode) {
     this.itemTypeCode = itemTypeCode;
   }

@@ -60,7 +60,7 @@ public interface CommonDetailRepository extends JpaRepository<CommonDetail, Long
   /**
    * 항목명(groupName) + 세부항목명(detailName)으로 단건 조회.
    * 비즈니스 규칙을 코드에 하드코딩하는 대신, 공통정보에 정의된 detailCode를
-   * 읽어 쓰기 위한 용도. (예: "공정분류"의 "니들펀칭" → detailCode "NP")
+   * 읽어 쓰기 위한 용도. (예: "제품구분"의 "니들펀칭" → detailCode "NP")
    */
   @Query("SELECT d FROM CommonDetail d " +
           "JOIN d.commonGroup g " +

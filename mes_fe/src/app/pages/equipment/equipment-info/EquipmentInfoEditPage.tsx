@@ -50,7 +50,7 @@ export default function EquipmentInfoEditPage({ id, onBack, onUpdate }: Equipmen
   const [attachFileContent, setAttachFileContent] = useState("");
   const [processList, setProcessList] = useState<string[]>([]);
 
-  // 공통정보(공정분류·라인구분)는 공용 훅이 1회 조회·도출한다.
+  // 공통정보(제품구분·라인구분)는 공용 훅이 1회 조회·도출한다.
   const { processClassifications, productTypeList, lineToType, linesForType } = useFacilityCommonInfo();
   const filteredLineList = linesForType(facilityType);
 
