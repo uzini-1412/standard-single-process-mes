@@ -8,6 +8,9 @@ function pickErrorMessage(reason: any): string {
   return reason?.message || "로그인에 실패했습니다.";
 }
 
+// 포트폴리오 열람용 데모 계정 — README에 공개된 기본 관리자 계정과 동일하다.
+const DEMO_ACCOUNT = { userId: "mesadmin", password: "ChangeMe!2026" };
+
 export default function LoginPage() {
   const { setUser } = useAuth();
 
@@ -17,13 +20,7 @@ export default function LoginPage() {
   const updateField = (field: "userId" | "password", text: string) =>
     setCredentials((prev) => ({ ...prev, [field]: text }));
 
-  const submit = useCallback(async () => {
-    const { userId, password } = credentials;
-    if (!userId || !password) {
-      showError("아이디와 비밀번호를 입력하세요.");
-      return;
-    }
-
+  const doLogin = useCallback(async (userId: string, password: string) => {
     setBusy(true);
     try {
       const account = await login({ userId, password });
@@ -33,7 +30,20 @@ export default function LoginPage() {
     } finally {
       setBusy(false);
     }
-  }, [credentials, setUser]);
+  }, [setUser]);
+
+  const submit = useCallback(() => {
+    const { userId, password } = credentials;
+    if (!userId || !password) {
+      showError("아이디와 비밀번호를 입력하세요.");
+      return;
+    }
+    doLogin(userId, password);
+  }, [credentials, doLogin]);
+
+  const submitDemo = useCallback(() => {
+    doLogin(DEMO_ACCOUNT.userId, DEMO_ACCOUNT.password);
+  }, [doLogin]);
 
   const onFieldKeyDown = (evt: React.KeyboardEvent) => {
     if (evt.key === "Enter") submit();
@@ -80,6 +90,19 @@ export default function LoginPage() {
         >
           {busy ? "로그인 중..." : "로그인"}
         </button>
+
+        <button
+          type="button"
+          className="w-full border border-gray-300 hover:bg-gray-50 text-gray-700 rounded py-2 disabled:opacity-50"
+          onClick={submitDemo}
+          disabled={busy}
+        >
+          데모로 둘러보기
+        </button>
+
+        <div className="text-center text-xs text-gray-400">
+          MES 시스템에 접근하기 위해서는<br />상급자의 승인이 필요합니다.
+        </div>
       </div>
     </div>
   );

@@ -15,6 +15,9 @@ interface LoginPageProps {
 const ADMIN_ROLE = "ROLE_ADMIN";
 const LOCKED_ACCOUNT_CODE = "AUTH-003";
 
+// 포트폴리오 열람용 데모 계정 — README에 공개된 기본 관리자 계정과 동일하다.
+const DEMO_ACCOUNT = { id: "mesadmin", pw: "ChangeMe!2026" };
+
 /** 서버 권한 목록을 menuCode → 권한 플래그 맵으로 변환한다. */
 function buildPermissionMap(rawList: any[]): Record<string, MenuPermission> {
   const result: Record<string, MenuPermission> = {};
@@ -57,14 +60,13 @@ export function LoginPage({ onLogin }: LoginPageProps) {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const performLogin = async (id: string, pw: string) => {
     setErrorMsg("");
     setSubmitting(true);
     try {
       const loginRes = await apiClient.post("/auth/login", {
-        userId: account.id,
-        password: account.pw,
+        userId: id,
+        password: pw,
       });
       const { token, userId: uid, userName, role, staffSq, staffNo } = loginRes.data.data;
       localStorage.setItem("token", token);
@@ -91,6 +93,13 @@ export function LoginPage({ onLogin }: LoginPageProps) {
       setSubmitting(false);
     }
   };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    performLogin(account.id, account.pw);
+  };
+
+  const handleDemoLogin = () => performLogin(DEMO_ACCOUNT.id, DEMO_ACCOUNT.pw);
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center relative">
@@ -166,9 +175,19 @@ export function LoginPage({ onLogin }: LoginPageProps) {
             </Button>
           </form>
 
+          <Button
+            type="button"
+            variant="outline"
+            disabled={submitting}
+            onClick={handleDemoLogin}
+            className="w-full h-12 mt-3"
+          >
+            데모로 둘러보기
+          </Button>
+
           <div className="text-center text-xs text-red-600 mt-6">
-            <p>MES 생산정보시스템에 접근하기 위해서는</p>
-            <p>정보책임자에게 승인을 받아야 합니다.</p>
+            <p>MES 시스템에 접근하기 위해서는</p>
+            <p>상급자의 승인이 필요합니다.</p>
           </div>
         </CardContent>
       </Card>

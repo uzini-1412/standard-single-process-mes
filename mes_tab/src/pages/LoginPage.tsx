@@ -8,6 +8,9 @@ function pickErrorMessage(reason: any): string {
   return reason?.response?.data?.message || '로그인에 실패했습니다.';
 }
 
+// 포트폴리오 열람용 데모 계정 — README에 공개된 기본 관리자 계정과 동일하다.
+const DEMO_ACCOUNT = { employeeNo: 'mesadmin', secret: 'ChangeMe!2026' };
+
 export default function LoginPage() {
   const { setUser } = useAuth();
   const { toast } = useToast();
@@ -20,14 +23,7 @@ export default function LoginPage() {
   const updateField = (field: 'employeeNo' | 'secret', text: string) =>
     setCredentials(prev => ({ ...prev, [field]: text }));
 
-  const submit = useCallback(async () => {
-    const { employeeNo, secret } = credentials;
-    // 둘 중 하나라도 비어 있으면 API 호출 전에 막는다.
-    if (!employeeNo || !secret) {
-      toast('입력 필요', '직원번호와 비밀번호를 입력하세요', 'warn');
-      return;
-    }
-
+  const doLogin = useCallback(async (employeeNo: string, secret: string) => {
     setBusy(true);
     try {
       const account = await login({ userId: employeeNo, password: secret });
@@ -38,7 +34,21 @@ export default function LoginPage() {
     } finally {
       setBusy(false);
     }
-  }, [credentials, setUser, toast]);
+  }, [setUser, toast]);
+
+  const submit = useCallback(() => {
+    const { employeeNo, secret } = credentials;
+    // 둘 중 하나라도 비어 있으면 API 호출 전에 막는다.
+    if (!employeeNo || !secret) {
+      toast('입력 필요', '직원번호와 비밀번호를 입력하세요', 'warn');
+      return;
+    }
+    doLogin(employeeNo, secret);
+  }, [credentials, doLogin, toast]);
+
+  const submitDemo = useCallback(() => {
+    doLogin(DEMO_ACCOUNT.employeeNo, DEMO_ACCOUNT.secret);
+  }, [doLogin]);
 
   // 엔터 키로도 로그인을 실행할 수 있게 한다.
   const onFieldKeyDown = (evt: React.KeyboardEvent) => {
@@ -79,8 +89,11 @@ export default function LoginPage() {
         <button className="btn btn-primary" onClick={submit} disabled={busy}>
           {busy ? '로그인 중...' : '로그인'}
         </button>
+        <button className="btn btn-outline" onClick={submitDemo} disabled={busy} style={{ marginTop: 8 }}>
+          데모로 둘러보기
+        </button>
         <div style={{ textAlign: 'center', marginTop: 16, fontSize: '0.75em', color: 'var(--sub)' }}>
-          생산정보시스템에 접근하기 위해서는<br />정보책임자에게 승인을 받아야 합니다.
+          MES 시스템에 접근하기 위해서는<br />상급자의 승인이 필요합니다.
         </div>
 
       </div>
