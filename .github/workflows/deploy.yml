@@ -1,0 +1,25 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 서버엔 이미 저장소가 clone돼 있고 deploy.sh도 올라가 있다고 가정.
+      # deploy.sh 자체가 git pull + docker compose up -d --build + 이미지 정리를 전부 처리한다.
+      - name: SSH into server and run deploy.sh
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          command_timeout: 30m
+          script: |
+            cd ${{ secrets.DEPLOY_PATH }}
+            ./deploy.sh

@@ -131,18 +131,28 @@ npm run dev                  # vite dev server 가 /api 를 http://localhost:708
 
 ## 배포
 
-클라우드 VM에 Docker Compose로 띄워 둔 구조입니다. 코드를 수정한 뒤 반영하는 순서:
+클라우드 VM에 Docker Compose로 띄워 둔 구조입니다. `main` 브랜치에 push하면
+GitHub Actions(`.github/workflows/deploy.yml`)가 SSH로 서버에 접속해
+`./deploy.sh`(= git pull + docker compose up -d --build + 오래된 이미지 정리)를
+자동으로 실행합니다.
 
 ```bash
-# 1) 로컬에서 변경사항을 GitHub에 push
 git add -A && git commit -m "..." && git push origin main
-
-# 2) 배포 서버(VM)에 SSH 접속 후, 저장소 루트에서
-./deploy.sh
-#   = git pull + docker compose up -d --build + 오래된 이미지 정리
+# 이후 자동 배포 — Actions 탭에서 진행 상황 확인
 ```
 
-서버 최초 세팅(OS, Docker 설치, 방화벽 등)은 1회성 작업이라 별도로 관리합니다.
+Actions가 SSH로 접속하는 데 필요한 값은 저장소 Settings → Secrets에 등록합니다:
+
+| Secret | 값 |
+|---|---|
+| `SERVER_HOST` | 배포 서버 IP |
+| `SERVER_USERNAME` | SSH 접속 계정 |
+| `SERVER_SSH_KEY` | SSH 개인키 |
+| `SERVER_PORT` | SSH 포트 (보통 22) |
+| `DEPLOY_PATH` | 서버에 clone해 둔 저장소 경로 |
+
+수동으로 배포하고 싶으면 서버에 SSH 접속해 저장소 루트에서 `./deploy.sh`를 직접 실행해도 됩니다.
+서버 최초 세팅(OS, Docker 설치, 저장소 clone, 방화벽 등)은 1회성 작업이라 별도로 관리합니다.
 
 ## 환경 변수
 
