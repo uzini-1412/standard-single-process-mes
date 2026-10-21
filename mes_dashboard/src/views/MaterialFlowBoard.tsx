@@ -17,8 +17,8 @@ type MonthlyBreakdown = {
 
 // 실측 사용량 파이프라인이 없어 임시 상수로 대체한 표본
 const sampleUsage: MaterialSlice[] = [
-  { name: '화이바', value: 25069270, color: 'wire' },
-  { name: '바인더', value: 10282500, color: 'binder' },
+  { name: '주원료', value: 25069270, color: 'primary' },
+  { name: '보조원료', value: 10282500, color: 'secondary' },
   { name: '부자재', value: 489580, color: 'sub' },
 ]
 
@@ -26,32 +26,32 @@ const usageByMonth: MonthlyBreakdown[] = [
   {
     month: '1월',
     items: [
-      { label: '화이바', value: 25069270, color: 'wire' },
-      { label: '바인더', value: 10282500, color: 'binder' },
+      { label: '주원료', value: 25069270, color: 'primary' },
+      { label: '보조원료', value: 10282500, color: 'secondary' },
       { label: '부자재', value: 489580, color: 'sub' },
     ],
   },
   {
     month: '2월',
     items: [
-      { label: '화이바', value: 21441078, color: 'wire' },
-      { label: '바인더', value: 6754875, color: 'binder' },
+      { label: '주원료', value: 21441078, color: 'primary' },
+      { label: '보조원료', value: 6754875, color: 'secondary' },
       { label: '부자재', value: 365622, color: 'sub' },
     ],
   },
   {
     month: '3월',
     items: [
-      { label: '화이바', value: 10028350, color: 'wire' },
-      { label: '바인더', value: 4464375, color: 'binder' },
+      { label: '주원료', value: 10028350, color: 'primary' },
+      { label: '보조원료', value: 4464375, color: 'secondary' },
       { label: '부자재', value: 183240, color: 'sub' },
     ],
   },
   {
     month: '평균',
     items: [
-      { label: '화이바', value: 18846232, color: 'wire' },
-      { label: '바인더', value: 7167250, color: 'binder' },
+      { label: '주원료', value: 18846232, color: 'primary' },
+      { label: '보조원료', value: 7167250, color: 'secondary' },
       { label: '부자재', value: 346147, color: 'sub' },
     ],
   },

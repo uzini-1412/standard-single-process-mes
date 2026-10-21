@@ -71,8 +71,8 @@ textarea {
   --rose: #fb7185;
   --cyan: #22d3ee;
   --lime: #bef264;
-  --wire: #fb7185;
-  --binder: #3b82f6;
+  --primary: #fb7185;
+  --secondary: #3b82f6;
   --sub: #fbbf24;
   --run: #a3e635;
   --stop: #e5e7eb;
@@ -127,8 +127,8 @@ textarea {
   --rose: #e11d48;
   --cyan: #0891b2;
   --lime: #84cc16;
-  --wire: #ec4899;
-  --binder: #2563eb;
+  --primary: #ec4899;
+  --secondary: #2563eb;
   --sub: #f59e0b;
   --run: #84cc16;
   --stop: #94a3b8;
@@ -741,12 +741,12 @@ textarea {
   background: var(--lime);
 }
 
-.dot.wire {
-  background: var(--wire);
+.dot.primary {
+  background: var(--primary);
 }
 
-.dot.binder {
-  background: var(--binder);
+.dot.secondary {
+  background: var(--secondary);
 }
 
 .dot.sub {
@@ -1456,12 +1456,12 @@ textarea {
   background: var(--lime);
 }
 
-.material-bar.wire {
-  background: var(--wire);
+.material-bar.primary {
+  background: var(--primary);
 }
 
-.material-bar.binder {
-  background: var(--binder);
+.material-bar.secondary {
+  background: var(--secondary);
 }
 
 .material-bar.sub {
