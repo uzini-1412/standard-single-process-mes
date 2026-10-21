@@ -131,10 +131,10 @@ export const HELP_CONTENT_PART2: Record<string, HelpContent> = {
   },
 
   "daily-inspection": {
-    title: "일상점검정의서",
+    title: "점검항목정의서",
     purpose: "설비 일상점검에서 무엇을 점검할지(점검 항목)를 정의·관리하는 화면입니다.",
     steps: [
-      { anchor: "daily-inspection-register", title: "점검 항목 등록", description: "설비별 일상점검 항목과 기준을 등록합니다." },
+      { anchor: "daily-inspection-register", title: "점검 항목 등록", description: "설비점검 등록 화면으로 이동해 설비별 일상점검 항목과 기준을 등록합니다." },
       { anchor: "daily-inspection-table", title: "항목 조회", description: "등록된 점검 항목을 목록에서 확인·수정합니다." },
     ],
   },
@@ -153,7 +153,7 @@ export const HELP_CONTENT_PART2: Record<string, HelpContent> = {
     purpose: "설비 정기점검 계획과 결과를 관리하는 화면입니다.",
     steps: [
       { anchor: "periodic-inspection-search", title: "검색", description: "기간·설비로 정기점검 내역을 조회합니다." },
-      { anchor: "periodic-inspection-register", title: "점검 등록", description: "정기점검 항목·결과를 입력해 등록합니다." },
+      { anchor: "periodic-inspection-register", title: "점검 등록", description: "설비점검 등록 화면으로 이동해 정기점검 계획·결과를 입력해 등록합니다." },
       { anchor: "periodic-inspection-table", title: "현황 조회", description: "정기점검 수행 현황을 목록에서 확인합니다." },
     ],
     tips: ["점검일은 설비 등록일 이전으로 설정할 수 없습니다."],

@@ -35,6 +35,24 @@ public class FacilityRegularCheck {
   @Column(name = "facility_sq", nullable = false)
   private Long facilitySq;
 
+  @Column(name = "check_item_nm")
+  private String checkItemNm;
+
+  @Column(name = "check_method")
+  private String checkMethod;
+
+  @Column(name = "check_criteria")
+  private String checkCriteria;
+
+  @Column(name = "max_val")
+  private String maxVal;
+
+  @Column(name = "min_val")
+  private String minVal;
+
+  @Column(name = "unit")
+  private String unit;
+
   @Column(name = "check_type")
   private String checkType;
 
@@ -75,11 +93,19 @@ public class FacilityRegularCheck {
   private LocalDateTime modDt;
 
   /**
-   * 계획·실시 양쪽 필드를 통째로 교체한다. 식별자와 소속 설비(facility_sq)는 손대지 않는다.
+   * 점검항목/계획·실시 필드를 통째로 교체한다. 식별자와 소속 설비(facility_sq)는 손대지 않는다.
    */
-  public void updateCheck(String checkType, String checkerNm, LocalDate planDate, String planContent,
+  public void updateCheck(String checkItemNm, String checkMethod, String checkCriteria, String maxVal, String minVal, String unit,
+      String checkType, String checkerNm, LocalDate planDate, String planContent,
       LocalDate execDate, String execContent, String execResult,
       String currentStatus, String remark) {
+    // 점검항목 영역 (일상점검과 동일 구조)
+    this.checkItemNm = checkItemNm;
+    this.checkMethod = checkMethod;
+    this.checkCriteria = checkCriteria;
+    this.maxVal = maxVal;
+    this.minVal = minVal;
+    this.unit = unit;
     // 계획 영역
     this.checkType = checkType;
     this.checkerNm = checkerNm;

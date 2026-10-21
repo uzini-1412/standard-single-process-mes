@@ -71,6 +71,7 @@ public class FacilityRegularCheckService {
       guardCheckDates(facilitySq, req.getPlanDate(), req.getExecDate());
 
       check.updateCheck(
+          req.getCheckItemNm(), req.getCheckMethod(), req.getCheckCriteria(), req.getMaxVal(), req.getMinVal(), req.getUnit(),
           req.getCheckType(), req.getCheckerNm(), req.getPlanDate(), req.getPlanContent(),
           req.getExecDate(), req.getExecContent(), req.getExecResult(),
           req.getCurrentStatus(), req.getRemark());
@@ -122,6 +123,12 @@ public class FacilityRegularCheckService {
   private FacilityRegularCheck buildNew(FacilityRegularCheckDto.SaveReq req) {
     return FacilityRegularCheck.builder()
         .facilitySq(req.getFacilitySq())
+        .checkItemNm(req.getCheckItemNm())
+        .checkMethod(req.getCheckMethod())
+        .checkCriteria(req.getCheckCriteria())
+        .maxVal(req.getMaxVal())
+        .minVal(req.getMinVal())
+        .unit(req.getUnit())
         .checkType(req.getCheckType())
         .checkerNm(req.getCheckerNm())
         .currentStatus(req.getCurrentStatus())
@@ -147,6 +154,13 @@ public class FacilityRegularCheckService {
       res.setFacilityName(f.getFacilityName());
       res.setImgPaths(f.getImgPaths());
     }
+
+    res.setCheckItemNm(r.getCheckItemNm());
+    res.setCheckMethod(r.getCheckMethod());
+    res.setCheckCriteria(r.getCheckCriteria());
+    res.setMaxVal(r.getMaxVal());
+    res.setMinVal(r.getMinVal());
+    res.setUnit(r.getUnit());
 
     res.setCheckType(r.getCheckType());
     res.setCheckerNm(r.getCheckerNm());

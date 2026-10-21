@@ -289,7 +289,7 @@ INSERT INTO `mes_menu_tb` (`menu_sq`, `menu_code`, `menu_name`, `parent_menu_sq`
 -- 세부 메뉴 (설비관리)
 INSERT INTO `mes_menu_tb` (`menu_sq`, `menu_code`, `menu_name`, `parent_menu_sq`, `sort_order`, `use_yn`) VALUES
 (34, 'equipment-info',           '설비정보관리',        6, 601, 'Y'),
-(35, 'daily-inspection',         '일상점검정의서',      6, 602, 'Y'),
+(35, 'daily-inspection',         '설비점검',           6, 602, 'Y'),
 (36, 'daily-inspection-result',  '일상점검현황',        6, 603, 'Y'),
 (37, 'periodic-inspection',      '정기점검',           6, 604, 'Y'),
 (38, 'equipment-history',        '설비이력관리',        6, 605, 'Y'),
@@ -1259,6 +1259,12 @@ CREATE TABLE IF NOT EXISTS mes_facility_daily_check_tb (
 CREATE TABLE IF NOT EXISTS mes_facility_regular_check_tb (
   regular_check_sq bigint       NOT NULL AUTO_INCREMENT COMMENT '정기점검 PK',
   facility_sq bigint       NOT NULL COMMENT '설비 FK',
+  check_item_nm varchar(255) NULL COMMENT '점검항목',
+  check_method varchar(255) NULL COMMENT '점검방법',
+  check_criteria varchar(255) NULL COMMENT '기준치',
+  max_val varchar(255) NULL COMMENT '상한치',
+  min_val varchar(255) NULL COMMENT '하한치',
+  unit varchar(255) NULL COMMENT '단위',
   check_type varchar(255) NULL COMMENT '구분',
   checker_nm varchar(255) NULL COMMENT '점검자',
   plan_date date         NULL COMMENT '계획일자',

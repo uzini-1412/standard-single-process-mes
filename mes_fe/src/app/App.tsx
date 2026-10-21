@@ -51,10 +51,9 @@ const EquipmentInfoPage = lazy(() => import("./pages/equipment/equipment-info/Eq
 const EquipmentInfoRegisterPage = lazy(() => import("./pages/equipment/equipment-info/EquipmentInfoRegisterPage"));
 const EquipmentInfoDetailPage = lazy(() => import("./pages/equipment/equipment-info/EquipmentInfoDetailPage"));
 const EquipmentInfoEditPage = lazy(() => import("./pages/equipment/equipment-info/EquipmentInfoEditPage"));
-// 일상점검: 정의서+점검현황 탭 통합 / 설비이력: 이력관리+이력카드 탭 통합
-const DailyInspectionTabsPage = lazy(() => import("./pages/equipment/daily-inspection/DailyInspectionTabsPage").then(m => ({ default: m.DailyInspectionTabsPage })));
+// 설비점검: 정의서+일상점검현황+정기점검현황 탭 통합 (등록은 공용 등록 화면) / 설비이력: 이력관리+이력카드 탭 통합
+const EquipmentInspectionTabsPage = lazy(() => import("./pages/equipment/daily-inspection/EquipmentInspectionTabsPage").then(m => ({ default: m.EquipmentInspectionTabsPage })));
 const SparePartsPage = lazy(() => import("./pages/equipment/spare-parts/SparePartsPage"));
-const PeriodicInspectionPage = lazy(() => import("./pages/equipment/periodic-inspection/PeriodicInspectionPage"));
 const EquipmentHistoryTabsPage = lazy(() => import("./pages/equipment/equipment-history/EquipmentHistoryTabsPage").then(m => ({ default: m.EquipmentHistoryTabsPage })));
 // 계측기등록+검교정이력+이력카드 탭 통합
 const InstrumentTabsPage = lazyPage(() => import("./pages/measuring-instrument/instrument-tabs/InstrumentTabsPage"), "InstrumentTabsPage");
@@ -122,7 +121,6 @@ type Page =
   | "equipment-info-edit"
   | "daily-inspection"
   | "spare-parts"
-  | "periodic-inspection"
   | "equipment-history"
   | "instrument-management"
   | "common-info"
@@ -545,9 +543,8 @@ export default function App() {
           }}
         />
       )}
-      {currentPage === "daily-inspection" && <DailyInspectionTabsPage />}
+      {currentPage === "daily-inspection" && <EquipmentInspectionTabsPage />}
       {currentPage === "spare-parts" && <SparePartsPage />}
-      {currentPage === "periodic-inspection" && <PeriodicInspectionPage />}
       {currentPage === "equipment-history" && <EquipmentHistoryTabsPage />}
       {currentPage === "instrument-management" && <InstrumentTabsPage />}
       {currentPage === "common-info" && <CommonInfoPage />}

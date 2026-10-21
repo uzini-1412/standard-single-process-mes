@@ -1,4 +1,5 @@
-/** [설비관리 > 정기점검] 설비 정기점검 계획/결과 목록 + 등록·수정·상세 진입. API: facilityRegularCheckApi(/api/facility/regular-check) + facilityApi. */
+/** [설비관리 > 설비점검 > 정기점검현황] 설비 정기점검 계획/결과 목록 + 수정·상세 진입. 등록은 통합 등록
+ * 화면(FacilityInspectionRegisterPage)에서 한다. API: facilityRegularCheckApi(/api/facility/regular-check) + facilityApi. */
 import { useState, useEffect } from "react";
 import { Button } from "../../../components/ui/button";
 import { BUTTON_STYLES, PAGE_LAYOUT_STYLES } from "../../../styles/button-styles";
@@ -7,7 +8,6 @@ import { ListPageHeader } from "../../../components/common/ListPageHeader";
 import { ListSearchFilter } from "../../../components/common/ListSearchFilter";
 import { ListTable, type ListColumn } from "../../../components/common/ListTable";
 import { useClientPagedList } from "../../../hooks/useClientPagedList";
-import PeriodicInspectionRegisterPage from "./PeriodicInspectionRegisterPage";
 import PeriodicInspectionDetailPage from "./PeriodicInspectionDetailPage";
 import PeriodicInspectionEditPage from "./PeriodicInspectionEditPage";
 import { fetchRegularCheckList, deleteRegularChecks, saveRegularChecks } from "@/app/api/facilityRegularCheckApi";
@@ -24,10 +24,14 @@ const LIST_COLUMNS: ListColumn<PeriodicInspectionData>[] = PERIODIC_LIST_COLUMNS
     : { key: c.key, label: c.label },
 );
 
-export default function PeriodicInspectionPage() {
-  const perm = usePermission("periodic-inspection");
+interface PeriodicInspectionPageProps {
+  onRegister: () => void;
+}
+
+export default function PeriodicInspectionPage({ onRegister }: PeriodicInspectionPageProps) {
+  const perm = usePermission("daily-inspection");
   const [manageNo, setManageNo] = useState("");
-  const [currentView, setCurrentView] = useState<"list" | "register" | "detail" | "edit">("list");
+  const [currentView, setCurrentView] = useState<"list" | "detail" | "edit">("list");
   const [selectedData, setSelectedData] = useState<any>(null);
   const [data, setData] = useState<PeriodicInspectionData[]>([]);
   const [loading, setLoading] = useState(false);
@@ -62,10 +66,6 @@ export default function PeriodicInspectionPage() {
     setCurrentView("detail");
   };
 
-  const handleRegister = () => {
-    setCurrentView("register");
-  };
-
   const handleEdit = () => {
     setCurrentView("edit");
   };
@@ -89,12 +89,6 @@ export default function PeriodicInspectionPage() {
       console.error("Failed to delete periodic inspection:", error);
       showError("삭제 중 오류가 발생했습니다.");
     }
-  };
-
-  const handleSave = (data: any) => {
-    // Data is already saved in PeriodicInspectionRegisterPage
-    setCurrentView("list");
-    fetchData(); // Reload list
   };
 
   const handleUpdate = async (updatedData: any) => {
@@ -136,10 +130,6 @@ export default function PeriodicInspectionPage() {
     // 실시간 필터링으로 동작하므로 별도 처리 불필요
   };
 
-  if (currentView === "register") {
-    return <PeriodicInspectionRegisterPage onBack={handleBack} onSave={handleSave} />;
-  }
-
   if (currentView === "detail" && selectedData) {
     return (
       <PeriodicInspectionDetailPage
@@ -161,7 +151,7 @@ export default function PeriodicInspectionPage() {
       <div className={PAGE_LAYOUT_STYLES.content}>
         <ListPageHeader
           title="정기점검"
-          actions={perm.createAuth && (<Button data-help="periodic-inspection-register" className={BUTTON_STYLES.register} onClick={handleRegister}>등록</Button>)}
+          actions={perm.createAuth && (<Button data-help="periodic-inspection-register" className={BUTTON_STYLES.register} onClick={onRegister}>등록</Button>)}
         />
 
         <div data-help="periodic-inspection-search">
@@ -180,6 +170,7 @@ export default function PeriodicInspectionPage() {
 
         <div data-help="periodic-inspection-table">
           <ListTable
+            tableId="periodic-inspection"
             columns={LIST_COLUMNS}
             rows={pagedRows}
             isLoading={loading}

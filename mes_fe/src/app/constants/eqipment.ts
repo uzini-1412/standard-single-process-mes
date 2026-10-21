@@ -19,20 +19,6 @@ export const EQUIPMENT_COLUMNS = [
 ];
 
 /* ===== 일상점검 정의서 ===== */
-// 조회 화면(DailyInspectionPage)용 설비 목록
-export const DAILY_EQUIPMENT_COLUMNS = [
-  { label: "선택", key: "selected" },
-  { label: "No.", key: "No" },
-  { label: "설비번호", key: "manageNo" },
-  { label: "설비명", key: "facilityName" },
-  { label: "사용공정", key: "processNm" },
-  { label: "제작사", key: "makerNm" },
-  { label: "구입일자", key: "purchaseDate" },
-  { label: "구입금액", key: "purchasePrice" },
-  { label: "용도", key: "purpose" },
-  { label: "폐기일자", key: "disposeDate" },
-];
-
 export const DAILY_INSPECTION_COLUMNS = [
   { label: "선택", key: "selected" },
   { label: "No.", key: "No" },
@@ -128,12 +114,17 @@ export const PERIODIC_LIST_COLUMNS = [
   { label: "No.", key: "No" },
   { label: "설비번호", key: "manageNo" },
   { label: "설비명", key: "facilityName" },
+  { label: "점검항목", key: "checkItemNm" },
+  { label: "점검방법", key: "checkMethod" },
+  { label: "기준치", key: "checkCriteria" },
+  { label: "상한치", key: "maxVal" },
+  { label: "하한치", key: "minVal" },
+  { label: "단위", key: "unit" },
   { label: "구분", key: "checkType" },
   { label: "점검자", key: "checkerNm" },
   { label: "계획일자", key: "planDate" },
-  { label: "계획내용", key: "planContent" },
   { label: "실시일자", key: "execDate" },
-  { label: "실시내용", key: "execContent" },
+  { label: "실시결과", key: "execResult" },
   { label: "현재상태", key: "currentStatus" },
   { label: "비고", key: "remark" },
 ];

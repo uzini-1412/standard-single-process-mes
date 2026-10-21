@@ -1,4 +1,4 @@
-/** 설비 정기점검 API 클라이언트 — BE /api/facility/regular-check (FacilityRegularCheckController). [설비관리 > 정기점검]. */
+/** 설비 정기점검 API 클라이언트 — BE /api/facility/regular-check (FacilityRegularCheckController). [설비관리 > 설비점검 > 정기점검현황]. */
 import { postJson, postVoid } from './request';
 import { PeriodicInspectionData } from '@/types/equipment/periodic.interface';
 
@@ -10,6 +10,12 @@ export interface RegularCheckSearchParams {
 export interface RegularCheckSaveData {
   regularCheckSq?: number;
   facilitySq: number;
+  checkItemNm?: string;
+  checkMethod?: string;
+  checkCriteria?: string;
+  maxVal?: string;
+  minVal?: string;
+  unit?: string;
   checkType?: string;
   checkerNm?: string;
   planDate?: string;

@@ -98,8 +98,7 @@ export const MENU_STRUCTURE: MenuItem[] = [
   group("equipment", "설비관리", Settings, [
     ["equipment-info", "설비정보관리"],
     ["facility-operation", "설비가동현황"],
-    ["daily-inspection", "일상점검"],
-    ["periodic-inspection", "정기점검"],
+    ["daily-inspection", "설비점검"],
     ["equipment-history", "설비이력관리"],
     ["spare-parts", "설비예비품관리"],
   ]),

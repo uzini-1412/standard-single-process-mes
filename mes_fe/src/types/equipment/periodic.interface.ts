@@ -6,12 +6,20 @@ export interface BasePeriodicInspection {
   manageNo: string;
   facilityName: string;
   imgPaths?: string | null;
+  checkItemNm: string;
+  checkMethod: string;
+  checkCriteria: string;
+  maxVal: string;
+  minVal: string;
+  unit: string;
   checkType: string;
   checkerNm: string;
   planDate: string;
-  planContent: string;
+  /** @deprecated 점검항목 구조(checkItemNm 등)로 대체됨. 과거 데이터 표시용으로만 타입에 남겨둠. */
+  planContent?: string;
   execDate: string;
-  execContent: string;
+  /** @deprecated 점검항목 구조(checkItemNm 등)로 대체됨. 과거 데이터 표시용으로만 타입에 남겨둠. */
+  execContent?: string;
   execResult: string;
   currentStatus: string;
   remark: string;
@@ -49,11 +57,6 @@ export interface PeriodicInspectionHistoryRecord extends BasePeriodicInspection 
 }
 
 // ---- Page props ----
-export interface PeriodicInspectionRegisterPageProps {
-  onBack: () => void;
-  onSave: (data: any) => void;
-}
-
 export interface PeriodicInspectionEditPageProps {
   data: PeriodicInspectionData;
   onBack: () => void;

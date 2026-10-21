@@ -28,6 +28,13 @@ public final class FacilityRegularCheckDto {
     private String facilityName;  // 설비명(조인)
     private String imgPaths;      // 설비사진(조인)
 
+    private String checkItemNm;
+    private String checkMethod;
+    private String checkCriteria;
+    private String maxVal;
+    private String minVal;
+    private String unit;
+
     private String checkType;
     private String checkerNm;
     private LocalDate planDate;
@@ -51,6 +58,15 @@ public final class FacilityRegularCheckDto {
     @NotNull(message = "설비는 필수 입력값입니다.")
     @Schema(description = "설비 PK")
     private Long facilitySq;
+
+    @Schema(description = "점검항목 (일상점검과 동일 구조)")
+    private String checkItemNm;
+    @Schema(description = "점검방법 (육안확인/측정기록)")
+    private String checkMethod;
+    private String checkCriteria;
+    private String maxVal;
+    private String minVal;
+    private String unit;
 
     @Schema(description = "점검 구분 (주간/월간 등)")
     private String checkType;

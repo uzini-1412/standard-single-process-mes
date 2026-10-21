@@ -1,4 +1,4 @@
-/** [설비관리 > 정기점검] 정기점검 1건 상세 조회(읽기). API: facilityRegularCheckApi(/api/facility/regular-check). */
+/** [설비관리 > 설비점검 > 정기점검현황] 정기점검 1건 상세 조회(읽기). API: facilityRegularCheckApi(/api/facility/regular-check). */
 import React from "react";
 import { Button } from "../../../components/ui/button";
 import { BUTTON_STYLES, PAGE_LAYOUT_STYLES, FOUR_COLUMN_GRID_STYLES } from "../../../styles/button-styles";
@@ -13,14 +13,16 @@ type DetailField = { label: string; value: React.ReactNode };
 type DetailRow = { cells: DetailField[]; wide?: boolean };
 
 export default function PeriodicInspectionDetailPage({ data, onBack, onEdit, onDelete }: PeriodicInspectionDetailPageProps) {
-  const perm = usePermission("periodic-inspection");
+  const perm = usePermission("daily-inspection");
 
-  // 6행 × (라벨/값) 구성을 한 곳에 모아 표를 만든다. 마지막 비고는 값 영역을 3칸으로 확장.
+  // 8행 × (라벨/값) 구성을 한 곳에 모아 표를 만든다. 마지막 비고는 값 영역을 3칸으로 확장.
   const rows: DetailRow[] = [
     { cells: [{ label: "설비번호", value: data.manageNo }, { label: "설비명", value: data.facilityName }] },
+    { cells: [{ label: "점검항목", value: data.checkItemNm }, { label: "점검방법", value: data.checkMethod }] },
+    { cells: [{ label: "기준치", value: data.checkCriteria }, { label: "상한치", value: data.maxVal }] },
+    { cells: [{ label: "하한치", value: data.minVal }, { label: "단위", value: data.unit }] },
     { cells: [{ label: "구분", value: data.checkType }, { label: "점검자", value: data.checkerNm }] },
-    { cells: [{ label: "계획일자", value: data.planDate }, { label: "계획내용", value: data.planContent }] },
-    { cells: [{ label: "실시일자", value: data.execDate }, { label: "실시내용", value: data.execContent }] },
+    { cells: [{ label: "계획일자", value: data.planDate }, { label: "실시일자", value: data.execDate }] },
     { cells: [{ label: "실시결과", value: data.execResult }, { label: "현재상태", value: data.currentStatus }] },
     { cells: [{ label: "비고", value: data.remark }], wide: true },
   ];

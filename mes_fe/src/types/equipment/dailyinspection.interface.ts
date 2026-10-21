@@ -14,25 +14,6 @@ export interface BaseInspectionItem {
   remark: string;
 }
 
-// Equipment list row on the daily-inspection (lookup) screen.
-export interface DailyInspectionEquipment
-  extends Pick<
-    EquipmentRecord,
-    | "selected"
-    | "manageNo"
-    | "facilityName"
-    | "processNm"
-    | "makerNm"
-    | "purchaseDate"
-    | "purchasePrice"
-    | "purpose"
-    | "disposeDate"
-    | "imgPaths"
-  > {
-  No: string;
-  facilitySq: number;
-}
-
 // Equipment list row on the registration screen (adds status fields).
 export interface DailyInspectionRegisterEquipment
   extends Pick<
