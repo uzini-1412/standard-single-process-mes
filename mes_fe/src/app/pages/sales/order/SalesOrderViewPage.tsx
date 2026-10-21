@@ -1,4 +1,4 @@
-/** [고객주문관리 > 수주정보] 수주 단건 상세를 읽기 전용으로 표시. 데이터 출처: orderApi.ts fetchOrderById. */
+/** [수주정보관리 > 수주정보] 수주 단건 상세를 읽기 전용으로 표시. 데이터 출처: orderApi.ts fetchOrderById. */
 import { useEffect, useState } from "react";
 import { Button } from "../../../components/ui/button";
 import { Input } from "../../../components/ui/input";

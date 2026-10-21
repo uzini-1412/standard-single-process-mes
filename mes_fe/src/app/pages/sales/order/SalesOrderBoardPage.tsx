@@ -1,4 +1,4 @@
-/** [고객주문관리 > 수주정보] 수주 목록 화면 — 검색/조회, 엑셀 내보내기, 등록·상세 화면 진입. 데이터 출처: orderApi.ts(/api/sales-order). */
+/** [수주정보관리 > 수주정보] 수주 목록 화면 — 검색/조회, 엑셀 내보내기, 등록·상세 화면 진입. 데이터 출처: orderApi.ts(/api/sales-order). */
 import { useEffect, useState } from "react";
 import { useSessionState } from "../../../hooks/useSessionState";
 import { Button } from "../../../components/ui/button";

@@ -19,7 +19,7 @@ export interface SubMenuItem {
 }
 
 type MenuLabel =
-  | "고객주문관리"
+  | "수주정보관리"
   | "자재관리"
   | "생산관리"
   | "품질관리"
@@ -62,7 +62,7 @@ const group = (
  * - 사용권한정보관리에서 권한 설정 메뉴로 사용
  */
 export const MENU_STRUCTURE: MenuItem[] = [
-  group("sales", "고객주문관리", ShoppingCart, [
+  group("sales", "수주정보관리", ShoppingCart, [
     ["order", "수주정보"],
   ]),
   group("material", "자재관리", Package, [

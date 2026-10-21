@@ -1,4 +1,4 @@
-/** [고객주문관리 > 수주정보] 수주 신규 등록 및 기존 건 수정(mode=create|edit). 입력 상태/검증은 useOrderEntryForm 훅으로 위임. */
+/** [수주정보관리 > 수주정보] 수주 신규 등록 및 기존 건 수정(mode=create|edit). 입력 상태/검증은 useOrderEntryForm 훅으로 위임. */
 import { PageHeader } from "../../../components/common";
 import { ProductSelectDialog } from "../../../components/features/order/ProductSelectDialog";
 import { Button } from "../../../components/ui/button";

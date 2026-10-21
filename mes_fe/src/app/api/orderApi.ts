@@ -1,4 +1,4 @@
-/** 수주 API 클라이언트 — BE /api/sales-order (SalesOrderController). [고객주문관리 > 수주정보] 외 공용. */
+/** 수주 API 클라이언트 — BE /api/sales-order (SalesOrderController). [수주정보관리 > 수주정보] 외 공용. */
 import { emptyPage, postJson, postVoid, type PageEnvelope } from './request';
 
 export interface OrderSearchParams {

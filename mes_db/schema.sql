@@ -236,7 +236,7 @@ CREATE TABLE `mes_menu_tb` (
 -- MES_DB.MES_MENU_TB data (matches MENU_STRUCTURE in frontend)
 -- 대분류 메뉴 (parent_menu_sq = NULL)
 INSERT INTO `mes_menu_tb` (`menu_sq`, `menu_code`, `menu_name`, `parent_menu_sq`, `sort_order`, `use_yn`) VALUES
-(1,  'sales',        '고객주문관리',        NULL, 10, 'Y'),
+(1,  'sales',        '수주정보관리',        NULL, 10, 'Y'),
 (2,  'material',     '자재관리',           NULL, 20, 'Y'),
 (3,  'production',   '생산관리',           NULL, 30, 'Y'),
 (4,  'quality',      '품질관리',           NULL, 40, 'Y'),
@@ -246,7 +246,7 @@ INSERT INTO `mes_menu_tb` (`menu_sq`, `menu_code`, `menu_name`, `parent_menu_sq`
 (8,  'company-info', '기업자원관리(ERP)',   NULL, 80, 'Y'),
 (9,  'master',       '기준정보관리',        NULL, 90, 'Y');
 
--- 세부 메뉴 (고객주문관리)
+-- 세부 메뉴 (수주정보관리)
 INSERT INTO `mes_menu_tb` (`menu_sq`, `menu_code`, `menu_name`, `parent_menu_sq`, `sort_order`, `use_yn`) VALUES
 (10, 'order',                    '수주정보',          1, 101, 'Y');
 
