@@ -106,20 +106,6 @@ export const productionPlanColumns: TableColumn[] = [
   col("remark", "비고"),
 ];
 
-/** 생산계획 스케줄(라인×시간) 행 헤더. */
-export const scheduleRowHeaders: TableColumn[] = [
-  COL.lineName,
-  COL.itemCode,
-  COL.itemName,
-  col("planQty", withUnit("생산계획량", UNITS.length)),
-  col("planQtyEa", "생산계획량(EA)"),
-  COL.productionSpeedSpd,
-  col("estimatedProductionTime", "예상소요시간(분)"),
-  col("startTime", "시작시간"),
-  col("endTime", "종료시간"),
-  col("remark", "비고"),
-];
-
 // ───────────────────────── 작업지시 ─────────────────────────
 
 export const workOrderColumns: TableColumn[] = [
