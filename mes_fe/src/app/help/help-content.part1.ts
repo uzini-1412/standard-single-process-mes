@@ -124,15 +124,6 @@ export const HELP_CONTENT_PART1: Record<string, HelpContent> = {
     ],
   },
 
-  "warehouse-info": {
-    title: "창고정보관리",
-    purpose: "창고·보관 위치의 기준정보를 관리합니다. 입출고와 재고에서 위치로 사용됩니다.",
-    steps: [
-      { anchor: "warehouse-info-register", title: "창고 등록", description: "창고명·구분·위치 정보를 입력해 추가합니다." },
-      { anchor: "warehouse-info-table", title: "조회 / 수정", description: "목록에서 창고를 선택해 상세를 보고 수정합니다." },
-    ],
-  },
-
   notice: {
     title: "공지사항",
     purpose: "사내 공지사항을 작성·게시하고 조회하는 화면입니다.",

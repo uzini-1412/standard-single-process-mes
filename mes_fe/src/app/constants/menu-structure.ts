@@ -124,7 +124,6 @@ export const MENU_STRUCTURE: MenuItem[] = [
     ["bom-info", "BOM관리"],
     ["inventory-adjustment", "재고조정관리"],
     ["inspection-standard", "검사표준관리"],
-    ["warehouse-info", "창고정보관리"],
     ["notice", "공지사항"],
     ["system-config", "환경설정"],
   ]),

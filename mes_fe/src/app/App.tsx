@@ -67,7 +67,6 @@ const InventoryAdjustmentPage = lazy(() => import("./pages/standard-info/invento
 const InspectionStandardPage = lazy(() => import("./pages/standard-info/inspection-standard/InspectionStandardPage"));
 const UnitPriceStandardPage = lazy(() => import("./pages/standard-info/unit-price-standard/UnitPriceStandardPage"));
 const NoticePage = lazy(() => import("./pages/standard-info/notice/NoticePage"));
-const WarehouseInfoPage = lazy(() => import("./pages/standard-info/warehouse-info/WarehouseInfoPage"));
 const SalesLedgerPage = lazyPage(() => import("./pages/management/SalesLedgerPage"), "SalesLedgerPage");
 const PurchaseLedgerPage = lazyPage(() => import("./pages/management/PurchaseLedgerPage"), "PurchaseLedgerPage");
 const ReceivablesListPage = lazyPage(() => import("./pages/management/collection/ReceivablesListPage"), "ReceivablesListPage");
@@ -139,7 +138,6 @@ type Page =
   | "collection-management-register"
   | "collection-management-detail"
   | "collection-management-edit"
-  | "warehouse-info"
   | "lot-trace"
   | "system-config"
   | "admin-activity-log";
@@ -556,7 +554,6 @@ export default function App() {
       {currentPage === "inventory-adjustment" && <InventoryAdjustmentPage />}
       {currentPage === "inspection-standard" && <InspectionStandardPage />}
       {currentPage === "unit-price-standard" && <UnitPriceStandardPage />}
-      {currentPage === "warehouse-info" && <WarehouseInfoPage />}
       {currentPage === "notice" && <NoticePage />}
       {currentPage === "system-config" && <SystemConfigPage />}
       {currentPage === "sales-management" && <SalesLedgerPage />}
