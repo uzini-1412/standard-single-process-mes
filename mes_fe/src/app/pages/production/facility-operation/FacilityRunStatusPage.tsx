@@ -111,6 +111,7 @@ export function FacilityRunStatusPage() {
 
         <div data-help="facility-operation-table">
           <ListTable
+            tableId="facility-run-status"
             columns={RUN_STATUS_COLUMNS}
             rows={pageRows}
             isLoading={isFetching}

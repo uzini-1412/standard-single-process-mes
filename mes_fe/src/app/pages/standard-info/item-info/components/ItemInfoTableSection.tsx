@@ -34,6 +34,7 @@ export function ItemInfoTableSection({
 
   return (
     <ListTable
+      tableId="item-info-list"
       columns={COLUMNS}
       rows={pagedRows}
       isLoading={isLoading}

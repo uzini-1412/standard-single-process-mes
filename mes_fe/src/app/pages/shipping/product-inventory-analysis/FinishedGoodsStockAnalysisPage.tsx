@@ -53,6 +53,7 @@ export function FinishedGoodsStockAnalysisPage() {
         </div>
 
         <ListTable
+          tableId="finished-goods-stock-analysis"
           columns={ANALYSIS_GRID_COLUMNS}
           rows={pagedRows}
           isLoading={isFetching}

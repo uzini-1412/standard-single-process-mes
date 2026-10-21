@@ -1,10 +1,14 @@
-import { Fragment, type ReactNode } from "react";
+import { Fragment, useEffect, useMemo, type ReactNode } from "react";
 import { cn } from "../ui/utils";
 import { ListTableContainer } from "./ListTableContainer";
 import { ServerPagination, type ServerPaginationProps } from "./ServerPagination";
 import { TableStateRow } from "./TableStateRow";
 import { formatNumber } from "../../utils/numberFormat";
 import { HEADER_ALIGN, NUMBER_ALIGN } from "../../styles/table-styles";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Checkbox } from "../ui/checkbox";
+import { usePersistedState } from "../../hooks/usePersistedState";
+import { useUserContext } from "../../context/UserContext";
 
 /**
  * 목록(List) 화면 표준 표 컬럼 정의.
@@ -87,6 +91,11 @@ interface ListTableProps<T> {
    * 보통 useClientPagedList()가 반환하는 `pagination` 을 그대로 넘긴다.
    */
   pagination?: Omit<ServerPaginationProps, "loading">;
+  /**
+   * 지정하면 "컬럼 설정" 버튼이 뜨고, 사용자가 숨긴 컬럼을 localStorage에 사용자별로 기억한다.
+   * 화면마다 고유해야 한다 (menu-code 는 여러 화면이 공유할 수 있어 쓰지 않는다).
+   */
+  tableId?: string;
 }
 
 const alignClass = (align: ListColumn<unknown>["align"]) =>
@@ -119,7 +128,13 @@ export function ListTable<T extends object>({
   onSort,
   highlightedKey,
   pagination,
+  tableId,
 }: ListTableProps<T>) {
+  const { userInfo } = useUserContext();
+  const columnStorageKey = `fe.columns.${tableId ?? "__unset__"}.${userInfo?.userId ?? "anon"}`;
+  const [hiddenKeys, setHiddenKeys] = usePersistedState<string[]>(columnStorageKey, []);
+  const hiddenSet = useMemo(() => new Set(hiddenKeys), [hiddenKeys]);
+
   const resolveKey = (row: T, index: number): string | number => {
     if (rowKey) return rowKey(row, index);
     const id = (row as { id?: string | number }).id;
@@ -140,11 +155,42 @@ export function ListTable<T extends object>({
     rows.length > 0 &&
     rows.every((row, index) => selectedKeys?.has(resolveKey(row, index)));
 
-  const leafColumns: ListColumn<T>[] = columns.flatMap((c) =>
+  const allLeafColumns: ListColumn<T>[] = columns.flatMap((c) =>
     isColumnGroup(c) ? c.children : [c],
   );
+  const leafColumns = allLeafColumns.filter((c) => !hiddenSet.has(c.key));
   const hasGroups = columns.some(isColumnGroup);
   const colSpan = leafColumns.length + (selectable ? 1 : 0);
+
+  // 컬럼 설정 팝오버용 토글 목록 (숨김 여부와 무관하게 전체 컬럼을 보여준다)
+  const toggleItems = useMemo(
+    () =>
+      columns.flatMap((c) =>
+        isColumnGroup(c)
+          ? c.children.map((leaf) => ({ key: leaf.key, label: leaf.label, groupLabel: c.label }))
+          : [{ key: c.key, label: c.label, groupLabel: undefined as string | undefined }],
+      ),
+    [columns],
+  );
+
+  const toggleColumn = (key: string) => {
+    setHiddenKeys((prev) => {
+      if (prev.includes(key)) return prev.filter((k) => k !== key);
+      if (leafColumns.length <= 1) return prev; // 마지막 컬럼은 숨길 수 없음
+      return [...prev, key];
+    });
+  };
+
+  // 컬럼이 리네임/삭제돼 더 이상 존재하지 않는 숨김 키는 저장소에서 정리한다.
+  const validLeafKeys = allLeafColumns.map((c) => c.key).join(",");
+  useEffect(() => {
+    const validKeys = new Set(validLeafKeys ? validLeafKeys.split(",") : []);
+    setHiddenKeys((prev) => {
+      const pruned = prev.filter((k) => validKeys.has(k));
+      return pruned.length === prev.length ? prev : pruned;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [validLeafKeys]);
 
   const renderLeafTh = (column: ListColumn<T>, rowSpan?: number) => {
     const sortable = !!column.sortable && !!onSort;
@@ -182,6 +228,41 @@ export function ListTable<T extends object>({
 
   return (
     <Fragment>
+      {tableId && (
+        <div className="flex justify-end mb-1">
+          <Popover>
+            <PopoverTrigger asChild>
+              <button
+                type="button"
+                className="text-xs text-gray-600 hover:text-gray-900 border border-gray-300 rounded px-2 py-1 bg-white"
+              >
+                컬럼 설정
+              </button>
+            </PopoverTrigger>
+            <PopoverContent align="end" className="w-56 max-h-80 overflow-y-auto">
+              <div className="text-xs font-semibold text-gray-500 mb-2">표시할 컬럼</div>
+              <div className="space-y-1">
+                {toggleItems.map((item) => {
+                  const checked = !hiddenSet.has(item.key);
+                  return (
+                    <label
+                      key={item.key}
+                      className="flex items-center gap-2 text-sm cursor-pointer py-0.5"
+                    >
+                      <Checkbox
+                        checked={checked}
+                        disabled={checked && leafColumns.length <= 1}
+                        onCheckedChange={() => toggleColumn(item.key)}
+                      />
+                      <span>{item.groupLabel ? `${item.groupLabel} · ${item.label}` : item.label}</span>
+                    </label>
+                  );
+                })}
+              </div>
+            </PopoverContent>
+          </Popover>
+        </div>
+      )}
       <ListTableContainer height={height}>
         <table
           className={cn("w-full", !minWidth && "table-fixed")}
@@ -192,11 +273,16 @@ export function ListTable<T extends object>({
               <>
                 <tr className="bg-[#4A5CC7]">
                   {selectAllTh(2)}
-                  {columns.map((c) =>
-                    isColumnGroup(c) ? (
+                  {columns.map((c) => {
+                    if (!isColumnGroup(c)) {
+                      return hiddenSet.has(c.key) ? null : renderLeafTh(c, 2);
+                    }
+                    const visibleChildren = c.children.filter((leaf) => !hiddenSet.has(leaf.key));
+                    if (visibleChildren.length === 0) return null;
+                    return (
                       <th
                         key={`grp-${c.label}`}
-                        colSpan={c.children.length}
+                        colSpan={visibleChildren.length}
                         className={cn(
                           "px-4 py-3 text-sm font-semibold text-white whitespace-nowrap border-r border-white",
                           HEADER_ALIGN,
@@ -204,14 +290,14 @@ export function ListTable<T extends object>({
                       >
                         {c.label}
                       </th>
-                    ) : (
-                      renderLeafTh(c, 2)
-                    ),
-                  )}
+                    );
+                  })}
                 </tr>
                 <tr className="bg-[#4A5CC7]">
                   {columns.flatMap((c) =>
-                    isColumnGroup(c) ? c.children.map((leaf) => renderLeafTh(leaf)) : [],
+                    isColumnGroup(c)
+                      ? c.children.filter((leaf) => !hiddenSet.has(leaf.key)).map((leaf) => renderLeafTh(leaf))
+                      : [],
                   )}
                 </tr>
               </>

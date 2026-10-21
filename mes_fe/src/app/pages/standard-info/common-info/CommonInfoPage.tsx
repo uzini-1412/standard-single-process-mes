@@ -236,6 +236,7 @@ export default function CommonInfoPage() {
 
         <div data-help="common-info-table">
           <ListTable
+            tableId="common-info"
             columns={columns}
             rows={pagedRows}
             isLoading={loading}

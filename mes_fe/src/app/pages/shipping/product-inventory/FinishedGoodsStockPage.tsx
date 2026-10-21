@@ -99,6 +99,7 @@ export function FinishedGoodsStockPage() {
         {/* 상단: 완제품 현재고 그리드 */}
         <div className="mb-4" data-help="product-inventory-table">
           <ListTable
+            tableId="finished-goods-stock"
             columns={STOCK_GRID_COLUMNS}
             rows={rows}
             isLoading={isFetching}

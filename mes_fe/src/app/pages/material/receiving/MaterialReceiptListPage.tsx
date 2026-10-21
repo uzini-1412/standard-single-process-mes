@@ -59,6 +59,7 @@ export function MaterialReceiptListPage() {
 
         <div data-help="receiving-status-table">
           <ListTable
+            tableId="material-receipt-list"
             columns={RECEIPT_TABLE_COLUMNS}
             rows={tableRows}
             isLoading={isFetching}

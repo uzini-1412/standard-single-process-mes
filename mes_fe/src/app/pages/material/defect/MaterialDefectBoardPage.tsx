@@ -74,6 +74,7 @@ export function MaterialDefectBoardPage() {
 
         <div data-help="material-defect-status-table">
           <ListTable
+            tableId="material-defect-board"
             columns={tableColumns}
             rows={board.rows}
             isLoading={board.busy}

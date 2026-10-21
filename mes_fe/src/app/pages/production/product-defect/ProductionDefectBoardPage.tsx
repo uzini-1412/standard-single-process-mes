@@ -71,6 +71,7 @@ export function ProductionDefectBoardPage() {
 
         <div data-help="product-defect-status-table">
           <ListTable
+            tableId="production-defect-board"
             rows={pagedRows}
             columns={tableColumns}
             rowKey={(row) => row.id}

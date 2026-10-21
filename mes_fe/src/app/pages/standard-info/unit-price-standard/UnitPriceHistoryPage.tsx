@@ -188,6 +188,7 @@ export function UnitPriceHistoryPage({ onViewModeChange }: Props) {
         </div>
 
         <ListTable
+          tableId="unit-price-history"
           columns={HISTORY_LIST_COLUMNS}
           rows={historyData}
           isLoading={loading}

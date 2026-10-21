@@ -198,6 +198,7 @@ export default function EquipmentHistoryPage() {
         {/* Table with Fixed Height and Scroll */}
         <div data-help="equipment-history-table">
           <ListTable
+            tableId="equipment-history"
             columns={LIST_COLUMNS}
             rows={pagedRows}
             isLoading={loading}

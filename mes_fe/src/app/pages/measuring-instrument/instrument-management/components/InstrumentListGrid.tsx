@@ -60,6 +60,7 @@ export function InstrumentListGrid({
 
   return (
     <ListTable
+      tableId="instrument-list-grid"
       columns={columns}
       rows={pagedRows}
       isLoading={loading}

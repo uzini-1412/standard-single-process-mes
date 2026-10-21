@@ -48,6 +48,7 @@ export function CalibrationLogResultGrid({
 
   return (
     <ListTable
+      tableId="calibration-log-result-grid"
       columns={columns}
       rows={pagedRows}
       isLoading={loading}

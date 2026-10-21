@@ -107,6 +107,7 @@ export function PurchaseOrderBoardPage({ onNavigateToRegister }: PurchaseOrderBo
 
         <div data-help="purchase-order-status-table">
           <ListTable
+            tableId="purchase-order-board"
             columns={PURCHASE_ORDER_TABLE_COLUMNS}
             rows={numberedRows}
             isLoading={isLoading}

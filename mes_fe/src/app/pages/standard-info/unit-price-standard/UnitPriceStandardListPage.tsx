@@ -141,6 +141,7 @@ export function UnitPriceStandardListPage({ onRegister, onRowClick, onViewModeCh
         </div>
         <div data-help="unit-price-standard-table">
           <ListTable
+            tableId="unit-price-standard-list"
             columns={LIST_COLUMNS}
             rows={pagedRows}
             isLoading={loading}

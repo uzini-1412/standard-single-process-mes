@@ -78,6 +78,7 @@ export function NonConformanceBoardPage({ onNavigateToRegister, onNavigateToDeta
 
         <div data-help="non-conformance-table">
           <ListTable
+            tableId="non-conformance-board"
             columns={tableColumns}
             rows={board.numberedRows}
             isLoading={board.isFetching}

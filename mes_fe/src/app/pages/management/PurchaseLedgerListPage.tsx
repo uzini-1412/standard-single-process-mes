@@ -124,6 +124,7 @@ export function PurchaseLedgerListPage({ pageMode, onPageModeChange }: Props) {
 
         <div data-help="purchase-management-table">
           <ListTable
+            tableId="purchase-ledger-list"
             columns={columns}
             rows={ledger.groups}
             isLoading={ledger.isFetching}

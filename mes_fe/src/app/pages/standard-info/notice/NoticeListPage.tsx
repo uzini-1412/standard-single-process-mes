@@ -76,6 +76,7 @@ export function NoticeListPage({ onRegister, onRowClick }: NoticeListPageProps) 
 
         <div data-help="notice-table">
           <ListTable
+            tableId="notice-list"
             columns={columns}
             rows={pagedRows}
             isLoading={loading}

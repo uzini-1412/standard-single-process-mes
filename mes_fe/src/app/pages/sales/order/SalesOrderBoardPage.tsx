@@ -174,6 +174,7 @@ export function SalesOrderBoardPage({
 
         <div data-help="order-table">
           <ListTable
+            tableId="sales-order-board"
             columns={TABLE_COLUMNS}
             rows={numberedRows}
             isLoading={isFetching}

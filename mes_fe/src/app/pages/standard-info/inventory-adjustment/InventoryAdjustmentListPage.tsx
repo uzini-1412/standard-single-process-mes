@@ -113,6 +113,7 @@ export function InventoryAdjustmentListPage({ onView, onRegister }: InventoryAdj
 
         <div data-help="inventory-adjustment-table">
           <ListTable
+            tableId="inventory-adjustment-list"
             columns={LIST_COLUMNS}
             rows={pagedRows}
             isLoading={loading}

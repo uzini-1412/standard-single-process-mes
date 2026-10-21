@@ -160,6 +160,7 @@ export default function ClientInfoPage() {
 
         <div data-help="client-info-table">
           <ListTable
+            tableId="client-info"
             columns={columns}
             rows={pagedRows}
             isLoading={isLoading}

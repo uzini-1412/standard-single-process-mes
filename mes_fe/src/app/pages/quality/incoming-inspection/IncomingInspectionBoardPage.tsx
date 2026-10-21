@@ -209,6 +209,7 @@ export function IncomingInspectionBoardPage() {
 
         <div data-help="incoming-inspection-table">
           <ListTable
+            tableId="incoming-inspection-board"
             columns={resultColumns}
             rows={board.pagedResults}
             isLoading={board.busy}

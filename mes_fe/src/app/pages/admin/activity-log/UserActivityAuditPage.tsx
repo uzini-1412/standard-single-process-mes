@@ -108,6 +108,7 @@ export function UserActivityAuditPage() {
         </ListSearchFilter>
 
         <ListTable
+          tableId="user-activity-audit"
           columns={ACTIVITY_COLUMNS}
           rows={feed.logRows}
           isLoading={feed.busy}

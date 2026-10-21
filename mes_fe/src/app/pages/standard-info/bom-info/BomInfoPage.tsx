@@ -215,6 +215,7 @@ export default function BomInfoPage() {
 
         <div data-help="bom-info-table">
           <ListTable
+            tableId="bom-info"
             columns={columns}
             rows={pagedRows}
             isLoading={isLoading}

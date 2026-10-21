@@ -55,6 +55,7 @@ export function MaterialStockListPage() {
 
         <div data-help="material-inventory-status-table" className="mb-4">
           <ListTable
+            tableId="material-stock-list"
             columns={STOCK_TABLE_COLUMNS}
             rows={stock.rows}
             isLoading={stock.isFetching}

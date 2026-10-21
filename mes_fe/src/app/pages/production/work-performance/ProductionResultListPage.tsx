@@ -52,6 +52,7 @@ export function ProductionResultListPage() {
 
         <div data-help="work-performance-status-table">
           <ListTable
+            tableId="production-result-list"
             columns={listColumns}
             rows={list.rows}
             rowKey={(row) => row.id}

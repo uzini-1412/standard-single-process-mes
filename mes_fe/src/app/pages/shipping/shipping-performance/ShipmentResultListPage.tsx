@@ -121,6 +121,7 @@ export function ShipmentResultListPage() {
 
         <div data-help="shipping-performance-table">
           <ListTable
+            tableId="shipment-result-list"
             columns={columns}
             rows={list.rows}
             isLoading={list.busy}

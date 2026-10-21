@@ -116,6 +116,7 @@ export function DowntimeStatusBoardPage() {
 
         <div data-help="non-operation-status-table">
           <ListTable
+            tableId="downtime-status-board"
             columns={columns}
             rows={pageRows}
             isLoading={isFetching}

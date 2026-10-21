@@ -53,6 +53,7 @@ export function FinishedGoodsLocationPage() {
 
         <div data-help="product-location-table">
           <ListTable
+            tableId="finished-goods-location"
             columns={stockGridColumns}
             rows={pagedRows}
             isLoading={busy}

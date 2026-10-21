@@ -305,6 +305,7 @@ export function OutgoingInspectionBoardPage({
 
         <div data-help="shipping-inspection-table" className="mb-3">
           <ListTable
+            tableId="outgoing-inspection-board"
             columns={columns}
             rows={board.rows}
             isLoading={board.isFetching}

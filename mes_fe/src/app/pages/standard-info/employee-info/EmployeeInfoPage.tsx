@@ -206,6 +206,7 @@ export default function EmployeeInfoPage() {
 
         <div data-help="employee-info-table">
           <ListTable
+            tableId="employee-info"
             columns={columns}
             rows={pagedRows}
             isLoading={loading}

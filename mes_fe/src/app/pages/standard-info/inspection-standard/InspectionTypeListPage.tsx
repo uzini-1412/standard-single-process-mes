@@ -131,6 +131,7 @@ export function InspectionTypeListPage({
 
         <div data-help="inspection-standard-table">
           <ListTable
+            tableId="inspection-type-list"
             columns={columns}
             rows={pagedRows}
             isLoading={loading}

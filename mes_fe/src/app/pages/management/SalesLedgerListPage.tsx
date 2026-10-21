@@ -110,6 +110,7 @@ export function SalesLedgerListPage({ currentView, onViewChange }: SalesLedgerLi
         {/* 그룹 요약 표 */}
         <div data-help="sales-management-table">
           <ListTable
+            tableId="sales-ledger-list"
             columns={columns}
             rows={ledger.rows}
             isLoading={ledger.isFetching}

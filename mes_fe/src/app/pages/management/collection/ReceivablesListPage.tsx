@@ -56,6 +56,7 @@ export function ReceivablesListPage({ onNavigateToRegister, onNavigateToDetail }
 
         <div data-help="collection-management-table">
           <ListTable
+            tableId="receivables-list"
             rows={pagedRows}
             columns={tableColumns}
             isLoading={isFetching}

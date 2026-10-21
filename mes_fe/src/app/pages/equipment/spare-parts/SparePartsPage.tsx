@@ -186,6 +186,7 @@ export default function SparePartsPage() {
 
         <div data-help="spare-parts-table">
           <ListTable
+            tableId="spare-parts"
             columns={LIST_COLUMNS}
             rows={pagedRows}
             isLoading={loading}

@@ -72,6 +72,7 @@ export function DispatchPlanBoardPage() {
 
         <div data-help="shipping-plan-table">
           <ListTable
+            tableId="dispatch-plan-board"
             columns={dispatchPlanBoardColumns}
             rows={board.pagedRows}
             isLoading={board.isFetching}

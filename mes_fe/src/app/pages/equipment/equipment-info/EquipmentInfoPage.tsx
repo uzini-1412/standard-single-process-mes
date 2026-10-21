@@ -158,6 +158,7 @@ export default function EquipmentInfoPage({ onNavigateToRegister, onNavigateToDe
 
         <div data-help="equipment-info-table">
           <ListTable
+            tableId="equipment-info"
             columns={LIST_COLUMNS}
             rows={pagedRows}
             isLoading={loading}

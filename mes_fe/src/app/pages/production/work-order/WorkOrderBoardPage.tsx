@@ -96,6 +96,7 @@ export function WorkOrderBoardPage() {
         <div data-help="work-order-table">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">작업지시목록</h2>
           <ListTable
+            tableId="work-order-board"
             columns={boardColumnDefs}
             rows={board.rows}
             isLoading={board.isFetching}
