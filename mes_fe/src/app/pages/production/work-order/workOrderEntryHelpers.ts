@@ -165,10 +165,10 @@ export function validateMasterWeights(opts: {
     return { kind: "warning", message: "우선순위를 입력해주세요." };
   }
   if (opts.manageWeight <= 0) {
-    return { kind: "warning", message: "관리평량을 입력해주세요." };
+    return { kind: "warning", message: "관리단위중량을 입력해주세요." };
   }
   if (opts.manageWeight > 0 && opts.basisWeight > 0 && opts.manageWeight < opts.basisWeight) {
-    return { kind: "error", message: "관리평량은 기준평량보다 작을 수 없습니다." };
+    return { kind: "error", message: "관리단위중량은 기준단위중량보다 작을 수 없습니다." };
   }
   if (opts.plcWeight <= 0) {
     return { kind: "warning", message: "브랜딩 합산 중량(g)을 입력해주세요." };

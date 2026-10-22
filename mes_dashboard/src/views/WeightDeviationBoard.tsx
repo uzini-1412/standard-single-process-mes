@@ -160,7 +160,7 @@ export function WeightDeviationBoard() {
         {error ? <span className="production-status error">조회 실패: {error}</span> : null}
         {loading ? <span className="production-status">불러오는 중…</span> : null}
         <span className="production-status">
-          비교: 생산일보 실측 평량 vs 품목 기준 평량 (편차율 = (실측-기준)/기준 × 100%) — 허용 ±
+          비교: 생산일보 실측 단위중량 vs 품목 기준 단위중량 (편차율 = (실측-기준)/기준 × 100%) — 허용 ±
           {limit.toFixed(2)}%
         </span>
       </div>

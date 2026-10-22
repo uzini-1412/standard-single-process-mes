@@ -34,7 +34,7 @@ function buildDetailPairs(item: ItemRes): DetailPair[][] {
     [
       { label: "규격", value: dash(item.spec) },
       {
-        label: withUnit("평량", UNITS.basisWeight),
+        label: withUnit("단위중량", UNITS.basisWeight),
         value: item.basisWeight != null ? item.basisWeight : "-",
       },
     ],

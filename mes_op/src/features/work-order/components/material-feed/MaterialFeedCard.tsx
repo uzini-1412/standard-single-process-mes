@@ -51,7 +51,7 @@ export function MaterialFeedCard({
             <span className="font-mono text-sm text-slate-500">{material.materialCode}</span>
           </div>
           <div className="text-sm text-slate-400">
-            {material.materialType || "-"} · {material.materialSpec || "-"} · 비중 {material.ratio.toFixed(2)}%
+            {material.materialType || "-"} · {material.materialSpec || "-"} · 구성비 {material.ratio.toFixed(2)}%
           </div>
         </div>
         <div className="flex items-center gap-3">

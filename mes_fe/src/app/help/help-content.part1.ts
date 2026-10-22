@@ -89,7 +89,7 @@ export const HELP_CONTENT_PART1: Record<string, HelpContent> = {
         anchor: "bom-info-register",
         title: "BOM 등록",
         description:
-          "제품을 선택하고 구성품과 수량(배합형은 비중/평량)을 추가해 저장합니다. BOM 번호는 품목유형에 따라 자동 채번됩니다.",
+          "제품을 선택하고 구성품과 수량(배합형은 비중/단위중량)을 추가해 저장합니다. BOM 번호는 품목유형에 따라 자동 채번됩니다.",
       },
       { anchor: "bom-info-table", title: "BOM 조회", description: "목록에서 제품을 선택하면 구성품을 상세에서 확인합니다." },
     ],

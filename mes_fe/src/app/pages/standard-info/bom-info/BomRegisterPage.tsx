@@ -436,12 +436,12 @@ export function BomRegisterPage({ mode = "create", initialData, onBack, onSave }
                       <input type="text" value={formData.productName} disabled
                         className={`${FOUR_COLUMN_GRID_STYLES.input} w-full px-3 py-2 bg-gray-50 cursor-not-allowed`} />
                     </td>
-                    <td className={FOUR_COLUMN_GRID_STYLES.labelCell}>{isRecipe ? withUnit("평량", UNITS.basisWeight) : ""}</td>
+                    <td className={FOUR_COLUMN_GRID_STYLES.labelCell}>{isRecipe ? withUnit("단위중량", UNITS.basisWeight) : ""}</td>
                     <td className={FOUR_COLUMN_GRID_STYLES.valueCell}>
                       {isRecipe && (
                         <input type="text" value={formData.weight}
                           onChange={(e) => handleChange("weight", e.target.value)}
-                          placeholder="평량을 입력하세요"
+                          placeholder="단위중량을 입력하세요"
                           className={`${FOUR_COLUMN_GRID_STYLES.input} w-full px-3 py-2`} />
                       )}
                     </td>
@@ -519,7 +519,7 @@ export function BomRegisterPage({ mode = "create", initialData, onBack, onSave }
                         onChange={(e) => handleChange("requiredQty", e.target.value)}
                         disabled={isRecipe}
                         className={`${FOUR_COLUMN_GRID_STYLES.input} w-full px-3 py-2 ${isRecipe ? "bg-gray-50 cursor-not-allowed" : (errors.ratio ? FORM_ERROR_STYLES.inputError : "")}`}
-                        placeholder={isRecipe ? "비중 입력 시 자동 계산" : "수량 입력"}
+                        placeholder={isRecipe ? "구성비 입력 시 자동 계산" : "수량 입력"}
                       />
                     </td>
                   </tr>
@@ -535,7 +535,7 @@ export function BomRegisterPage({ mode = "create", initialData, onBack, onSave }
                         placeholder="품목정보"
                       />
                     </td>
-                    <td className={FOUR_COLUMN_GRID_STYLES.labelCell}>{isRecipe ? <>비중(%)<span className="text-red-500"> *</span></> : "단위"}</td>
+                    <td className={FOUR_COLUMN_GRID_STYLES.labelCell}>{isRecipe ? <>구성비(%)<span className="text-red-500"> *</span></> : "단위"}</td>
                     <td className={FOUR_COLUMN_GRID_STYLES.valueCell}>
                       {isRecipe ? (
                       <div>

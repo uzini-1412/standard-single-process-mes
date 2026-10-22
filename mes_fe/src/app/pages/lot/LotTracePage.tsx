@@ -65,7 +65,7 @@ const resultColumns: TraceColumn[] = [
   { label: "일자", bg: slateHead, width: "100px" },
   { label: "거래처 / 라인", bg: slateHead },
   { label: "품번", bg: slateHead, width: "110px" },
-  { label: withUnit("평량", UNITS.basisWeight), bg: slateHead, width: "90px", align: NUMBER_ALIGN },
+  { label: withUnit("단위중량", UNITS.basisWeight), bg: slateHead, width: "90px", align: NUMBER_ALIGN },
   { label: withUnit("폭", UNITS.width), bg: slateHead, width: "80px", align: NUMBER_ALIGN },
   { label: "수량 / 중량", bg: slateHead, width: "100px", align: NUMBER_ALIGN },
   { label: "연계 LOT", bg: slateHead },
@@ -161,7 +161,7 @@ function LotSearch({ onSelectPurchase, onSelectMfg }: {
       const linkedByLot = new Map<string, string[]>();
       for (const it of linked) linkedByLot.set(it.lotNo, it.linkedLots || []);
 
-      const basisLabel = withUnit("평량", UNITS.basisWeight);
+      const basisLabel = withUnit("단위중량", UNITS.basisWeight);
       const widthLabel = withUnit("폭", UNITS.width);
       const sheetRows = all.map((r, idx) => {
         const chain = linkedByLot.get(r.lotNo) || [];

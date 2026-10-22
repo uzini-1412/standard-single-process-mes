@@ -49,7 +49,7 @@ export function ShipmentOrderFormPage({ onBack, onSave }: ShipmentOrderFormPageP
                     <th className={HEAD_CELL_CLASS}>거래처번호</th>
                     <th className={HEAD_CELL_CLASS}>품번</th>
                     <th className={HEAD_CELL_CLASS}>품명</th>
-                    <th className={HEAD_CELL_CLASS}>{withUnit("평량", UNITS.basisWeight)}</th>
+                    <th className={HEAD_CELL_CLASS}>{withUnit("단위중량", UNITS.basisWeight)}</th>
                     <th className={HEAD_CELL_CLASS}>{withUnit("폭", UNITS.width)}</th>
                     <th className={HEAD_CELL_CLASS}>{withUnit("길이", UNITS.length)}</th>
                     <th className={HEAD_CELL_CLASS}>{withUnit("수주량", UNITS.length)}</th>
@@ -137,7 +137,7 @@ export function ShipmentOrderFormPage({ onBack, onSave }: ShipmentOrderFormPageP
               </tr>
 
               <tr className="border-b border-gray-300">
-                <td className={LABEL_CELL_CLASS}>평량(g/m<sup>2</sup>)</td>
+                <td className={LABEL_CELL_CLASS}>단위중량(g/m<sup>2</sup>)</td>
                 <td className="border-r border-gray-300 px-4 py-3">
                   <Input value={formData.basisWeight} readOnly disabled placeholder="출하계획에서 자동입력" className={LOCKED_INPUT_CLASS} />
                 </td>
@@ -160,7 +160,7 @@ export function ShipmentOrderFormPage({ onBack, onSave }: ShipmentOrderFormPageP
               </tr>
 
               <tr className="border-b border-gray-300">
-                <td className={LABEL_CELL_CLASS}>출하롤수(EA)</td>
+                <td className={LABEL_CELL_CLASS}>출하수량(EA)</td>
                 <td className="border-r border-gray-300 px-4 py-3">
                   <Input value={formData.planQtyEa} disabled className="bg-gray-100 text-xs border border-gray-300 focus-visible:ring-0" />
                 </td>
@@ -243,11 +243,11 @@ export function ShipmentOrderFormPage({ onBack, onSave }: ShipmentOrderFormPageP
                     <th className={HEAD_CELL_CLASS}>거래처번호</th>
                     <th className={HEAD_CELL_CLASS}>품번</th>
                     <th className={HEAD_CELL_CLASS}>품명</th>
-                    <th className={HEAD_CELL_CLASS}>{withUnit("평량", UNITS.basisWeight)}</th>
+                    <th className={HEAD_CELL_CLASS}>{withUnit("단위중량", UNITS.basisWeight)}</th>
                     <th className={HEAD_CELL_CLASS}>{withUnit("폭", UNITS.width)}</th>
                     <th className={HEAD_CELL_CLASS}>{withUnit("길이", UNITS.length)}</th>
                     <th className={HEAD_CELL_CLASS}>{withUnit("출하지시량", UNITS.length)}</th>
-                    <th className={HEAD_CELL_CLASS}>출하롤수(EA)</th>
+                    <th className={HEAD_CELL_CLASS}>출하수량(EA)</th>
                     <th className={HEAD_CELL_CLASS}>재고(m)</th>
                     <th className={HEAD_CELL_CLASS}>제품LOT</th>
                     <th className={HEAD_CELL_CLASS}>도착지</th>

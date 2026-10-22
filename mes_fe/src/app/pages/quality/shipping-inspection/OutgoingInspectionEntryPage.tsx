@@ -435,11 +435,11 @@ export function OutgoingInspectionEntryPage({ onBack, onRegister }: OutgoingInsp
                     <th className="px-4 py-3 text-xs font-semibold text-white text-center whitespace-nowrap border-r border-white">검사일자</th>
                     <th className="px-4 py-3 text-xs font-semibold text-white text-center whitespace-nowrap border-r border-white">품번</th>
                     <th className="px-4 py-3 text-xs font-semibold text-white text-center whitespace-nowrap border-r border-white">품명</th>
-                    <th className="px-4 py-3 text-xs font-semibold text-white text-center whitespace-nowrap border-r border-white">평량</th>
+                    <th className="px-4 py-3 text-xs font-semibold text-white text-center whitespace-nowrap border-r border-white">단위중량</th>
                     <th className="px-4 py-3 text-xs font-semibold text-white text-center whitespace-nowrap border-r border-white">{withUnit("폭", UNITS.width)}</th>
                     <th className="px-4 py-3 text-xs font-semibold text-white text-center whitespace-nowrap border-r border-white">{withUnit("길이", UNITS.length)}</th>
-                    <th className="px-4 py-3 text-xs font-semibold text-white text-center whitespace-nowrap border-r border-white">{withUnit("생산 롤중량", UNITS.weight)}</th>
-                    <th className="px-4 py-3 text-xs font-semibold text-white text-center whitespace-nowrap border-r border-white">{withUnit("생산평량", UNITS.basisWeight)}</th>
+                    <th className="px-4 py-3 text-xs font-semibold text-white text-center whitespace-nowrap border-r border-white">{withUnit("생산중량", UNITS.weight)}</th>
+                    <th className="px-4 py-3 text-xs font-semibold text-white text-center whitespace-nowrap border-r border-white">{withUnit("생산단위중량", UNITS.basisWeight)}</th>
                     <th className="px-4 py-3 text-xs font-semibold text-white text-center whitespace-nowrap border-r border-white">상한치</th>
                     <th className="px-4 py-3 text-xs font-semibold text-white text-center whitespace-nowrap border-r border-white">하한치</th>
                     <th className="px-4 py-3 text-xs font-semibold text-white text-center whitespace-nowrap border-r border-white">합부판정</th>

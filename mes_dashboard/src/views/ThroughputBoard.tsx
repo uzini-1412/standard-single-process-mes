@@ -231,7 +231,7 @@ export function ThroughputBoard() {
           <div className="view-panel-header">
             <div>
               <h3>완제품 로스율 (%)</h3>
-              <p>1 − (생산 롤중량 합 ÷ 관리 롤중량 합) × 100 · 이상치 기준 {threshold}%</p>
+              <p>1 − (생산중량 합 ÷ 관리중량 합) × 100 · 이상치 기준 {threshold}%</p>
             </div>
           </div>
 

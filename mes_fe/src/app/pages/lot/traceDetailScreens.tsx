@@ -223,14 +223,14 @@ export function MfgLotDetail({ lotNo, onBack, onSelectPurchase }: {
     ["생산일자", detail.prodDate || "-"],
     ["품번", <span className="font-mono">{detail.itemCode || "-"}</span>],
     ["품명", detail.itemName || "-"],
-    [withUnit("평량", UNITS.basisWeight), detail.basisWeight || "-"],
+    [withUnit("단위중량", UNITS.basisWeight), detail.basisWeight || "-"],
     [withUnit("폭", UNITS.width), detail.width || "-"],
     [withUnit("작업지시량", UNITS.length), detail.orderedQty || "-"],
     [withUnit("실생산량", UNITS.length), <span className="font-bold text-emerald-700">{detail.actualQty || "-"}</span>],
     ["라인 / 작업시간", detail.lineTime || "-"],
     ["양품 / 불량", detail.goodDefect || "-"],
     [withUnit("생산속도", UNITS.productionSpeed), detail.speed || "-"],
-    [withUnit("관리평량", UNITS.basisWeight), detail.managedWeight || "-"],
+    [withUnit("관리단위중량", UNITS.basisWeight), detail.managedWeight || "-"],
   ];
 
   const weightCols: TraceColumn[] = [
@@ -238,7 +238,7 @@ export function MfgLotDetail({ lotNo, onBack, onSelectPurchase }: {
     col("Roll No", "bg-slate-700 text-white", { width: "70px" }),
     numCol(withUnit("폭", UNITS.width), "bg-slate-700 text-white", "80px"),
     numCol(withUnit("길이", UNITS.length), "bg-slate-700 text-white", "80px"),
-    numCol(withUnit("평량", UNITS.basisWeight), "bg-slate-700 text-white", "90px"),
+    numCol(withUnit("단위중량", UNITS.basisWeight), "bg-slate-700 text-white", "90px"),
     numCol(withUnit("순중량", UNITS.weight), "bg-slate-700 text-white", "90px"),
     numCol(withUnit("총중량", UNITS.weight), "bg-slate-700 text-white", "90px"),
     col("판정", "bg-slate-700 text-white", { width: "70px" }),

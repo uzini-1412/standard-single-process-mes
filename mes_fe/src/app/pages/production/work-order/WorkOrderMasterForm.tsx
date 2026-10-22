@@ -213,7 +213,7 @@ export function WorkOrderMasterForm({
 
           {/* 3.5행: 기준평량(읽기전용)/관리평량(입력) */}
           <tr className="border-b border-gray-300">
-            <td className={LABEL_CELL}>{withUnit("기준평량", UNITS.basisWeight)}</td>
+            <td className={LABEL_CELL}>{withUnit("기준단위중량", UNITS.basisWeight)}</td>
             <td className={VALUE_CELL}>
               {isDetailView ? (
                 <div className={VALUE_TEXT}>{formData.basisWeight || "-"}</div>
@@ -228,7 +228,7 @@ export function WorkOrderMasterForm({
               )}
             </td>
             <td className={LABEL_CELL}>
-              {withUnit("관리평량", UNITS.basisWeight)}
+              {withUnit("관리단위중량", UNITS.basisWeight)}
               <RequiredMark show={editable} />
             </td>
             <td className="px-6 py-4 border-r border-gray-200">

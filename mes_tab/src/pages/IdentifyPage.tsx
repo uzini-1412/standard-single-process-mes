@@ -150,7 +150,7 @@ export default function IdentifyPage({ onGoBack }: { onGoBack?: () => void }) {
               <div className="lot-hero__grid">
                 <div><span>품번</span><strong>{trace.itemCode || '-'}</strong></div>
                 <div><span>품명</span><strong>{trace.itemName || '-'}</strong></div>
-                <div><span>평량</span><strong>{trace.basisWeight ? `${trace.basisWeight}g/m²` : '-'}</strong></div>
+                <div><span>단위중량</span><strong>{trace.basisWeight ? `${trace.basisWeight}g/m²` : '-'}</strong></div>
                 <div><span>길이</span><strong>{trace.length ? `${trace.length}m` : '-'}</strong></div>
                 <div><span>무게</span><strong>{formatWeight(trace)}</strong></div>
                 <div><span>생산일자</span><strong>{resolveMadeDate(trace)}</strong></div>
@@ -173,7 +173,7 @@ export default function IdentifyPage({ onGoBack }: { onGoBack?: () => void }) {
                 <div className="identify-row"><span className="identify-label">계정구분</span><span className="identify-value">{trace.accountType || '-'}</span></div>
                 <div className="identify-row"><span className="identify-label">보관위치</span><span className="identify-value">{trace.storageLoc || '-'}</span></div>
                 <div className="identify-row"><span className="identify-label">현재고</span><span className="identify-value">{trace.currentQty != null ? `${trace.currentQty} ${trace.qtyUnit || ''}` : '-'}</span></div>
-                {trace.basisWeight ? <div className="identify-row"><span className="identify-label">평량(g/m²)</span><span className="identify-value">{trace.basisWeight}</span></div> : null}
+                {trace.basisWeight ? <div className="identify-row"><span className="identify-label">단위중량(g/m²)</span><span className="identify-value">{trace.basisWeight}</span></div> : null}
                 {trace.width ? <div className="identify-row"><span className="identify-label">폭(mm)</span><span className="identify-value">{trace.width}</span></div> : null}
                 {trace.length ? <div className="identify-row"><span className="identify-label">길이(m)</span><span className="identify-value">{trace.length}</span></div> : null}
               </div>

@@ -258,7 +258,7 @@ export function ItemSpecSelectDialog<T extends ItemSpecSelectItem>({
                                       <th className="px-4 py-1.5 text-[11px] font-medium text-blue-800 text-center w-16">No.</th>
                                       <th className="px-4 py-1.5 text-[11px] font-medium text-blue-800 text-center">{withUnit("폭", UNITS.width)}</th>
                                       <th className="px-4 py-1.5 text-[11px] font-medium text-blue-800 text-center">{withUnit("길이", UNITS.length)}</th>
-                                      <th className="px-4 py-1.5 text-[11px] font-medium text-blue-800 text-center">{withUnit("평량", UNITS.basisWeight)}</th>
+                                      <th className="px-4 py-1.5 text-[11px] font-medium text-blue-800 text-center">{withUnit("단위중량", UNITS.basisWeight)}</th>
                                       <th className="px-4 py-1.5 text-[11px] font-medium text-blue-800 text-center">{withUnit("중량", UNITS.weight)}</th>
                                     </tr>
                                   </thead>

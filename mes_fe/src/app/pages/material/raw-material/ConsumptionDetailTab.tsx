@@ -160,7 +160,7 @@ export function ConsumptionDetailTab({ detail, lineList }: Props) {
                 <td className="px-3 py-2 border border-gray-300 text-center font-semibold">{recipeTotals.ratio}</td>
               </tr>
               <tr>
-                <th className="bg-gray-100 text-gray-700 font-semibold px-3 py-2 border border-gray-300 text-center">평량(g/m²)</th>
+                <th className="bg-gray-100 text-gray-700 font-semibold px-3 py-2 border border-gray-300 text-center">단위중량(g/m²)</th>
                 {materials.map((m) => (
                   <td key={`${m.label}-basis`} className="px-3 py-2 border border-gray-300 text-center bg-white">{m.basisQty}</td>
                 ))}

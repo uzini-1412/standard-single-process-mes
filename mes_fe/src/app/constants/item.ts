@@ -8,7 +8,7 @@ export const ITEM_LIST_COLUMNS = [
   { label: "품번", key: "itemCode", width: "12%" },
   { label: "품명", key: "itemName", width: "15%" },
   { label: "규격", key: "spec", width: "12%" },
-  { label: withUnit("평량", UNITS.basisWeight), key: "basisWeight", width: "10%" },
+  { label: withUnit("단위중량", UNITS.basisWeight), key: "basisWeight", width: "10%" },
   { label: withUnit("폭", UNITS.width), key: "width", width: "9%" },
   { label: withUnit("길이", UNITS.length), key: "length", width: "9%" },
   { label: withUnit("중량", UNITS.weight), key: "weight", width: "9%" },

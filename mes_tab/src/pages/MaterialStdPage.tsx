@@ -245,7 +245,7 @@ export default function MaterialStdPage() {
                               <th>소재품명</th>
                               <th>규격</th>
                               <th>소요량</th>
-                              <th>비중</th>
+                              <th>구성비</th>
                             </tr>
                           </thead>
                           <tbody>

@@ -93,7 +93,7 @@ export function ItemFormSection({
     ],
     [
       { label: "규격", field: renderText("spec") },
-      { label: withUnit("평량", UNITS.basisWeight), field: renderNumber("basisWeight") },
+      { label: withUnit("단위중량", UNITS.basisWeight), field: renderNumber("basisWeight") },
     ],
     [
       {

@@ -74,7 +74,7 @@ export function BomDetailPage({ bomData, onBack, onEdit, onDelete }: BomDetailPa
                   </tr>
 
                   <tr className={FOUR_COLUMN_GRID_STYLES.lastRow}>
-                    <td className={FOUR_COLUMN_GRID_STYLES.labelCell}>{withUnit("평량", UNITS.basisWeight)}</td>
+                    <td className={FOUR_COLUMN_GRID_STYLES.labelCell}>{withUnit("단위중량", UNITS.basisWeight)}</td>
                     <td className={FOUR_COLUMN_GRID_STYLES.valueCellWithBorder}>
                       {bomData?.basisWeight || '-'}
                     </td>

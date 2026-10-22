@@ -53,7 +53,7 @@ export function DispatchPlanViewPage({ onBack, onEdit, onDelete, item }: Dispatc
                 <td className={FOUR_COLUMN_GRID_STYLES.valueCell}>{item.itemName}</td>
               </tr>
               <tr className={FOUR_COLUMN_GRID_STYLES.row}>
-                <td className={FOUR_COLUMN_GRID_STYLES.labelCell}>{withUnit("평량", UNITS.basisWeight)}</td>
+                <td className={FOUR_COLUMN_GRID_STYLES.labelCell}>{withUnit("단위중량", UNITS.basisWeight)}</td>
                 <td className={FOUR_COLUMN_GRID_STYLES.valueCell}>{item.basisWeight}</td>
                 <td className={FOUR_COLUMN_GRID_STYLES.labelCell}>{withUnit("폭", UNITS.width)}</td>
                 <td className={FOUR_COLUMN_GRID_STYLES.valueCell}>{item.width}</td>
@@ -73,7 +73,7 @@ export function DispatchPlanViewPage({ onBack, onEdit, onDelete, item }: Dispatc
               <tr className={FOUR_COLUMN_GRID_STYLES.row}>
                 <td className={FOUR_COLUMN_GRID_STYLES.labelCell}>{withUnit("출하량", UNITS.length)}</td>
                 <td className={FOUR_COLUMN_GRID_STYLES.valueCell}>{item.planQty}</td>
-                <td className={FOUR_COLUMN_GRID_STYLES.labelCell}>롤수(EA)</td>
+                <td className={FOUR_COLUMN_GRID_STYLES.labelCell}>출하수량(EA)</td>
                 <td className={FOUR_COLUMN_GRID_STYLES.valueCell}>{item.planQtyEa}</td>
               </tr>
               <tr className={FOUR_COLUMN_GRID_STYLES.row}>

@@ -66,7 +66,7 @@ export const buildResultColumns = (
   { key: "customerName", label: "거래처", width: "120px" },
   { key: "itemCode", label: "품번", width: "100px" },
   { key: "itemName", label: "품명", width: "120px" },
-  { key: "basisWeight", label: "평량\n(g/m²)", width: "80px", format: "number" },
+  { key: "basisWeight", label: "단위중량\n(g/m²)", width: "80px", format: "number" },
   { key: "width", label: "폭\n(mm)", width: "80px", format: "number" },
   { key: "length", label: "길이\n(m)", width: "80px", format: "number" },
   { key: "orderQty", label: "출하지시량\n(m)", width: "100px", format: "number" },
@@ -86,7 +86,7 @@ export interface DetailField {
 export const DETAIL_FIELDS: DetailField[] = [
   { label: "품번", key: "itemCode" },
   { label: "품명", key: "itemName" },
-  { label: withUnit("평량", UNITS.basisWeight), key: "basisWeight" },
+  { label: withUnit("단위중량", UNITS.basisWeight), key: "basisWeight" },
   { label: withUnit("폭", UNITS.width), key: "width" },
   { label: withUnit("길이", UNITS.length), key: "length" },
   { label: "출하 Lot-No", key: "lotNo" },

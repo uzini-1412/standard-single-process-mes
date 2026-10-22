@@ -108,7 +108,7 @@ export function ShipmentOrderDetailView({ board }: { board: BoardApi }) {
               </tr>
 
               <tr className="border-b border-gray-300">
-                <td className={LABEL_CELL}>평량(g/m<sup>2</sup>)</td>
+                <td className={LABEL_CELL}>단위중량(g/m<sup>2</sup>)</td>
                 <td className={VALUE_CELL}>
                   {readOnly ? (
                     <div className="text-sm text-gray-700">{activeOrder?.basisWeight}</div>
@@ -212,7 +212,7 @@ export function ShipmentOrderDetailView({ board }: { board: BoardApi }) {
                   <th className="px-3 py-2 text-center text-xs font-semibold text-white whitespace-nowrap border-r border-white">No</th>
                   <th className="px-3 py-2 text-center text-xs font-semibold text-white whitespace-nowrap border-r border-white">제품 LOT</th>
                   <th className={`px-3 py-2 ${HEADER_ALIGN} text-xs font-semibold text-white whitespace-nowrap border-r border-white`}>{withUnit("출하지시량", UNITS.length)}</th>
-                  <th className={`px-3 py-2 ${HEADER_ALIGN} text-xs font-semibold text-white whitespace-nowrap border-r border-white`}>출하롤수(EA)</th>
+                  <th className={`px-3 py-2 ${HEADER_ALIGN} text-xs font-semibold text-white whitespace-nowrap border-r border-white`}>출하수량(EA)</th>
                   <th className="px-3 py-2 text-center text-xs font-semibold text-white whitespace-nowrap border-r border-white">보관위치</th>
                   <th className="px-3 py-2 text-center text-xs font-semibold text-white whitespace-nowrap border-r border-white">출하상태</th>
                   <th className="px-3 py-2 text-center text-xs font-semibold text-white whitespace-nowrap">출하검사</th>

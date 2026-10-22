@@ -26,7 +26,7 @@ export function EditDraftTable({ editDraft, onChange }: EditDraftTableProps) {
             </td>
           </tr>
           <tr className={FOUR_COLUMN_GRID_STYLES.row}>
-            <td className={FOUR_COLUMN_GRID_STYLES.labelCell}>{withUnit("평량", UNITS.basisWeight)}</td>
+            <td className={FOUR_COLUMN_GRID_STYLES.labelCell}>{withUnit("단위중량", UNITS.basisWeight)}</td>
             <td className={FOUR_COLUMN_GRID_STYLES.valueCell}>
               <input value={editDraft.basisWeight} readOnly disabled className={`${FOUR_COLUMN_GRID_STYLES.input} w-full bg-gray-50`} />
             </td>
@@ -71,7 +71,7 @@ export function EditDraftTable({ editDraft, onChange }: EditDraftTableProps) {
                 className={`${FOUR_COLUMN_GRID_STYLES.input} w-full`}
               />
             </td>
-            <td className={FOUR_COLUMN_GRID_STYLES.labelCell}>롤수(EA)</td>
+            <td className={FOUR_COLUMN_GRID_STYLES.labelCell}>출하수량(EA)</td>
             <td className={FOUR_COLUMN_GRID_STYLES.valueCell}>
               <input value={editDraft.planQtyEa || ""} readOnly disabled className={`${FOUR_COLUMN_GRID_STYLES.input} w-full bg-gray-50`} />
             </td>

@@ -107,7 +107,7 @@ function ProcessCard({ line }: { line: ProcessStatusRes }) {
             <div className="process-info-table">
               <InfoRow label="품번" value={line.itemCode ?? '-'} />
               <InfoRow label="품명" value={line.itemName ?? '-'} />
-              <InfoRow label="평량(g/m²)" value={basisWeightText} />
+              <InfoRow label="단위중량(g/m²)" value={basisWeightText} />
               <InfoRow
                 label="가동상태"
                 value={<span className={`status-pill ${badge.className}`}>{badge.label}</span>}

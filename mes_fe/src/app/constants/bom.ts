@@ -9,7 +9,7 @@ export const RECIPE_MATERIAL_COLUMNS = [
   { key: "materialName", label: "소재 품명" },
   { key: "materialSpec", label: "규격" },
   { key: "requiredQty", label: withUnit("소요량", UNITS.basisWeight) },
-  { key: "ratio", label: "비중(%)" },
+  { key: "ratio", label: "구성비(%)" },
   { key: "plcMachineNo", label: "호기" },
   { key: "remark", label: "비고" },
 ] as const;
@@ -32,5 +32,5 @@ export const BOM_LIST_BASE_COLUMNS = [
   { key: "bomNo", label: "BOM번호", isMaterial: false, materialIndex: -1 },
   { key: "productCode", label: "품번", isMaterial: false, materialIndex: -1 },
   { key: "productName", label: "품명", isMaterial: false, materialIndex: -1 },
-  { key: "basisWeight", label: withUnit("평량", UNITS.basisWeight), isMaterial: false, materialIndex: -1 },
+  { key: "basisWeight", label: withUnit("단위중량", UNITS.basisWeight), isMaterial: false, materialIndex: -1 },
 ] as const;
