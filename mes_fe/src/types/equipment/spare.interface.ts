@@ -28,7 +28,6 @@ export interface BaseSparePart {
   safetyStock: string;
   currentStock: string;
   storageLoc: string;
-  useFacility: string;
   remark: string;
   imgPaths?: string | null;
 }

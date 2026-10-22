@@ -472,9 +472,9 @@ export default function FacilityInspectionRegisterPage({ initialType, onBack, on
                 </thead>
                 <tbody>
                   {loadingEquipment ? (
-                    <tr><td colSpan={9} className="px-4 py-8 text-center text-sm text-gray-500 border-r border-gray-200">로딩 중...</td></tr>
+                    <tr><td colSpan={7} className="px-4 py-8 text-center text-sm text-gray-500 border-r border-gray-200">로딩 중...</td></tr>
                   ) : visibleEquipmentList.length === 0 ? (
-                    <tr><td colSpan={9} className="px-4 py-8 text-center text-sm text-gray-500 border-r border-gray-200">선택 가능한 설비가 없습니다.</td></tr>
+                    <tr><td colSpan={7} className="px-4 py-8 text-center text-sm text-gray-500 border-r border-gray-200">선택 가능한 설비가 없습니다.</td></tr>
                   ) : (
                     visibleEquipmentList.map((equipment) => {
                       const isSelected = selectedEquipmentId === equipment.facilitySq;
@@ -484,9 +484,7 @@ export default function FacilityInspectionRegisterPage({ initialType, onBack, on
                         equipment.regDt?.substring(0, 10),
                         equipment.manageNo,
                         equipment.facilityName,
-                        equipment.processNm,
                         equipment.makerNm,
-                        equipment.spec,
                       ];
                       return (
                         <tr

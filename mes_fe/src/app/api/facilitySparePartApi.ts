@@ -19,7 +19,6 @@ export interface SparePartSaveData {
   safetyStock?: string;
   currentStock?: string;
   storageLoc?: string;
-  useFacility?: string;
   imgPaths?: string;
   remark?: string;
   writerId?: string;

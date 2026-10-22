@@ -37,9 +37,7 @@ export default function EquipmentInfoEditPage({ id, onBack, onUpdate }: Equipmen
   const [regDt, setRegDt] = useState("");
   const [manageNo, setManageNo] = useState("");
   const [facilityName, setFacilityNm] = useState("");
-  const [processNm, setProcessNm] = useState("");
   const [makerNm, setMakerNm] = useState("");
-  const [spec, setSpec] = useState("");
   const [purchaseDate, setPurchaseDate] = useState("");
   const [purchasePrice, setPurchasePrice] = useState("");
   const [purpose, setPurpose] = useState("");
@@ -48,10 +46,9 @@ export default function EquipmentInfoEditPage({ id, onBack, onUpdate }: Equipmen
   const [attachFile, setAttachFile] = useState<File | null>(null);
   const [attachFileNm, setAttachFileNm] = useState("");
   const [attachFileContent, setAttachFileContent] = useState("");
-  const [processList, setProcessList] = useState<string[]>([]);
 
   // 공통정보(제품구분·라인구분)는 공용 훅이 1회 조회·도출한다.
-  const { processClassifications, productTypeList, lineToType, linesForType } = useFacilityCommonInfo();
+  const { productTypeList, lineToType, linesForType } = useFacilityCommonInfo();
   const filteredLineList = linesForType(facilityType);
 
   useEffect(() => {
@@ -73,22 +70,6 @@ export default function EquipmentInfoEditPage({ id, onBack, onUpdate }: Equipmen
     }
   };
 
-  // 제품구분이 변경되면 해당 공정 목록 갱신
-  useEffect(() => {
-    if (!facilityType) {
-      setProcessList([]);
-      return;
-    }
-    const matchedItem = processClassifications.find(
-      (item: any) => item.detailName === facilityType
-    );
-    if (matchedItem && Array.isArray(matchedItem.contentValues)) {
-      setProcessList(matchedItem.contentValues);
-    } else {
-      setProcessList([]);
-    }
-  }, [facilityType, processClassifications]);
-
   const fetchEquipmentDetail = async () => {
     try {
       setLoading(true);
@@ -99,9 +80,7 @@ export default function EquipmentInfoEditPage({ id, onBack, onUpdate }: Equipmen
       setRegDt(data.regDt ? String(data.regDt).substring(0, 10) : "");
       setManageNo(data.manageNo || "");
       setFacilityNm(data.facilityName || "");
-      setProcessNm(data.processNm || "");
       setMakerNm(data.makerNm || "");
-      setSpec(data.spec || "");
       setPurchaseDate(data.purchaseDate || "");
       setPurchasePrice(formatCurrency(data.purchasePrice || ""));
       setPurpose(data.purpose || "");
@@ -134,7 +113,6 @@ export default function EquipmentInfoEditPage({ id, onBack, onUpdate }: Equipmen
           manageNo,
           facilityName,
           facilityType,
-          spec,
           makerNm,
           purchaseDate: purchaseDate || undefined,
           purchasePrice: removeCurrency(purchasePrice) || undefined,
@@ -145,7 +123,6 @@ export default function EquipmentInfoEditPage({ id, onBack, onUpdate }: Equipmen
           attachFileNm,
           attachFileContent,
           lineNm,
-          processNm,
         }]);
       },
       successMessage: "설비정보가 수정되었습니다.",
@@ -241,9 +218,7 @@ export default function EquipmentInfoEditPage({ id, onBack, onUpdate }: Equipmen
     { label: "등록일자", value: textCell(regDt, setRegDt, "date") },
     { label: labelOf("설비번호", true), value: textCell(manageNo, setManageNo) },
     { label: labelOf("설비명", true), value: textCell(facilityName, setFacilityNm) },
-    { label: "사용공정", value: selectCell(processNm, setProcessNm, processList) },
     { label: "제작사", value: textCell(makerNm, setMakerNm) },
-    { label: "제원", value: textCell(spec, setSpec) },
     { label: "구입일자", value: textCell(purchaseDate, setPurchaseDate, "date") },
     { label: "구입금액", value: currencyCell },
     { label: "용도", value: textCell(purpose, setPurpose) },

@@ -64,7 +64,6 @@ function buildPrintHtml(card: HistoryCardRes): string {
                 ${infoCell("설비명", card.facilityName)}
               </div>
               <div class="info-row">
-                ${infoCell("사용공정", card.processNm)}
                 ${infoCell("구입일자", card.purchaseDate)}
               </div>
             </div>
@@ -207,11 +206,10 @@ export default function EquipmentHistoryCardPage({ onBack }: { onBack?: () => vo
       })
     : [];
 
-  // 카드 상단 설비정보(설비번호/설비명/사용공정/구입일자) 2행 구성
+  // 카드 상단 설비정보(설비번호/설비명/구입일자) 2행 구성
   const infoPairs: [string, string][] = [
     ["설비번호", cardData?.manageNo || ""],
     ["설비명", cardData?.facilityName || ""],
-    ["사용공정", cardData?.processNm || ""],
     ["구입일자", cardData?.purchaseDate || ""],
   ];
 

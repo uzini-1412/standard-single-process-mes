@@ -7,9 +7,7 @@ export const EQUIPMENT_COLUMNS = [
   { label: "등록일자", key: "regDt" },
   { label: "설비번호", key: "manageNo" },
   { label: "설비명", key: "facilityName" },
-  { label: "사용공정", key: "processNm" },
   { label: "제작사", key: "makerNm" },
-  { label: "제원", key: "spec" },
   { label: "구입일자", key: "purchaseDate" },
   { label: "구입금액", key: "purchasePrice" },
   { label: "용도", key: "purpose" },
@@ -88,9 +86,7 @@ export const PERIODIC_EQUIPMENT_COLUMNS = [
   { label: "등록일자", key: "regDt" },
   { label: "설비번호", key: "manageNo" },
   { label: "설비명", key: "facilityName" },
-  { label: "사용공정", key: "processNm" },
   { label: "제작사", key: "makerNm" },
-  { label: "제원", key: "spec" },
 ];
 
 // 등록 화면 하단: 정기점검 등록 내역
@@ -137,7 +133,6 @@ export const HISTORY_LIST_COLUMNS = [
   { label: "설비명", key: "facilityName" },
   { label: "제품구분", key: "facilityType" },
   { label: "라인구분", key: "lineNm" },
-  { label: "사용공정", key: "processNm" },
   { label: "관리번호", key: "historyNo" },
   { label: "조치구분", key: "actionType" },
   { label: "발생일자", key: "occurDate" },
@@ -157,7 +152,6 @@ export const HISTORY_EQUIPMENT_COLUMNS = [
   { label: "설비명", key: "facilityName" },
   { label: "제품구분", key: "facilityType" },
   { label: "라인구분", key: "lineNm" },
-  { label: "사용공정", key: "processNm" },
 ];
 
 // 등록 화면 하단: 저장/조회 현황
@@ -168,7 +162,6 @@ export const HISTORY_REGISTER_COLUMNS = [
   { label: "설비명", key: "facilityName" },
   { label: "제품구분", key: "facilityType" },
   { label: "라인구분", key: "lineNm" },
-  { label: "사용공정", key: "processNm" },
   { label: "관리번호", key: "historyNo" },
   { label: "조치구분", key: "actionType" },
   { label: "발생일자", key: "occurDate" },
@@ -202,6 +195,5 @@ export const SPARE_PARTS_COLUMNS = [
   { label: "안전재고량", key: "safetyStock" },
   { label: "현재고량", key: "currentStock" },
   { label: "보관위치", key: "storageLoc" },
-  { label: "사용설비", key: "useFacility" },
   { label: "비고", key: "remark" },
 ];

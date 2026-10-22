@@ -22,7 +22,6 @@ export default function SparePartsRegisterPage({ onBack, onSave }: SparePartsReg
   const [safetyStock, setSafetyStock] = useState("");
   const [currentStock, setCurrentStock] = useState("");
   const [storageLoc, setStorageLoc] = useState("");
-  const [useFacility, setUseFacility] = useState("");
   const [remark, setRemark] = useState("");
 
   const [historyData, setHistoryData] = useState<SparePartsHistoryRecord[]>([]);
@@ -58,7 +57,7 @@ export default function SparePartsRegisterPage({ onBack, onSave }: SparePartsReg
       cell("구입금액", formatNumberWithComma(purchasePrice), (v) => setPurchasePrice(parseNumberWithoutComma(v))),
     ],
     [cell("안전재고량", safetyStock, setSafetyStock), cell("현재고량", currentStock, setCurrentStock)],
-    [cell("보관위치", storageLoc, setStorageLoc), cell("사용설비", useFacility, setUseFacility)],
+    [cell("보관위치", storageLoc, setStorageLoc), cell("", "", () => {})],
   ];
 
   const renderInput = (c: Cell) => (
@@ -83,7 +82,6 @@ export default function SparePartsRegisterPage({ onBack, onSave }: SparePartsReg
       safetyStock,
       currentStock,
       storageLoc,
-      useFacility,
       remark,
       imgPaths,
     };
@@ -100,7 +98,6 @@ export default function SparePartsRegisterPage({ onBack, onSave }: SparePartsReg
     setSafetyStock("");
     setCurrentStock("");
     setStorageLoc("");
-    setUseFacility("");
     setRemark("");
   };
 
@@ -127,7 +124,6 @@ export default function SparePartsRegisterPage({ onBack, onSave }: SparePartsReg
     { key: "safetyStock", label: "안전재고량", width: "w-24" },
     { key: "currentStock", label: "현재고량", width: "w-24" },
     { key: "storageLoc", label: "보관위치", width: "w-24" },
-    { key: "useFacility", label: "사용설비", width: "w-24" },
     { key: "remark", label: "비고", width: "w-32" },
   ];
   const GRID_HEADER_TH =
@@ -162,7 +158,6 @@ export default function SparePartsRegisterPage({ onBack, onSave }: SparePartsReg
         safetyStock: row.safetyStock,
         currentStock: row.currentStock,
         storageLoc: row.storageLoc,
-        useFacility: row.useFacility,
         remark: row.remark,
         imgPaths: row.imgPaths ?? undefined,
       })));
@@ -212,7 +207,7 @@ export default function SparePartsRegisterPage({ onBack, onSave }: SparePartsReg
                         <td className={FOUR_COLUMN_GRID_STYLES.labelCell}>{left.label}</td>
                         <td className={FOUR_COLUMN_GRID_STYLES.valueCellWithBorder}>{renderInput(left)}</td>
                         <td className={FOUR_COLUMN_GRID_STYLES.labelCell}>{right.label}</td>
-                        <td className={FOUR_COLUMN_GRID_STYLES.valueCell}>{renderInput(right)}</td>
+                        <td className={FOUR_COLUMN_GRID_STYLES.valueCell}>{right.label ? renderInput(right) : null}</td>
                       </tr>
                     ))}
 
@@ -253,7 +248,7 @@ export default function SparePartsRegisterPage({ onBack, onSave }: SparePartsReg
                 <tbody>
                   {historyData.length === 0 ? (
                     <tr>
-                      <td colSpan={13} className="px-4 py-8 text-center text-sm text-gray-500 border-r border-gray-200">
+                      <td colSpan={12} className="px-4 py-8 text-center text-sm text-gray-500 border-r border-gray-200">
                         등록된 예비품 정보가 없습니다.
                       </td>
                     </tr>

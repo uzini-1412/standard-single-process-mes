@@ -43,7 +43,6 @@ export default function EquipmentHistoryEditPage({ data, onBack, onSave }: Equip
     facilityName: data.facilityName,
     facilityType: data.facilityType,
     lineNm: data.lineNm,
-    processNm: data.processNm,
   };
 
   const handleSave = () => {
@@ -56,7 +55,6 @@ export default function EquipmentHistoryEditPage({ data, onBack, onSave }: Equip
       facilityName: readonlyInfo.facilityName,
       facilityType: readonlyInfo.facilityType,
       lineNm: readonlyInfo.lineNm,
-      processNm: readonlyInfo.processNm,
       historyNo: form.historyNo,
       actionType: form.actionType,
       occurDate: form.occurDate,
@@ -112,10 +110,10 @@ export default function EquipmentHistoryEditPage({ data, onBack, onSave }: Equip
                 </tr>
 
                 <tr className={FOUR_COLUMN_GRID_STYLES.row}>
-                  <td className={FOUR_COLUMN_GRID_STYLES.labelCell}>사용공정</td>
-                  <td className={FOUR_COLUMN_GRID_STYLES.valueCellWithBorder}>{readonlyCell(readonlyInfo.processNm)}</td>
                   <td className={FOUR_COLUMN_GRID_STYLES.labelCell}>관리번호</td>
-                  <td className={FOUR_COLUMN_GRID_STYLES.valueCell}>{textCell("historyNo")}</td>
+                  <td className={FOUR_COLUMN_GRID_STYLES.valueCellWithBorder}>{textCell("historyNo")}</td>
+                  <td className={FOUR_COLUMN_GRID_STYLES.labelCell}></td>
+                  <td className={FOUR_COLUMN_GRID_STYLES.valueCell}></td>
                 </tr>
 
                 <tr className={FOUR_COLUMN_GRID_STYLES.row}>

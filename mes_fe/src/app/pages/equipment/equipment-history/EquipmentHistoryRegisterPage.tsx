@@ -33,7 +33,6 @@ const REGISTER_EDIT_COLS: RegisterCol[] = [
   { field: "facilityName", width: "w-32" },
   { field: "facilityType", width: "w-24" },
   { field: "lineNm", width: "w-24" },
-  { field: "processNm", width: "w-24" },
   { field: "historyNo", width: "w-24" },
   { field: "actionType", width: "w-24", kind: "select" },
   { field: "occurDate", width: "w-32", kind: "dateText" },
@@ -57,7 +56,6 @@ export default function EquipmentHistoryRegisterPage({ onBack, onSave }: Equipme
   const [facilityName, setFacilityNm] = useState("");
   const [facilityType, setFacilityType] = useState("");
   const [lineNm, setLineNm] = useState("");
-  const [processNm, setProcessNm] = useState("");
   const [facilitySq, setFacilitySq] = useState<number>(0);
 
   const [selectedRegDt, setSelectedRegDt] = useState("");
@@ -93,7 +91,6 @@ export default function EquipmentHistoryRegisterPage({ onBack, onSave }: Equipme
         facilityName: item.facilityName,
         facilityType: item.facilityType,
         lineNm: item.lineNm,
-        processNm: item.processNm,
         regDt: item.regDt,
       }));
       setEquipmentList(mapped);
@@ -111,7 +108,6 @@ export default function EquipmentHistoryRegisterPage({ onBack, onSave }: Equipme
     setFacilityNm(selectedEquipment.facilityName);
     setFacilityType(selectedEquipment.facilityType);
     setLineNm(selectedEquipment.lineNm);
-    setProcessNm(selectedEquipment.processNm);
     setSelectedRegDt(selectedEquipment.regDt ? selectedEquipment.regDt.substring(0, 10) : "");
     setOccurDateError(false);
     setActionDateError(false);
@@ -182,7 +178,6 @@ export default function EquipmentHistoryRegisterPage({ onBack, onSave }: Equipme
       facilityName,
       facilityType,
       lineNm,
-      processNm,
       historyNo,
       actionType,
       occurDate,
@@ -201,7 +196,6 @@ export default function EquipmentHistoryRegisterPage({ onBack, onSave }: Equipme
     setFacilityNm("");
     setFacilityType("");
     setLineNm("");
-    setProcessNm("");
     setFacilitySq(0);
     setHistoryNo("");
     setActionType("");
@@ -284,7 +278,7 @@ export default function EquipmentHistoryRegisterPage({ onBack, onSave }: Equipme
                 <tbody>
                   {equipmentList.length === 0 ? (
                     <tr>
-                      <td colSpan={6} className="px-4 py-8 text-center text-sm text-gray-500 border-r border-gray-200">
+                      <td colSpan={5} className="px-4 py-8 text-center text-sm text-gray-500 border-r border-gray-200">
                         등록된 설비 정보가 없습니다.
                       </td>
                     </tr>
@@ -309,7 +303,6 @@ export default function EquipmentHistoryRegisterPage({ onBack, onSave }: Equipme
                         <td className="px-4 py-3 text-xs text-gray-700 whitespace-nowrap border-r border-gray-200">{equipment.facilityName}</td>
                         <td className="px-4 py-3 text-xs text-gray-700 whitespace-nowrap border-r border-gray-200">{equipment.facilityType}</td>
                         <td className="px-4 py-3 text-xs text-gray-700 whitespace-nowrap border-r border-gray-200">{equipment.lineNm}</td>
-                        <td className="px-4 py-3 text-xs text-gray-700 whitespace-nowrap border-r border-gray-200">{equipment.processNm}</td>
                       </tr>
                     ))
                   )}
@@ -371,17 +364,8 @@ export default function EquipmentHistoryRegisterPage({ onBack, onSave }: Equipme
                 </tr>
 
                 <tr className={FOUR_COLUMN_GRID_STYLES.row}>
-                  <td className={FOUR_COLUMN_GRID_STYLES.labelCell}>사용공정</td>
-                  <td className={FOUR_COLUMN_GRID_STYLES.valueCellWithBorder}>
-                    <input
-                      type="text"
-                      value={processNm}
-                      readOnly
-                      className={FOUR_COLUMN_GRID_STYLES.input + " w-full bg-gray-100"}
-                    />
-                  </td>
                   <td className={FOUR_COLUMN_GRID_STYLES.labelCell}>관리번호</td>
-                  <td className={FOUR_COLUMN_GRID_STYLES.valueCell}>
+                  <td className={FOUR_COLUMN_GRID_STYLES.valueCellWithBorder}>
                     <input
                       type="text"
                       value={historyNo}
@@ -389,6 +373,8 @@ export default function EquipmentHistoryRegisterPage({ onBack, onSave }: Equipme
                       className={FOUR_COLUMN_GRID_STYLES.input + " w-full"}
                     />
                   </td>
+                  <td className={FOUR_COLUMN_GRID_STYLES.labelCell}></td>
+                  <td className={FOUR_COLUMN_GRID_STYLES.valueCell}></td>
                 </tr>
 
                 <tr className={FOUR_COLUMN_GRID_STYLES.row}>
@@ -527,7 +513,7 @@ export default function EquipmentHistoryRegisterPage({ onBack, onSave }: Equipme
                 <tbody>
                   {historyData.length === 0 ? (
                     <tr>
-                      <td colSpan={17} className="px-4 py-8 text-center text-sm text-gray-500 border-r border-gray-200">
+                      <td colSpan={16} className="px-4 py-8 text-center text-sm text-gray-500 border-r border-gray-200">
                         등록된 이력 정보가 없습니다.
                       </td>
                     </tr>

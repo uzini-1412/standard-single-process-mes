@@ -7,7 +7,6 @@ interface EquipmentIdentity {
   facilityName: string;
   facilityType: string;
   lineNm: string;
-  processNm: string;
 }
 
 // Top "equipment info" lookup row on the history registration screen.
@@ -68,7 +67,6 @@ export interface HistoryCardEquipmentInfo {
   facilitySq: number;
   manageNo: string;
   facilityName: string;
-  processNm: string;
   purchaseDate: string;
   imgPaths: string;
 }

@@ -20,7 +20,6 @@ export default function SparePartsEditPage({ data, onBack, onUpdate }: SparePart
   const [safetyStock, setSafetyStock] = useState(data.safetyStock);
   const [currentStock, setCurrentStock] = useState(data.currentStock);
   const [storageLoc, setStorageLoc] = useState(data.storageLoc);
-  const [useFacility, setUseFacility] = useState(data.useFacility);
   const [remark, setRemark] = useState(data.remark);
 
   // Format number with comma
@@ -53,7 +52,7 @@ export default function SparePartsEditPage({ data, onBack, onUpdate }: SparePart
       cell("구입금액", formatNumberWithComma(purchasePrice), (v) => setPurchasePrice(parseNumberWithoutComma(v))),
     ],
     [cell("안전재고량", safetyStock, setSafetyStock), cell("현재고량", currentStock, setCurrentStock)],
-    [cell("보관위치", storageLoc, setStorageLoc), cell("사용설비", useFacility, setUseFacility)],
+    [cell("보관위치", storageLoc, setStorageLoc), cell("", "", () => {})],
   ];
 
   const renderInput = (c: Cell) => (
@@ -84,7 +83,6 @@ export default function SparePartsEditPage({ data, onBack, onUpdate }: SparePart
         safetyStock,
         currentStock,
         storageLoc,
-        useFacility,
         remark,
       });
     } catch (e) {
@@ -132,7 +130,7 @@ export default function SparePartsEditPage({ data, onBack, onUpdate }: SparePart
                         <td className={FOUR_COLUMN_GRID_STYLES.labelCell}>{left.label}</td>
                         <td className={FOUR_COLUMN_GRID_STYLES.valueCellWithBorder}>{renderInput(left)}</td>
                         <td className={FOUR_COLUMN_GRID_STYLES.labelCell}>{right.label}</td>
-                        <td className={FOUR_COLUMN_GRID_STYLES.valueCell}>{renderInput(right)}</td>
+                        <td className={FOUR_COLUMN_GRID_STYLES.valueCell}>{right.label ? renderInput(right) : null}</td>
                       </tr>
                     ))}
 

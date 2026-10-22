@@ -12,7 +12,7 @@ function buildDetailRows(data: EquipmentHistoryData): [Cell, Cell?][] {
   return [
     [{ label: "설비번호", value: data.manageNo }, { label: "설비명", value: data.facilityName }],
     [{ label: "제품구분", value: data.facilityType }, { label: "라인구분", value: data.lineNm }],
-    [{ label: "사용공정", value: data.processNm }, { label: "관리번호", value: data.historyNo }],
+    [{ label: "관리번호", value: data.historyNo }],
     [{ label: "조치구분", value: data.actionType }, { label: "발생일자", value: data.occurDate }],
     [{ label: "발생내용", value: data.occurContent }, { label: "조치일자", value: data.actionDate }],
     [{ label: "조치책임자", value: data.actionManager }, { label: "조치내용", value: data.actionContent }],

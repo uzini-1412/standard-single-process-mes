@@ -37,9 +37,7 @@ export default function EquipmentInfoRegisterPage({ onBack, onRegister }: Equipm
   const [regDt, setRegDt] = useState("");
   const [manageNo, setManageNo] = useState("");
   const [facilityName, setFacilityNm] = useState("");
-  const [processNm, setProcessNm] = useState("");
   const [makerNm, setMakerNm] = useState("");
-  const [spec, setSpec] = useState("");
   const [purchaseDate, setPurchaseDate] = useState("");
   const [purchasePrice, setPurchasePrice] = useState("");
   const [purpose, setPurpose] = useState("");
@@ -49,10 +47,9 @@ export default function EquipmentInfoRegisterPage({ onBack, onRegister }: Equipm
   const [attachFile, setAttachFile] = useState<File | null>(null);
 
   const [equipmentData, setEquipmentData] = useState<EquipmentRecord[]>([]);
-  const [processList, setProcessList] = useState<string[]>([]);
 
   // 공통정보(제품구분·라인구분)는 공용 훅이 1회 조회·도출한다.
-  const { processClassifications, productTypeList, lineToType, linesForType } = useFacilityCommonInfo();
+  const { productTypeList, lineToType, linesForType } = useFacilityCommonInfo();
   const filteredLineList = linesForType(facilityType);
 
   // 오늘 날짜를 기본값으로 설정
@@ -78,23 +75,6 @@ export default function EquipmentInfoRegisterPage({ onBack, onRegister }: Equipm
     }
   };
 
-  // 제품구분이 변경되면 해당 공정 목록 갱신
-  useEffect(() => {
-    if (!facilityType) {
-      setProcessList([]);
-      setProcessNm("");
-      return;
-    }
-    const matchedItem = processClassifications.find(
-      (item: any) => item.detailName === facilityType
-    );
-    if (matchedItem && Array.isArray(matchedItem.contentValues)) {
-      setProcessList(matchedItem.contentValues);
-    } else {
-      setProcessList([]);
-    }
-  }, [facilityType, processClassifications]);
-
   const handleAddRow = () => {
     const newRow: EquipmentRecord = {
       selected: true,
@@ -104,9 +84,7 @@ export default function EquipmentInfoRegisterPage({ onBack, onRegister }: Equipm
       regDt,
       manageNo,
       facilityName,
-      processNm,
       makerNm,
-      spec,
       purchaseDate,
       purchasePrice,
       purpose,
@@ -136,9 +114,7 @@ export default function EquipmentInfoRegisterPage({ onBack, onRegister }: Equipm
     setRegDt(today);
     setManageNo("");
     setFacilityNm("");
-    setProcessNm("");
     setMakerNm("");
-    setSpec("");
     setPurchaseDate("");
     setPurchasePrice("");
     setPurpose("");
@@ -179,9 +155,7 @@ export default function EquipmentInfoRegisterPage({ onBack, onRegister }: Equipm
     { key: "regDt", label: "등록일자", kind: "date" },
     { key: "manageNo", label: "설비번호", kind: "text" },
     { key: "facilityName", label: "설비명", kind: "text" },
-    { key: "processNm", label: "사용공정", kind: "text" },
     { key: "makerNm", label: "제작사", kind: "text" },
-    { key: "spec", label: "제원", kind: "text" },
     { key: "purchaseDate", label: "구입일자", kind: "date" },
     { key: "purchasePrice", label: "구입금액", kind: "money" },
     { key: "purpose", label: "용도", kind: "text" },
@@ -266,7 +240,6 @@ export default function EquipmentInfoRegisterPage({ onBack, onRegister }: Equipm
           manageNo: item.manageNo,
           facilityName: item.facilityName,
           facilityType: item.facilityType,
-          spec: item.spec,
           makerNm: item.makerNm,
           purchaseDate: item.purchaseDate || undefined,
           purchasePrice: removeCurrency(item.purchasePrice) || undefined,
@@ -278,7 +251,6 @@ export default function EquipmentInfoRegisterPage({ onBack, onRegister }: Equipm
           attachFileNm: item.attachFileNm,
           attachFileContent: item.attachFileContent,
           lineNm: item.lineNm,
-          processNm: item.processNm,
         })),
       );
 
@@ -362,28 +334,9 @@ export default function EquipmentInfoRegisterPage({ onBack, onRegister }: Equipm
                     <td className={FOUR_COLUMN_GRID_STYLES.valueCellWithBorder}>
                       {textCell(facilityName, setFacilityNm)}
                     </td>
-                    <td className={FOUR_COLUMN_GRID_STYLES.labelCell}>사용공정</td>
-                    <td className={FOUR_COLUMN_GRID_STYLES.valueCell}>
-                      <select
-                        value={processNm}
-                        onChange={(e) => setProcessNm(e.target.value)}
-                        className={FOUR_COLUMN_GRID_STYLES.input + " w-full"}
-                      >
-                        <option value="">선택</option>
-                        {processList.map((process, index) => (
-                          <option key={index} value={process}>{process}</option>
-                        ))}
-                      </select>
-                    </td>
-                  </tr>
-                  <tr className={FOUR_COLUMN_GRID_STYLES.row}>
                     <td className={FOUR_COLUMN_GRID_STYLES.labelCell}>제작사</td>
-                    <td className={FOUR_COLUMN_GRID_STYLES.valueCellWithBorder}>
-                      {textCell(makerNm, setMakerNm)}
-                    </td>
-                    <td className={FOUR_COLUMN_GRID_STYLES.labelCell}>제원</td>
                     <td className={FOUR_COLUMN_GRID_STYLES.valueCell}>
-                      {textCell(spec, setSpec)}
+                      {textCell(makerNm, setMakerNm)}
                     </td>
                   </tr>
                   <tr className={FOUR_COLUMN_GRID_STYLES.row}>
@@ -475,7 +428,7 @@ export default function EquipmentInfoRegisterPage({ onBack, onRegister }: Equipm
                 <tbody>
                   {equipmentData.length === 0 ? (
                     <tr>
-                      <td colSpan={16} className="px-4 py-8 text-center text-sm text-gray-500 border-r border-gray-200">
+                      <td colSpan={14} className="px-4 py-8 text-center text-sm text-gray-500 border-r border-gray-200">
                         추가 버튼을 클릭하여 설비 정보를 입력해주세요.
                       </td>
                     </tr>

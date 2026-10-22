@@ -18,7 +18,7 @@ export default function SparePartsDetailPage({ data, onBack, onEdit, onDelete }:
     ["규격", data.spec, "구입처", data.supplierNm],
     ["구입일자", data.purchaseDate, "구입금액", withComma(data.purchasePrice)],
     ["안전재고량", data.safetyStock, "현재고량", data.currentStock],
-    ["보관위치", data.storageLoc, "사용설비", data.useFacility],
+    ["보관위치", data.storageLoc, "", ""],
   ];
 
   return (
