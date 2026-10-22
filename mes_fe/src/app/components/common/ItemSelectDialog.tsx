@@ -20,7 +20,6 @@ const toValue = (item: any, spec?: any): ItemSelectValue => ({
   itemType: item.itemType || "",
   customerName: item.customerName || "",
   spec: item.spec || "",
-  color: item.color || "",
   weight: spec?.weight != null ? String(spec.weight) : (item.weight != null ? String(item.weight) : ""),
   productionSpeed: item.productionSpeed != null ? String(item.productionSpeed) : "",
   widthUnit: item.widthUnit || "",

@@ -10,7 +10,6 @@ export interface ItemCommonAttributes {
   itemType: string;
   customerName: string;
   spec: string;
-  color: string;
   weight: string;
   productionSpeed: string;
   widthUnit: string;
@@ -137,7 +136,6 @@ export interface ItemSaveData {
   widthUnit?: string;
   length?: number | null;
   weight?: number | null;
-  color?: string;
   productionSpeed?: number | null;
   safetyStock?: number | null;
   importInspGb?: boolean | null;
@@ -165,7 +163,6 @@ export interface ItemRes {
   widthUnit?: string;
   length?: number;
   weight?: number;
-  color?: string;
   productionSpeed?: number;
   safetyStock?: number;
   optimalStock?: number;

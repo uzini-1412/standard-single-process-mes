@@ -9,7 +9,6 @@ import { showApiError } from "@/app/utils/apiError";
 import type { ItemRegisterPageProps } from "@/types/standard-info/item.interface";
 import { ItemFormSection } from "./components/ItemFormSection";
 import { ItemImageSection } from "./components/ItemImageSection";
-import { ItemSpecTableSection } from "./components/ItemSpecTableSection";
 import { createItemSaveData } from "./itemInfo.utils";
 import { useItemRegisterForm } from "./useItemRegisterForm";
 
@@ -28,8 +27,6 @@ export function ItemRegisterPage({
     options,
     isLoading,
     handleChange,
-    handleAddSpec,
-    handleRemoveSpec,
     handleSpecChange,
     handleImageChange,
   } = useItemRegisterForm({
@@ -120,16 +117,8 @@ export function ItemRegisterPage({
               formData={formData}
               options={options}
               onChange={handleChange}
-            />
-
-            <ItemSpecTableSection
-              rows={formData.specs}
-              warehouseLocationOptions={options.warehouseLocationOptions}
-              editable
-              emptyMessage="등록된 규격이 없습니다. 추가 버튼으로 규격을 입력해 주세요."
-              onAddSpec={handleAddSpec}
-              onRemoveSpec={handleRemoveSpec}
-              onSpecChange={handleSpecChange}
+              specValues={formData.specs[0]}
+              onSpecChange={(field, value) => handleSpecChange(0, field, value)}
             />
           </div>
         </div>

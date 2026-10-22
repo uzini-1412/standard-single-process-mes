@@ -23,7 +23,6 @@ export const ITEM_FORM_INITIAL_DATA = (): ItemFormData => ({
   customerName: "",
   accountType: "",
   spec: "",
-  color: "",
   basisWeight: "",
   width: "",
   length: "",

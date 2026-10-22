@@ -54,7 +54,7 @@ export function createEmptyItemSearchForm(): ItemSearchForm {
 }
 
 export function createEmptyItemFormData(): ItemFormData {
-  return ITEM_FORM_INITIAL_DATA();
+  return { ...ITEM_FORM_INITIAL_DATA(), specs: [createEmptyItemSpec()] };
 }
 
 function buildRowFromItem(item: ItemRes): ItemListRow {
@@ -139,6 +139,34 @@ export function filterItemListRows(
 const stringifyOrEmpty = (value?: string | number | null): string =>
   value != null ? String(value) : "";
 
+// 품목당 규격은 1개만 둔다. 기존에 여러 규격이 쌓여 있던 품목은 (폭 기준) 첫 번째만 불러오고,
+// 규격 행 자체가 없는 레거시 품목은 품목 대표값(width/length/weight/safetyStock)을 규격으로 끌어온다.
+function resolvePrimarySpec(item: ItemRes): ItemSpecInfo {
+  const [primarySpec] = sortSpecsByWidthAsc(item.specs ?? []);
+  if (!primarySpec) {
+    return {
+      width: stringifyOrEmpty(item.width),
+      length: stringifyOrEmpty(item.length),
+      basisWeight: "",
+      safetyStock: stringifyOrEmpty(item.safetyStock),
+      weight: stringifyOrEmpty(item.weight),
+      warehouseLocation: "",
+      storageLocation: "",
+    };
+  }
+  return {
+    itemSpecSq: primarySpec.itemSpecSq,
+    width: stringifyOrEmpty(primarySpec.width),
+    length: stringifyOrEmpty(primarySpec.length),
+    basisWeight: stringifyOrEmpty(primarySpec.basisWeight),
+    safetyStock: stringifyOrEmpty(primarySpec.safetyStock),
+    weight: stringifyOrEmpty(primarySpec.weight),
+    specOrder: primarySpec.specOrder,
+    warehouseLocation: primarySpec.warehouseLocation || "",
+    storageLocation: primarySpec.storageLocation || "",
+  };
+}
+
 export function createItemFormData(item: ItemRes): ItemFormData {
   return {
     itemType: item.itemType || "",
@@ -149,7 +177,6 @@ export function createItemFormData(item: ItemRes): ItemFormData {
     spec: item.spec || "",
     basisWeight: stringifyOrEmpty(item.basisWeight),
     width: stringifyOrEmpty(item.width),
-    color: item.color || "",
     weight: stringifyOrEmpty(item.weight),
     length: stringifyOrEmpty(item.length),
     productionSpeed: stringifyOrEmpty(item.productionSpeed),
@@ -158,17 +185,7 @@ export function createItemFormData(item: ItemRes): ItemFormData {
     packingUnit: item.packingUnit || "",
     safetyStock: stringifyOrEmpty(item.safetyStock),
     remark: item.remark || "",
-    specs: sortSpecsByWidthAsc(item.specs ?? []).map((spec) => ({
-      itemSpecSq: spec.itemSpecSq,
-      width: stringifyOrEmpty(spec.width),
-      length: stringifyOrEmpty(spec.length),
-      basisWeight: stringifyOrEmpty(spec.basisWeight),
-      safetyStock: stringifyOrEmpty(spec.safetyStock),
-      weight: stringifyOrEmpty(spec.weight),
-      specOrder: spec.specOrder,
-      warehouseLocation: spec.warehouseLocation || "",
-      storageLocation: spec.storageLocation || "",
-    })),
+    specs: [resolvePrimarySpec(item)],
   };
 }
 
@@ -229,7 +246,6 @@ export function createItemSaveData(
     widthUnit: formData.widthUnit || undefined,
     length: toOptionalNumber(formData.length),
     weight: toOptionalNumber(formData.weight),
-    color: formData.color || undefined,
     productionSpeed: toOptionalNumber(formData.productionSpeed),
     packingUnit: formData.packingUnit || undefined,
     safetyStock: toOptionalNumber(formData.safetyStock),

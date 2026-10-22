@@ -39,15 +39,15 @@ function buildDetailPairs(item: ItemRes): DetailPair[][] {
       },
     ],
     [
-      { label: "색상", value: dash(item.color) },
       {
         label: withUnit("생산속도", UNITS.productionSpeed),
         value: item.productionSpeed != null ? item.productionSpeed : "-",
       },
+      { label: "수입검사유무", value: getImportInspectionLabel(item.importInspGb) },
     ],
     [
-      { label: "수입검사유무", value: getImportInspectionLabel(item.importInspGb) },
       { label: "포장단위", value: dash(item.packingUnit) },
+      { label: "", value: "" },
     ],
   ];
 }

@@ -10,11 +10,7 @@ import type {
   ItemRegisterPageProps,
   ItemSpecInfo,
 } from "@/types/standard-info/item.interface";
-import {
-  createEmptyItemFormData,
-  createEmptyItemSpec,
-  createItemFormData,
-} from "./itemInfo.utils";
+import { createEmptyItemFormData, createItemFormData } from "./itemInfo.utils";
 
 function computeSpecWeight(
   basisWeight: string,
@@ -127,20 +123,6 @@ export function useItemRegisterForm({
     });
   };
 
-  const handleAddSpec = () => {
-    setFormData((prev) => ({
-      ...prev,
-      specs: prev.specs.concat(createEmptyItemSpec()),
-    }));
-  };
-
-  const handleRemoveSpec = (index: number) => {
-    setFormData((prev) => ({
-      ...prev,
-      specs: prev.specs.filter((_, i) => i !== index),
-    }));
-  };
-
   const handleSpecChange = (
     index: number,
     field: keyof ItemSpecInfo,
@@ -179,8 +161,6 @@ export function useItemRegisterForm({
     options,
     isLoading,
     handleChange,
-    handleAddSpec,
-    handleRemoveSpec,
     handleSpecChange,
     handleImageChange,
   };
