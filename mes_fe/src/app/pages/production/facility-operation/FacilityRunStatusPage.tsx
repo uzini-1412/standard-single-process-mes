@@ -1,4 +1,5 @@
 /** [생산관리 > 설비가동관리] 라인별 설비 가동/비가동 구간 조회. API: workResultApi(/api/production/result). */
+import { useMemo, useState } from "react";
 import { Button } from "../../../components/ui/button";
 import { BUTTON_STYLES, PAGE_LAYOUT_STYLES } from "../../../styles/button-styles";
 import { DateRangePickerWithLabel } from "../../../components/common/DateRangePickerWithLabel";
@@ -9,7 +10,15 @@ import { buildExcelFileName as buildStdExcelFileName } from "@/app/utils/excelDo
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { useFacilityRunStatus } from "./useFacilityRunStatus";
-import { buildDateRangeToken, type RunSegmentRow } from "./runStatusHelpers";
+import { buildDateRangeToken, summarizeByDate, type RunSegmentRow } from "./runStatusHelpers";
+import { RunStatusTrendChart } from "./RunStatusTrendChart";
+
+type RunStatusTab = "list" | "chart";
+
+const RUN_STATUS_TABS: { key: RunStatusTab; label: string }[] = [
+  { key: "list", label: "목록" },
+  { key: "chart", label: "그래프" },
+];
 
 // 가동/비가동을 2단 그룹헤더로 묶은 테이블 컬럼 정의.
 const RUN_STATUS_COLUMNS: ListColumnDef<RunSegmentRow>[] = [
@@ -47,6 +56,9 @@ export function FacilityRunStatusPage() {
     pagination,
     resetToFirstPage,
   } = useFacilityRunStatus();
+
+  const [tab, setTab] = useState<RunStatusTab>("list");
+  const chartData = useMemo(() => summarizeByDate(visibleRows), [visibleRows]);
 
   // 현재 필터 결과를 엑셀 한 장으로 내보낸다.
   const exportToExcel = () => {
@@ -109,17 +121,49 @@ export function FacilityRunStatusPage() {
           </div>
         </div>
 
-        <div data-help="facility-operation-table">
-          <ListTable
-            tableId="facility-run-status"
-            columns={RUN_STATUS_COLUMNS}
-            rows={pageRows}
-            isLoading={isFetching}
-            rowKey={(r) => r.id}
-            minWidth="1200px"
-            pagination={pagination}
-          />
+        <div className="flex gap-1 border-b border-gray-200 px-1 mb-4 bg-white">
+          {RUN_STATUS_TABS.map((t) => (
+            <button
+              key={t.key}
+              onClick={() => setTab(t.key)}
+              className={`px-4 py-2 text-sm font-semibold border-b-2 -mb-px transition-colors ${
+                tab === t.key
+                  ? "border-[#4A5CC7] text-[#4A5CC7]"
+                  : "border-transparent text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
         </div>
+
+        {tab === "list" && (
+          <div data-help="facility-operation-table">
+            <ListTable
+              tableId="facility-run-status"
+              columns={RUN_STATUS_COLUMNS}
+              rows={pageRows}
+              isLoading={isFetching}
+              rowKey={(r) => r.id}
+              minWidth="1200px"
+              pagination={pagination}
+            />
+          </div>
+        )}
+
+        {tab === "chart" && (
+          <div
+            className="bg-white border border-gray-300 rounded-md p-4"
+            data-help="facility-operation-chart"
+          >
+            <div className="text-center font-semibold text-gray-800 mb-2">
+              일자별 가동/비가동시간 추이
+            </div>
+            <div style={{ width: "100%", height: 360 }}>
+              <RunStatusTrendChart isLoading={isFetching} data={chartData} />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

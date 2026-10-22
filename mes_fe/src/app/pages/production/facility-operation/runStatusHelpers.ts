@@ -193,6 +193,35 @@ export const composeSegmentRows = (
   return rows;
 };
 
+/** 일자별 가동/비가동시간 합계(그래프 탭 전용). */
+export interface DailyRunSummary {
+  workDate: string;
+  opMinutes: number;
+  dtMinutes: number;
+}
+
+/** 가동/비가동 구간 행을 일자 단위로 합산해 꺾은선 그래프용 데이터로 만든다. */
+export const summarizeByDate = (rows: RunSegmentRow[]): DailyRunSummary[] => {
+  const toMinutes = (value: string): number => {
+    const n = Number(value);
+    return Number.isFinite(n) ? n : 0;
+  };
+
+  const byDate = new Map<string, DailyRunSummary>();
+  rows.forEach((r) => {
+    if (!r.workDate || r.workDate === "-") return;
+    let bucket = byDate.get(r.workDate);
+    if (!bucket) {
+      bucket = { workDate: r.workDate, opMinutes: 0, dtMinutes: 0 };
+      byDate.set(r.workDate, bucket);
+    }
+    bucket.opMinutes += toMinutes(r.opMinutes);
+    bucket.dtMinutes += toMinutes(r.dtMinutes);
+  });
+
+  return Array.from(byDate.values()).sort((a, b) => a.workDate.localeCompare(b.workDate));
+};
+
 /** 검색 조건(날짜범위/라인)을 파일명용 토큰으로 압축한다. */
 export const buildDateRangeToken = (from: string, to: string): string | undefined => {
   if (from && to) {

@@ -265,6 +265,7 @@ export const HELP_CONTENT_PART1: Record<string, HelpContent> = {
       { anchor: "facility-operation-search", title: "검색", description: "기간·설비로 가동 기록을 조회합니다." },
       { anchor: "facility-operation-register", title: "가동 기록", description: "설비의 가동·비가동 상태와 시간을 기록합니다." },
       { anchor: "facility-operation-table", title: "현황 조회", description: "설비별 가동 현황을 목록에서 확인합니다." },
+      { anchor: "facility-operation-chart", title: "그래프 조회", description: "일자별 가동/비가동시간을 꺾은선 그래프로 확인합니다." },
     ],
   },
 
