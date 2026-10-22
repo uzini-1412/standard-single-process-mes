@@ -3,12 +3,14 @@ import { Button } from "../../../components/ui/button";
 import { Input } from "../../../components/ui/input";
 import { BUTTON_STYLES, FORM_ERROR_STYLES, LIST_TABLE_STYLES } from "@/app/styles/button-styles";
 import { DateRangePickerWithLabel } from "../../../components/common/DateRangePickerWithLabel";
+import { ServerPagination } from "../../../components/common/ServerPagination";
+import { TableStateRow } from "../../../components/common/TableStateRow";
 import { handleNonNegativeNumberChange, preventNegativeKey } from "@/app/utils/numericInput";
 import { usePermission } from "../../../context/UserContext";
 import { formatNumber } from "@/app/utils/numberFormat";
-import { NUMBER_ALIGN } from "@/app/styles/table-styles";
+import { NUMBER_ALIGN, HEADER_ALIGN } from "@/app/styles/table-styles";
+import { cn } from "@/app/components/ui/utils";
 import { useIncomingPrepEntry } from "./useIncomingPrepEntry";
-import { CandidateOrdersTable } from "./CandidateOrdersTable";
 import { PrepAdjustDialog } from "./PrepAdjustDialog";
 
 interface IncomingPrepEntryPageProps {
@@ -19,8 +21,8 @@ interface IncomingPrepEntryPageProps {
 }
 
 const ORDER_ITEM_HEADERS = [
-  "No.", "발주번호", "계정구분", "품번", "품명", "규격", "단위", "거래처명",
-  "거래처번호", "발주일자", "입고요청일", "발주수량", "가입고수량", "구매 Lot-No", "가입고일자",
+  "선택", "No.", "발주번호", "계정구분", "품번", "품명", "규격", "단위", "거래처명",
+  "거래처번호", "발주일자", "입고요청일", "발주수량", "기존가입고수량", "가입고수량", "구매 Lot-No", "가입고일자",
 ];
 
 const HISTORY_HEADERS = [
@@ -44,6 +46,14 @@ export function IncomingPrepEntryPage(_props: IncomingPrepEntryPageProps = {}) {
   const tdClass = "px-4 py-3 text-xs text-gray-700 text-center whitespace-nowrap border-r border-gray-200";
 
   const canSubmit = entry.tableItems.filter((i) => i.selected).length > 0 && !entry.isRegistering;
+
+  const availTotal = entry.availableOrders.length;
+  const availTotalPages = Math.max(1, Math.ceil(availTotal / entry.availSize));
+  const availSafePage = Math.min(entry.availPage, availTotalPages - 1);
+  const availPageRows = entry.availableOrders.slice(
+    availSafePage * entry.availSize,
+    availSafePage * entry.availSize + entry.availSize,
+  );
 
   return (
     <div className="p-3">
@@ -76,97 +86,122 @@ export function IncomingPrepEntryPage(_props: IncomingPrepEntryPageProps = {}) {
             </div>
           </div>
 
-          {/* 가입고 대상 선택 */}
-          <div>
-            <div className="py-2 font-semibold text-gray-900 mb-2">가입고대상선택</div>
-            <CandidateOrdersTable
-              orders={entry.availableOrders}
-              isLoading={entry.isLoadingOrders}
-              selectedRows={entry.selectedRows}
-              page={entry.availPage}
-              size={entry.availSize}
-              onToggle={entry.toggleRow}
-              onPageChange={entry.setAvailPage}
-              onSizeChange={entry.setAvailSize}
-            />
-          </div>
-
-          {/* 발주 품목정보 입력 */}
+          {/* 발주 품목정보: 대상을 체크해 선택하고, 같은 행에서 바로 가입고수량/일자를 입력한다 */}
           <div>
             <div className="py-2 font-semibold text-gray-900 mb-2">발주 품목정보</div>
-            <div className="border border-gray-200 rounded-sm overflow-hidden">
-              <div className="overflow-x-auto overflow-y-auto" style={{ height: "300px" }}>
-                <table className="w-full" style={{ minWidth: "1400px" }}>
-                  <thead className="sticky top-0 z-10">
+            <div className={`${LIST_TABLE_STYLES.container} mb-4`}>
+              <div className={LIST_TABLE_STYLES.scrollWrapper} style={{ height: "300px" }}>
+                <table className="w-full" style={{ minWidth: "1600px" }}>
+                  <thead className={LIST_TABLE_STYLES.thead}>
                     <tr className={LIST_TABLE_STYLES.headerRow}>
                       {ORDER_ITEM_HEADERS.map((h) => (
-                        <th key={h} className={thClass}>
+                        <th key={h} className={cn(thClass, HEADER_ALIGN)}>
                           {h === "가입고일자" ? <>{h}<span className="text-red-500"> *</span></> : h}
                         </th>
                       ))}
                     </tr>
                   </thead>
                   <tbody>
-                    {entry.tableItems.length === 0 ? (
-                      <tr>
-                        <td colSpan={15} className="px-4 py-8 text-center text-sm text-gray-500 border-r border-gray-200">
-                          추가된 품목이 없습니다.
-                        </td>
-                      </tr>
-                    ) : (
-                      entry.tableItems.map((item, index) => {
-                        const rowError = entry.errors[item.no];
+                    <TableStateRow
+                      loading={entry.isLoadingOrders}
+                      isEmpty={availPageRows.length === 0}
+                      colSpan={17}
+                      emptyText="선택 가능한 발주정보가 없습니다."
+                    />
+                    {!entry.isLoadingOrders &&
+                      availPageRows.map((row) => {
+                        const checked = entry.selectedRows.has(row.no);
+                        const rowError = entry.errors[row.no];
+                        const tableItem = entry.tableItems.find((t) => t.no === row.no);
                         return (
-                          <tr key={item.no} className="border-b border-gray-200 hover:bg-gray-50">
-                            <td className={tdClass}>{index + 1}</td>
-                            <td className={tdClass}>{item.orderNo}</td>
-                            <td className={tdClass}>{item.accountType}</td>
-                            <td className={tdClass}>{item.itemCode}</td>
-                            <td className={tdClass}>{item.itemName}</td>
-                            <td className={tdClass}>{item.spec}</td>
-                            <td className={tdClass}>{item.orderUnit}</td>
-                            <td className={tdClass}>{item.customerName}</td>
-                            <td className={tdClass}>{item.customerCode}</td>
-                            <td className={tdClass}>{item.orderDate}</td>
-                            <td className={tdClass}>{item.inReqDate}</td>
-                            <td className={tdClass}>{item.orderQty}</td>
-                            <td className="px-4 py-3 text-center border-r border-gray-200">
-                              <Input
-                                type="number"
-                                step="1"
-                                min="0"
-                                value={item.inboundQty}
-                                placeholder="0"
-                                onChange={(e) =>
-                                  handleNonNegativeNumberChange(e.target.value, (v) =>
-                                    entry.changeInboundQty(index, v),
-                                  )
-                                }
-                                onKeyDown={preventNegativeKey}
-                                className={`w-20 text-center bg-white ${rowError?.inboundQty ? FORM_ERROR_STYLES.inputError : "border-gray-300"}`}
+                          <tr
+                            key={row.no}
+                            onClick={() => entry.toggleRow(row.no)}
+                            className={`border-b border-gray-200 hover:bg-gray-50 cursor-pointer ${checked ? "bg-blue-50" : ""}`}
+                          >
+                            <td className="px-4 py-3 text-center border-r border-gray-200" onClick={(e) => e.stopPropagation()}>
+                              <input
+                                type="checkbox"
+                                checked={checked}
+                                onChange={() => entry.toggleRow(row.no)}
+                                className="w-4 h-4 cursor-pointer"
                               />
-                              {rowError?.inboundQty && (
-                                <span className={FORM_ERROR_STYLES.errorMessage}>{rowError.inboundQty}</span>
+                            </td>
+                            <td className={tdClass}>{row.no}</td>
+                            <td className={tdClass}>{row.orderNo}</td>
+                            <td className={tdClass}>{row.accountType}</td>
+                            <td className={tdClass}>{row.itemCode}</td>
+                            <td className={tdClass}>{row.itemName}</td>
+                            <td className={tdClass}>{row.spec}</td>
+                            <td className={tdClass}>{row.orderUnit}</td>
+                            <td className={tdClass}>{row.customerName}</td>
+                            <td className={tdClass}>{row.customerCode}</td>
+                            <td className={tdClass}>{row.orderDate}</td>
+                            <td className={tdClass}>{row.inReqDate}</td>
+                            <td className={cn(tdClass, NUMBER_ALIGN)}>{formatNumber(row.orderQty)}</td>
+                            <td className={cn(tdClass, NUMBER_ALIGN)}>{formatNumber(row.totalInboundQty || "0")}</td>
+                            <td className="px-4 py-3 text-center border-r border-gray-200" onClick={(e) => e.stopPropagation()}>
+                              {checked ? (
+                                <>
+                                  <Input
+                                    type="number"
+                                    step="1"
+                                    min="0"
+                                    value={tableItem?.inboundQty ?? ""}
+                                    placeholder="0"
+                                    onChange={(e) =>
+                                      handleNonNegativeNumberChange(e.target.value, (v) =>
+                                        entry.changeInboundQty(row.no, v),
+                                      )
+                                    }
+                                    onKeyDown={preventNegativeKey}
+                                    className={`w-20 text-center bg-white ${rowError?.inboundQty ? FORM_ERROR_STYLES.inputError : "border-gray-300"}`}
+                                  />
+                                  {rowError?.inboundQty && (
+                                    <span className={FORM_ERROR_STYLES.errorMessage}>{rowError.inboundQty}</span>
+                                  )}
+                                </>
+                              ) : (
+                                <span className="text-gray-400">-</span>
                               )}
                             </td>
-                            <td className={tdClass}>{item.purchaseLotNoPreview}</td>
-                            <td className="px-4 py-3 text-center border-r border-gray-200">
-                              <input
-                                type="date"
-                                value={item.inboundDate}
-                                onChange={(e) => entry.changeInboundDate(index, e.target.value)}
-                                className={`h-10 px-2 bg-white border rounded text-sm focus:outline-none focus:ring-1 ${rowError?.inboundDate ? "validation-error-input" : "border-gray-300 focus:ring-[#5B6FD8]"}`}
-                              />
-                              {rowError?.inboundDate && (
-                                <p className="validation-error-message">{rowError.inboundDate}</p>
+                            <td className={tdClass}>{checked ? tableItem?.purchaseLotNoPreview : "-"}</td>
+                            <td className="px-4 py-3 text-center border-r border-gray-200" onClick={(e) => e.stopPropagation()}>
+                              {checked ? (
+                                <>
+                                  <input
+                                    type="date"
+                                    value={tableItem?.inboundDate ?? ""}
+                                    onChange={(e) => entry.changeInboundDate(row.no, e.target.value)}
+                                    className={`h-10 px-2 bg-white border rounded text-sm focus:outline-none focus:ring-1 ${rowError?.inboundDate ? "validation-error-input" : "border-gray-300 focus:ring-[#5B6FD8]"}`}
+                                  />
+                                  {rowError?.inboundDate && (
+                                    <p className="validation-error-message">{rowError.inboundDate}</p>
+                                  )}
+                                </>
+                              ) : (
+                                <span className="text-gray-400">-</span>
                               )}
                             </td>
                           </tr>
                         );
-                      })
-                    )}
+                      })}
                   </tbody>
                 </table>
+              </div>
+              <div className={LIST_TABLE_STYLES.paginationWrapper}>
+                <ServerPagination
+                  page={availSafePage}
+                  size={entry.availSize}
+                  totalElements={availTotal}
+                  totalPages={availTotalPages}
+                  onPageChange={entry.setAvailPage}
+                  onSizeChange={(s) => {
+                    entry.setAvailSize(s);
+                    entry.setAvailPage(0);
+                  }}
+                  loading={entry.isLoadingOrders}
+                />
               </div>
             </div>
           </div>

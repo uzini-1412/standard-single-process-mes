@@ -110,30 +110,24 @@ export function useIncomingPrepEntry() {
     });
   };
 
-  // 하단 테이블 수량 입력 변경
-  const changeInboundQty = (index: number, value: string) => {
-    setTableItems((prev) => {
-      const next = [...prev];
-      next[index] = { ...next[index], inboundQty: value };
-      return next;
-    });
-    const row = tableItems[index];
-    checkQty(row.no, value, row.orderQty, row.totalInboundQty);
+  // 입력 테이블 수량 변경 (발주 번호 기준으로 대상 행을 찾는다)
+  const changeInboundQty = (no: number, value: string) => {
+    setTableItems((prev) => prev.map((item) => (item.no === no ? { ...item, inboundQty: value } : item)));
+    const row = tableItems.find((item) => item.no === no);
+    if (row) checkQty(no, value, row.orderQty, row.totalInboundQty);
   };
 
-  // 하단 테이블 가입고일자 변경 + 발주일 이전 금지 검증
-  const changeInboundDate = (index: number, value: string) => {
-    const next = [...tableItems];
-    next[index] = { ...next[index], inboundDate: value };
-    setTableItems(next);
+  // 입력 테이블 가입고일자 변경 + 발주일 이전 금지 검증
+  const changeInboundDate = (no: number, value: string) => {
+    setTableItems((prev) => prev.map((item) => (item.no === no ? { ...item, inboundDate: value } : item)));
 
-    const row = next[index];
+    const row = tableItems.find((item) => item.no === no);
     setErrors((prev) => {
       const updated = { ...prev };
-      if (!updated[row.no]) updated[row.no] = { inboundQty: "", inboundDate: "" };
-      updated[row.no] = {
-        ...updated[row.no],
-        inboundDate: ensureDateOrder(row.orderDate, value, "발주일자", "가입고일자") ?? "",
+      if (!updated[no]) updated[no] = { inboundQty: "", inboundDate: "" };
+      updated[no] = {
+        ...updated[no],
+        inboundDate: ensureDateOrder(row?.orderDate ?? "", value, "발주일자", "가입고일자") ?? "",
       };
       return updated;
     });
