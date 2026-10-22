@@ -1,17 +1,10 @@
 import { PAGE_LAYOUT_STYLES } from "../../styles/button-styles";
-import type { SalesViewMode } from "./SalesLedgerPage";
 import { useSalesTrend } from "./useSalesTrend";
 import { SalesSearchBar } from "./SalesSearchBar";
-import { SalesViewSwitch } from "./SalesViewSwitch";
 import { SalesTrendChart } from "./SalesTrendChart";
 import { SalesTrendTable } from "./SalesTrendTable";
 
-interface SalesTrendChartPageProps {
-  currentView: SalesViewMode;
-  onViewChange: (mode: SalesViewMode) => void;
-}
-
-export function SalesTrendChartPage({ currentView, onViewChange }: SalesTrendChartPageProps) {
+export function SalesTrendChartPage() {
   const trend = useSalesTrend();
   const showTable = !trend.isFetching && trend.series.length > 0;
 
@@ -22,8 +15,6 @@ export function SalesTrendChartPage({ currentView, onViewChange }: SalesTrendCha
         <div className="flex items-center justify-between mb-3">
           <h1 className="text-2xl font-semibold text-gray-900">매출현황</h1>
         </div>
-
-        <SalesViewSwitch value={currentView} onChange={onViewChange} />
 
         <SalesSearchBar
           dateFrom={trend.draftFrom}

@@ -6,7 +6,6 @@ import { TradeStatementView } from "../shipping/shipping-order/TradeStatementVie
 import { showWarning } from "@/app/utils/toast";
 import { usePermission } from "../../context/UserContext";
 import { ListTable, type ListColumn } from "../../components/common/ListTable";
-import type { PurchaseLedgerMode } from "./PurchaseLedgerPage";
 import {
   composeTradeStatementForm,
   makeGroupKey,
@@ -17,17 +16,11 @@ import {
 import { usePurchaseLedger } from "./usePurchaseLedger";
 import { usePurchaseGroupDetail } from "./usePurchaseGroupDetail";
 import { PurchaseLedgerFilterBar } from "./PurchaseLedgerFilterBar";
-import { PurchaseViewModeSelect } from "./PurchaseViewModeSelect";
 import { PurchaseGroupDetailDialog } from "./PurchaseGroupDetailDialog";
 
 type ScreenStage = "list" | "print";
 
-interface Props {
-  pageMode: PurchaseLedgerMode;
-  onPageModeChange: (mode: PurchaseLedgerMode) => void;
-}
-
-export function PurchaseLedgerListPage({ pageMode, onPageModeChange }: Props) {
+export function PurchaseLedgerListPage() {
   const permission = usePermission("purchase-management");
   const [stage, setStage] = useState<ScreenStage>("list");
 
@@ -107,8 +100,6 @@ export function PurchaseLedgerListPage({ pageMode, onPageModeChange }: Props) {
             </Button>
           )}
         </div>
-
-        <PurchaseViewModeSelect value={pageMode} onChange={onPageModeChange} />
 
         <PurchaseLedgerFilterBar
           helpKey="purchase-management-search"

@@ -8,7 +8,7 @@ import { ListSearchFilter } from "../../../components/common/ListSearchFilter";
 import { ListTable, type ListColumn } from "../../../components/common/ListTable";
 import { useClientPagedList } from "../../../hooks/useClientPagedList";
 import { fetchUnitPriceActiveList } from "../../../api/unitPriceStandardApi";
-import { UnitPriceListItem, UnitPricePageMode } from "@/types/standard-info/unit_price.interface";
+import { UnitPriceListItem } from "@/types/standard-info/unit_price.interface";
 import { UNIT_PRICE_LIST_COLUMNS } from "@/app/constants/unit";
 import { usePermission } from "../../../context/UserContext";
 import { formatCurrency } from "@/app/utils/numberFormat";
@@ -35,12 +35,10 @@ const LIST_COLUMNS: ListColumn<UnitPriceListItem>[] = UNIT_PRICE_LIST_COLUMNS.ma
 interface Props {
   onRegister: () => void;
   onRowClick: (id: number) => void;
-  onViewModeChange: (mode: UnitPricePageMode) => void;
 }
 
-export function UnitPriceStandardListPage({ onRegister, onRowClick, onViewModeChange }: Props) {
+export function UnitPriceStandardListPage({ onRegister, onRowClick }: Props) {
   const perm = usePermission("unit-price-standard-info");
-  const [viewMode, setViewMode] = useState<UnitPricePageMode>("standard");
   const [searchCustomerName, setSearchCustomerName] = useState("");
   const [searchItemCode, setSearchItemCode] = useState("");
   const [searchItemName, setSearchItemName] = useState("");
@@ -115,13 +113,6 @@ export function UnitPriceStandardListPage({ onRegister, onRowClick, onViewModeCh
           title="단가기준정보 관리"
           actions={perm.createAuth && <Button data-help="unit-price-standard-register" className={BUTTON_STYLES.register} onClick={onRegister}>등록</Button>}
         />
-        <div className="mb-4">
-          <select value={viewMode} onChange={(e) => { setViewMode(e.target.value as UnitPricePageMode); onViewModeChange(e.target.value as UnitPricePageMode); }}
-            className="w-48 h-10 px-3 bg-white border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#5B6FD8]">
-            <option value="standard">단가기준</option>
-            <option value="history">단가이력</option>
-          </select>
-        </div>
         <div data-help="unit-price-standard-search">
         <ListSearchFilter onSearch={loadData}>
           <SelectWithLabel

@@ -26,13 +26,8 @@ const HISTORY_LIST_COLUMNS: ListColumn<UnitPriceHistoryItem>[] = UNIT_PRICE_HIST
   return { key: c.key, label: c.label };
 });
 
-interface Props {
-  onViewModeChange: (mode: "standard" | "history") => void;
-}
-
-export function UnitPriceHistoryPage({ onViewModeChange }: Props) {
+export function UnitPriceHistoryPage() {
   const { matchFinished, matchRaw, matchSub } = useAccountTypes();
-  const [viewMode, setViewMode] = useState<"standard" | "history">("history");
   const [priceType, setPriceType] = useState("");
   const [customerSq, setCustomerSq] = useState<number | undefined>();
   const [customerName, setCustomerName] = useState("");
@@ -124,12 +119,6 @@ export function UnitPriceHistoryPage({ onViewModeChange }: Props) {
     <div className={PAGE_LAYOUT_STYLES.container}>
       <div className={PAGE_LAYOUT_STYLES.content}>
         <h1 className="text-2xl font-semibold text-gray-900 mb-6">단가이력 관리</h1>
-        <div className="mb-4">
-          <select value={viewMode} onChange={(e) => { setViewMode(e.target.value as any); onViewModeChange(e.target.value as any); }}
-            className="w-48 h-10 px-3 bg-white border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#5B6FD8]">
-            <option value="standard">단가기준</option><option value="history">단가이력</option>
-          </select>
-        </div>
 
         <div className="mb-6">
           <div className="flex items-center justify-between mb-3">

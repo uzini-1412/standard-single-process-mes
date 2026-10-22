@@ -11,12 +11,6 @@ import type { InspectionListRow } from "@/types/standard-info/inspection.interfa
 
 export type InspectionType = "incoming" | "frequent" | "shipping";
 
-const INSPECTION_TYPE_OPTIONS: { value: InspectionType; label: string }[] = [
-  { value: "incoming", label: "입고검사" },
-  { value: "frequent", label: "자주검사" },
-  { value: "shipping", label: "출하검사" },
-];
-
 /** 서버 응답 → 검사표준서 목록 행 (입고/자주/출하 공통). */
 const mapInspectionRows = (result: any[]): InspectionListRow[] =>
   result.map((item) => ({
@@ -31,12 +25,10 @@ const mapInspectionRows = (result: any[]): InspectionListRow[] =>
   }));
 
 interface Props {
-  currentType: InspectionType;
   registerLabel: string;
   stdNoLabel: string;
   fetchFn: (params?: { keyword?: string }) => Promise<any[]>;
   onRegister: () => void;
-  onInspectionTypeChange: (type: InspectionType) => void;
   onRowClick?: (id: number) => void;
 }
 
@@ -46,12 +38,10 @@ interface Props {
  * 한 컴포넌트로 묶고, 각 검사유형 페이지는 이 컴포넌트를 얇게 감싸기만 한다.
  */
 export function InspectionTypeListPage({
-  currentType,
   registerLabel,
   stdNoLabel,
   fetchFn,
   onRegister,
-  onInspectionTypeChange,
   onRowClick,
 }: Props) {
   const perm = usePermission("inspection-standard-info");
@@ -107,20 +97,6 @@ export function InspectionTypeListPage({
             )
           }
         />
-
-        <div className="mb-4">
-          <select
-            value={currentType}
-            onChange={(e) => onInspectionTypeChange(e.target.value as InspectionType)}
-            className="w-48 h-10 px-3 bg-white border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#5B6FD8]"
-          >
-            {INSPECTION_TYPE_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-        </div>
 
         <div data-help="inspection-standard-search">
           <ListSearchFilter onSearch={loadData}>

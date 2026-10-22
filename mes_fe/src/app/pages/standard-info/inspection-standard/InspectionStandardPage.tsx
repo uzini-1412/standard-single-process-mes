@@ -17,6 +17,12 @@ import { showConfirm } from "@/app/utils/confirm";
 type InspectionType = "incoming" | "frequent" | "shipping";
 type ViewMode = "list" | "register" | "detail" | "edit";
 
+const INSPECTION_TYPE_TABS: { key: InspectionType; label: string }[] = [
+  { key: "incoming", label: "입고검사" },
+  { key: "frequent", label: "자주검사" },
+  { key: "shipping", label: "출하검사" },
+];
+
 /**
  * 검사유형(입고/자주/출하)별 List/Register/Detail 컴포넌트 + 삭제 API 묶음.
  * 세 유형이 동일한 화면 전환 흐름을 공유하므로 한 곳에 모아 분기를 데이터로 처리한다.
@@ -83,35 +89,49 @@ export default function InspectionStandardPage() {
   };
 
   const { List, Register, Detail } = INSPECTION_SCREENS[inspectionType];
-  const isRegisterView = viewMode === "register" || viewMode === "edit";
+
+  if (viewMode === "register" || viewMode === "edit") {
+    return (
+      <Register
+        mode={viewMode === "edit" ? "edit" : "create"}
+        selectedId={viewMode === "edit" ? (selectedId ?? undefined) : undefined}
+        onBack={goList}
+        onSave={goList}
+      />
+    );
+  }
+
+  if (viewMode === "detail" && selectedId) {
+    return (
+      <Detail
+        selectedId={selectedId}
+        onBack={goList}
+        onEdit={() => setViewMode("edit")}
+        onDelete={handleDelete}
+      />
+    );
+  }
 
   return (
-    <>
-      {viewMode === "list" && (
-        <List
-          onRegister={() => setViewMode("register")}
-          onInspectionTypeChange={handleInspectionTypeChange}
-          onRowClick={handleRowClick}
-        />
-      )}
+    <div>
+      {/* 상단 탭 바 — 입고/자주/출하검사 표준서 화면을 전환한다 */}
+      <div className="flex gap-1 border-b border-gray-200 px-3 pt-2 bg-white">
+        {INSPECTION_TYPE_TABS.map((t) => (
+          <button
+            key={t.key}
+            onClick={() => handleInspectionTypeChange(t.key)}
+            className={`px-4 py-2 text-sm font-semibold border-b-2 -mb-px transition-colors ${
+              inspectionType === t.key
+                ? "border-[#4A5CC7] text-[#4A5CC7]"
+                : "border-transparent text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
 
-      {isRegisterView && (
-        <Register
-          mode={viewMode === "edit" ? "edit" : "create"}
-          selectedId={viewMode === "edit" ? (selectedId ?? undefined) : undefined}
-          onBack={goList}
-          onSave={goList}
-        />
-      )}
-
-      {viewMode === "detail" && selectedId && (
-        <Detail
-          selectedId={selectedId}
-          onBack={goList}
-          onEdit={() => setViewMode("edit")}
-          onDelete={handleDelete}
-        />
-      )}
-    </>
+      <List onRegister={() => setViewMode("register")} onRowClick={handleRowClick} />
+    </div>
   );
 }

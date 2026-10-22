@@ -1,17 +1,10 @@
 import { PAGE_LAYOUT_STYLES } from "../../styles/button-styles";
-import type { PurchaseLedgerMode } from "./PurchaseLedgerPage";
 import { usePurchaseTrend } from "./usePurchaseTrend";
 import { PurchaseLedgerFilterBar } from "./PurchaseLedgerFilterBar";
-import { PurchaseViewModeSelect } from "./PurchaseViewModeSelect";
 import { PurchaseTrendChart } from "./PurchaseTrendChart";
 import { PurchaseTrendTable } from "./PurchaseTrendTable";
 
-interface Props {
-  pageMode: PurchaseLedgerMode;
-  onPageModeChange: (mode: PurchaseLedgerMode) => void;
-}
-
-export function PurchaseTrendChartPage({ pageMode, onPageModeChange }: Props) {
+export function PurchaseTrendChartPage() {
   const trend = usePurchaseTrend();
 
   // 보조 표는 로딩이 끝나고 데이터가 있을 때만 노출
@@ -23,8 +16,6 @@ export function PurchaseTrendChartPage({ pageMode, onPageModeChange }: Props) {
         <div className="flex items-center justify-between mb-3">
           <h1 className="text-2xl font-semibold text-gray-900">매입현황</h1>
         </div>
-
-        <PurchaseViewModeSelect value={pageMode} onChange={onPageModeChange} />
 
         <PurchaseLedgerFilterBar
           dateFrom={trend.draftDateFrom}

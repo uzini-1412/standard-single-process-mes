@@ -6,22 +6,15 @@ import { TradeStatementView } from "../shipping/shipping-order/TradeStatementVie
 import { showWarning } from "@/app/utils/toast";
 import { usePermission } from "../../context/UserContext";
 import { ListTable, type ListColumn } from "../../components/common/ListTable";
-import type { SalesViewMode } from "./SalesLedgerPage";
 import { useSalesLedgerList, type LedgerRow } from "./useSalesLedgerList";
 import { useSalesDetailPopup } from "./useSalesDetailPopup";
 import { SalesSearchBar } from "./SalesSearchBar";
-import { SalesViewSwitch } from "./SalesViewSwitch";
 import { SalesDetailDialog } from "./SalesDetailDialog";
 import { ORDERABLE_FIELDS, groupRowKey, toWonText, composeTradeStatementDraft } from "./salesLedgerHelpers";
 
 type ScreenStage = "list" | "print";
 
-interface SalesLedgerListPageProps {
-  currentView: SalesViewMode;
-  onViewChange: (mode: SalesViewMode) => void;
-}
-
-export function SalesLedgerListPage({ currentView, onViewChange }: SalesLedgerListPageProps) {
+export function SalesLedgerListPage() {
   const permission = usePermission("sales-management");
   const [stage, setStage] = useState<ScreenStage>("list");
 
@@ -92,8 +85,6 @@ export function SalesLedgerListPage({ currentView, onViewChange }: SalesLedgerLi
             </Button>
           )}
         </div>
-
-        <SalesViewSwitch value={currentView} onChange={onViewChange} />
 
         <SalesSearchBar
           helpKey="sales-management-search"

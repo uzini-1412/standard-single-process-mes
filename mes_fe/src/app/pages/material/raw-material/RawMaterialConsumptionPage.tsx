@@ -10,6 +10,12 @@ import { ConsumptionMatrixTab } from "./ConsumptionMatrixTab";
 import { ConsumptionAnalysisTab } from "./ConsumptionAnalysisTab";
 import { ConsumptionDetailTab } from "./ConsumptionDetailTab";
 
+const CONSUMPTION_TABS: { key: ConsumptionTab; label: string }[] = [
+  { key: "input-analysis", label: "원소재투입분석" },
+  { key: "input-analysis-detail", label: "원소재투입분석상세" },
+  { key: "input-status", label: "원소재투입현황" },
+];
+
 export function RawMaterialConsumptionPage() {
   const [activeTab, setActiveTab] = useState<ConsumptionTab>("input-analysis");
 
@@ -27,17 +33,21 @@ export function RawMaterialConsumptionPage() {
           <h1 className="text-2xl font-semibold text-gray-900">원소재사용현황</h1>
         </div>
 
-        {/* 탭 전환 드롭다운 */}
-        <div className="mb-6">
-          <select
-            value={activeTab}
-            onChange={(e) => setActiveTab(e.target.value as ConsumptionTab)}
-            className="h-10 px-3 bg-white border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#5B6FD8]"
-          >
-            <option value="input-analysis">원소재투입분석</option>
-            <option value="input-analysis-detail">원소재투입분석상세</option>
-            <option value="input-status">원소재투입현황</option>
-          </select>
+        {/* 상단 탭 바 — 원소재투입분석/분석상세/투입현황 보기를 전환한다 */}
+        <div className="flex gap-1 border-b border-gray-200 mb-6">
+          {CONSUMPTION_TABS.map((t) => (
+            <button
+              key={t.key}
+              onClick={() => setActiveTab(t.key)}
+              className={`px-4 py-2 text-sm font-semibold border-b-2 -mb-px transition-colors ${
+                activeTab === t.key
+                  ? "border-[#4A5CC7] text-[#4A5CC7]"
+                  : "border-transparent text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
         </div>
 
         {activeTab === "input-status" && <ConsumptionMatrixTab matrix={matrix} />}
