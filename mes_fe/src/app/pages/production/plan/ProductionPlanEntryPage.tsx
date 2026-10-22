@@ -1,4 +1,4 @@
-/** [생산관리 > 생산계획] 신규 등록 화면. 소요량 선택 → 폼 입력 → 다건 적재 후 일괄 저장. API: productionPlanApi(/api/production/plan). */
+/** [생산관리 > 생산계획] 신규 등록 화면. 폼 입력 → 다건 적재 후 일괄 저장. API: productionPlanApi(/api/production/plan). */
 import { useState, useEffect, useCallback } from "react";
 import { Button } from "../../../components/ui/button";
 import { Input } from "../../../components/ui/input";
@@ -12,20 +12,15 @@ import {
 } from "../../../components/ui/select";
 import { Checkbox } from "../../../components/ui/checkbox";
 import { ProductionItemSelectDialogForPlan } from "../../../components/features/production/ProductionItemSelectDialogForPlan";
-import { ServerPagination } from "../../../components/common/ServerPagination";
 import { FormActions } from "../../../components/common/FormActions";
-import * as itemApi from "../../../api/itemApi";
 import * as commonInfoApi from "../../../api/commonInfoApi";
 import * as productionPlanApi from "../../../api/productionPlanApi";
 import { showWarning } from "@/app/utils/toast";
-import { ensureDateOrder } from "@/app/utils/dateGuard";
 import { ProductionPlanTableRow } from "@/types/production/plan.interface";
-import { productionPlanColumns, requirementColumnsForPlan } from "@/app/constants/production";
+import { productionPlanColumns } from "@/app/constants/production";
 import { UNITS, withUnit } from "@/app/utils/unitConvert";
 import { useCrudForm } from "../../../hooks/useCrudForm";
 import { usePlanForm, makeEmptyPlanForm } from "./usePlanForm";
-import { todayYmd } from "@/app/utils/dateToday";
-import { useRequirementList } from "./useRequirementList";
 
 interface ProductionPlanEntryPageProps {
   onBack?: () => void;
@@ -34,10 +29,7 @@ interface ProductionPlanEntryPageProps {
 export function ProductionPlanEntryPage({ onBack }: ProductionPlanEntryPageProps) {
   const { form, setForm, updateField } = usePlanForm();
   const { saving, runSave } = useCrudForm();
-  const requirementList = useRequirementList();
 
-  const [orderDateRef, setOrderDateRef] = useState("");
-  const [dateInvalid, setDateInvalid] = useState(false);
   const [itemDialogOpen, setItemDialogOpen] = useState(false);
   const [lineOptions, setLineOptions] = useState<string[]>([]);
   const [stagedRows, setStagedRows] = useState<ProductionPlanTableRow[]>([]);
@@ -57,46 +49,8 @@ export function ProductionPlanEntryPage({ onBack }: ProductionPlanEntryPageProps
     fetchLineOptions();
   }, [fetchLineOptions]);
 
-  // 생산계획일 입력은 자동계산 갱신과 함께 수주일 이전 여부를 같이 점검한다.
   const onChangeField = (field: keyof typeof form, value: string) => {
     updateField(field, value);
-    if (field === "planDate") {
-      setDateInvalid(!!(value && orderDateRef && value < orderDateRef));
-    }
-  };
-
-  // 소요량 행을 누르면 해당 품목 정보로 폼을 채운다(폭/평량/길이/관리중량 제외, 품번 단위).
-  const pickRequirement = async (requirement: any) => {
-    try {
-      const itemList = await itemApi.fetchItemList();
-      const matched = itemList.find(
-        (item: any) => item.itemCode === requirement.itemCode && item.itemName === requirement.itemName,
-      );
-
-      setOrderDateRef(requirement.orderDate || "");
-      setDateInvalid(false);
-
-      setForm({
-        planDate: todayYmd(),
-        itemSq: requirement.itemSq ?? matched?.itemSq,
-        itemCode: requirement.itemCode || "",
-        itemName: requirement.itemName || "",
-        basisWeight: "",
-        width: "",
-        length: "",
-        planQty: Number(requirement.productionReqQty) || 0,
-        manageWeight: "",
-        productionSpeed: requirement.productionSpeed || "",
-        estimatedProductionTime: requirement.estimatedProductionTime || "",
-        remark: "",
-        itemType: matched?.itemType || "",
-        lineName: "",
-        currentStock: Number(requirement.currentStock) || 0,
-        weight: "",
-      });
-    } catch (err) {
-      console.error("[ProductionPlanEntry] 품목 정보 로딩 실패:", err);
-    }
   };
 
   // 품목 선택 다이얼로그 결과를 폼에 반영(폭/평량/길이/관리중량은 비움).
@@ -136,13 +90,6 @@ export function ProductionPlanEntryPage({ onBack }: ProductionPlanEntryPageProps
       return;
     }
 
-    const dateErr = ensureDateOrder(orderDateRef, form.planDate, "수주일자", "생산계획일");
-    if (dateErr) {
-      setDateInvalid(true);
-      showWarning(dateErr);
-      return;
-    }
-
     const row: ProductionPlanTableRow = {
       selected: true,
       no: String(stagedRows.length + 1).padStart(2, "0"),
@@ -165,8 +112,6 @@ export function ProductionPlanEntryPage({ onBack }: ProductionPlanEntryPageProps
 
     setStagedRows((prev) => [...prev, row]);
     setForm(makeEmptyPlanForm());
-    setOrderDateRef("");
-    setDateInvalid(false);
   };
 
   const toggleRow = (index: number) => {
@@ -205,70 +150,6 @@ export function ProductionPlanEntryPage({ onBack }: ProductionPlanEntryPageProps
         </div>
 
         <div className="space-y-3">
-          {/* 소요량 산출 내역 */}
-          <div className="bg-white rounded-lg p-3">
-            <div className="py-2 font-semibold text-gray-900 mb-4">생산소요량 산출 내역</div>
-            <div className="border border-gray-200 rounded-sm overflow-hidden h-[400px] flex flex-col">
-              <div className="overflow-auto flex-1">
-                <table className="w-full">
-                  <thead className="sticky top-0 z-10">
-                    <tr className="bg-[#4A5CC7] border-b border-gray-200">
-                      {requirementColumnsForPlan.map((col) => (
-                        <th key={col.key} className="px-4 py-3 text-center text-xs font-semibold text-white tracking-wider whitespace-nowrap border-r border-white">
-                          {col.label}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white">
-                    {requirementList.loadingReq ? (
-                      <tr>
-                        <td colSpan={requirementColumnsForPlan.length} className="px-4 py-12 text-center text-gray-500 text-sm border-r border-gray-200">
-                          로딩 중...
-                        </td>
-                      </tr>
-                    ) : requirementList.requirements.length === 0 ? (
-                      <tr>
-                        <td colSpan={requirementColumnsForPlan.length} className="px-4 py-12 text-center text-gray-500 text-sm border-r border-gray-200">
-                          생산소요량 산출 데이터가 없습니다
-                        </td>
-                      </tr>
-                    ) : (
-                      requirementList.pageRows.map((req, index) => (
-                        <tr
-                          key={index}
-                          className="border-b border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer"
-                          onClick={() => pickRequirement(req)}
-                        >
-                          {requirementColumnsForPlan.map((col) => (
-                            <td key={col.key} className="px-4 py-3 text-sm text-gray-700 text-center whitespace-nowrap border-r border-gray-200">
-                              {req[col.key as keyof typeof req]}
-                            </td>
-                          ))}
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
-              <div className="border-t border-gray-200">
-                <ServerPagination
-                  page={requirementList.page}
-                  size={requirementList.pageSize}
-                  totalElements={requirementList.requirements.length}
-                  totalPages={requirementList.totalPages}
-                  onPageChange={requirementList.setPage}
-                  onSizeChange={(s) => {
-                    requirementList.setPageSize(s);
-                    requirementList.setPage(0);
-                  }}
-                  sizeOptions={[10, 20, 50, 100]}
-                  loading={requirementList.loadingReq}
-                />
-              </div>
-            </div>
-          </div>
-
           {/* 생산계획정보 입력 */}
           <div className="bg-white rounded-lg p-3">
             <table className="w-full border border-gray-300 border-t-2 border-t-[#5B6FD8]">
@@ -282,13 +163,8 @@ export function ProductionPlanEntryPage({ onBack }: ProductionPlanEntryPageProps
                       type="date"
                       value={form.planDate}
                       onChange={(e) => onChangeField("planDate", e.target.value)}
-                      className={`h-10 px-3 bg-white border rounded-md text-sm focus:outline-none focus:ring-2 w-full ${dateInvalid ? "validation-error-input" : "border-gray-300 focus:ring-[#5B6FD8]"}`}
+                      className="h-10 px-3 bg-white border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#5B6FD8] w-full"
                     />
-                    {dateInvalid && (
-                      <p className="validation-error-message">
-                        {ensureDateOrder(orderDateRef, form.planDate, "수주일자", "생산계획일", { earlierContext: orderDateRef })}
-                      </p>
-                    )}
                   </td>
                   <td className="border-r border-gray-300 bg-gray-100 text-[#4A5CC7] text-xs font-semibold px-4 py-3 w-32">
                     품번

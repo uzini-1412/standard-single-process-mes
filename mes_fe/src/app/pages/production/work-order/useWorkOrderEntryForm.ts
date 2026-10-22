@@ -4,7 +4,6 @@ import * as productionPlanApi from "../../../api/productionPlanApi";
 import * as itemApi from "../../../api/itemApi";
 import * as bomApi from "../../../api/bomApi";
 import * as workOrderApi from "../../../api/workOrderApi";
-import * as productionRequirementApi from "../../../api/productionRequirementApi";
 import * as commonInfoApi from "../../../api/commonInfoApi";
 import type { WorkOrderData, WorkOrderSubItem } from "@/types/production/workOrder.interface";
 import { showSuccess, showWarning, showError } from "@/app/utils/toast";
@@ -155,18 +154,9 @@ export function useWorkOrderEntryForm({ mode, initialData, initialSubItems, work
       setIsPlanLoading(true);
       const plans = await productionPlanApi.fetchProductionPlans();
 
-      // 폭별 상세 매핑용 소요량도 함께 조회 (실패 시 무시)
-      let reqList: any[] = [];
-      try {
-        reqList = (await productionRequirementApi.fetchMaterialRequirements()) || [];
-      } catch {
-        /* 소요량 조회 실패는 치명적이지 않음 */
-      }
-
       const formatted = plans.map((plan: any, idx: number) => ({
         ...plan,
         no: String(idx + 1),
-        _details: reqList.filter((r: any) => r.itemCode === plan.itemCode),
       }));
       setPlanRows(formatted);
     } catch (error) {

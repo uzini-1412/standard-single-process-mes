@@ -19,77 +19,16 @@ const col = (key: string, label: string): TableColumn => ({ key, label });
 const COL = {
   selected: col("selected", "선택"),
   no: col("no", "No."),
-  orderDate: col("orderDate", "수주일자"),
-  orderNo: col("orderNo", "수주번호"),
-  customerCode: col("customerCode", "거래처번호"),
-  customerName: col("customerName", "거래처명"),
   itemCode: col("itemCode", "품번"),
   itemName: col("itemName", "품명"),
   width: col("width", withUnit("폭", UNITS.width)),
   basisWeight: col("basisWeight", withUnit("단위중량", UNITS.basisWeight)),
   length: col("length", withUnit("길이", UNITS.length)),
-  orderQty: col("orderQty", withUnit("수주량", UNITS.length)),
-  orderQtyEa: col("orderQtyEa", "수주량(EA)"),
   currentStock: col("currentStock", withUnit("재고량", UNITS.length)),
-  safetyStock: col("safetyStock", withUnit("적정재고량", UNITS.length)),
-  shortageQty: col("shortageQty", withUnit("과부족량", UNITS.length)),
-  productionReqQty: col("productionReqQty", withUnit("생산소요량", UNITS.length)),
   targetQtyOrder: col("targetQty", withUnit("작업지시량", UNITS.length)),
   productionSpeedSpd: col("productionSpeed", withUnit("생산속도", UNITS.productionSpeed)),
   lineName: col("lineName", "라인구분"),
 } as const;
-
-// ───────────────────────── 생산소요량 산출 ─────────────────────────
-
-export const requirementColumns: TableColumn[] = [
-  COL.orderDate,
-  COL.orderNo,
-  COL.customerCode,
-  COL.customerName,
-  COL.itemCode,
-  COL.itemName,
-  COL.width,
-  COL.basisWeight,
-  COL.length,
-  COL.orderQty,
-  COL.currentStock,
-  COL.safetyStock,
-  COL.shortageQty,
-  col("deliveryPlannedQty", withUnit("추가출하예정량", UNITS.length)),
-  COL.productionReqQty,
-  col("productionSpeed", "분당생산량"),
-  col("productionPerHourM2", withUnit("분당생산량", UNITS.area)),
-  col("estimatedProductionTime", "예상생산소요시간(분)"),
-];
-
-/** 상단 고객수주 (수주번호 단위 합산). */
-export const customerOrderColumns: TableColumn[] = [
-  COL.selected,
-  COL.orderDate,
-  COL.orderNo,
-  COL.customerCode,
-  COL.itemCode,
-  COL.itemName,
-  COL.orderQty,
-  COL.orderQtyEa,
-];
-
-/** 생산계획 등록 시 상단 소요량 대상 선택 테이블 (폭/평량/길이 제외, 품번 단위). */
-export const requirementColumnsForPlan: TableColumn[] = [
-  COL.orderDate,
-  COL.orderNo,
-  COL.customerCode,
-  COL.customerName,
-  COL.itemCode,
-  COL.itemName,
-  COL.orderQty,
-  COL.currentStock,
-  COL.safetyStock,
-  COL.shortageQty,
-  COL.productionReqQty,
-  col("productionSpeed", "분당생산량"),
-  col("estimatedProductionTime", "예상생산소요시간(분)"),
-];
 
 // ───────────────────────── 생산계획 ─────────────────────────
 

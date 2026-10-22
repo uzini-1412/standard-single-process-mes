@@ -1,4 +1,4 @@
-/** 작업지시 등록 시 대상 생산계획을 고르는 표 (클라이언트 페이징 + 폭별 상세 툴팁). */
+/** 작업지시 등록 시 대상 생산계획을 고르는 표 (클라이언트 페이징). */
 import { ServerPagination } from "../../../components/common/ServerPagination";
 import { productionPlanColumns } from "@/app/constants/production";
 
@@ -10,16 +10,6 @@ interface ProductionPlanPickerProps {
   onPageChange: (page: number) => void;
   onSizeChange: (size: number) => void;
   onRowClick: (plan: any) => void;
-}
-
-// 폭별 소요 상세를 한 줄씩 텍스트로 조립 (툴팁 본문)
-function buildSpecTooltip(details: any[]): string {
-  return details
-    .map(
-      (d: any) =>
-        `폭${d.width || "?"}mm: 수주${d.orderQty || 0}m / 재고${d.currentStock || 0}m / 소요량${d.productionReqQty || 0}m`,
-    )
-    .join("\n");
 }
 
 export function ProductionPlanPicker({
@@ -80,13 +70,10 @@ export function ProductionPlanPicker({
               ) : (
                 pageRows.map((plan, localIdx) => {
                   const index = baseNo + localIdx;
-                  const details = plan._details || [];
-                  const hasMultiSpec = details.length > 1;
                   return (
                     <tr
                       key={plan.id || index}
                       className="border-b border-gray-200 hover:bg-gray-50 cursor-pointer"
-                      title={hasMultiSpec ? `[폭별 상세 내역]\n${buildSpecTooltip(details)}` : undefined}
                       onClick={() => onRowClick(plan)}
                     >
                       {productionPlanColumns.map((col) => (

@@ -209,15 +209,6 @@ export const HELP_CONTENT_PART1: Record<string, HelpContent> = {
   // ════════════════════════════════════════════════════════════
   //  생산관리
   // ════════════════════════════════════════════════════════════
-  "production-requirement": {
-    title: "생산소요량산출",
-    purpose: "생산계획 대비 필요한 자재 소요량을 계산하는 화면입니다.",
-    steps: [
-      { anchor: "production-requirement-search", title: "산출 조건", description: "대상 제품·기간을 선택하고 소요량을 산출합니다." },
-      { anchor: "production-requirement-table", title: "결과 확인", description: "산출된 자재별 필요 수량을 확인해 발주·투입에 활용합니다." },
-    ],
-  },
-
   "production-plan": {
     title: "생산계획",
     purpose: "생산계획을 등록·관리하는 화면입니다.",

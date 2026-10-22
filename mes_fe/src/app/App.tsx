@@ -26,7 +26,7 @@ const IncomingPrepEntryPage = lazyPage(() => import("./pages/material/pre-receiv
 const MaterialReceiptListPage = lazyPage(() => import("./pages/material/receiving/MaterialReceiptListPage"), "MaterialReceiptListPage");
 const MaterialStockListPage = lazyPage(() => import("./pages/material/inventory/MaterialStockListPage"), "MaterialStockListPage");
 const MaterialDefectBoardPage = lazyPage(() => import("./pages/material/defect/MaterialDefectBoardPage"), "MaterialDefectBoardPage");
-const ProductionPlanWorkbenchPage = lazyPage(() => import("./pages/production/plan/ProductionPlanWorkbenchPage"), "ProductionPlanWorkbenchPage");
+const ProductionPlanBoardPage = lazyPage(() => import("./pages/production/plan/ProductionPlanBoardPage"), "ProductionPlanBoardPage");
 const WorkOrderBoardPage = lazyPage(() => import("./pages/production/work-order/WorkOrderBoardPage"), "WorkOrderBoardPage");
 const ProductionResultListPage = lazyPage(() => import("./pages/production/work-performance/ProductionResultListPage"), "ProductionResultListPage");
 const RawMaterialConsumptionPage = lazyPage(() => import("./pages/material/raw-material/RawMaterialConsumptionPage"), "RawMaterialConsumptionPage");
@@ -414,7 +414,7 @@ export default function App() {
           }}
         />
       )}
-      {currentPage === "production-plan" && <ProductionPlanWorkbenchPage />}
+      {currentPage === "production-plan" && <ProductionPlanBoardPage />}
       {currentPage === "work-order" && <WorkOrderBoardPage />}
       {currentPage === "work-performance-status" && <ProductionResultListPage />}
       {currentPage === "production-trend" && <ProductionAnalysisPage />}
