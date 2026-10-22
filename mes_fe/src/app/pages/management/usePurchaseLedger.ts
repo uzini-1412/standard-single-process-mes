@@ -73,7 +73,7 @@ export function usePurchaseLedger() {
       setTotalPages(res.totalPages);
     } catch (err) {
       console.error("[PurchaseStatus] Error loading data:", err);
-      showError("거래처원장 데이터를 불러오는 중 오류가 발생했습니다.");
+      showError("매입현황 데이터를 불러오는 중 오류가 발생했습니다.");
     } finally {
       setIsFetching(false);
     }

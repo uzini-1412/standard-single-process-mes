@@ -27,7 +27,7 @@ type MenuLabel =
   | "제품이력관리"
   | "설비관리"
   | "계측기관리"
-  | "기업자원관리(ERP)"
+  | "자원관리"
   | "의사결정관제"
   | "기준정보관리";
 
@@ -106,9 +106,9 @@ export const MENU_STRUCTURE: MenuItem[] = [
   group("measuring", "계측기관리", Ruler, [
     ["instrument-management", "계측기"],
   ]),
-  group("company-info", "기업자원관리(ERP)", Building2, [
+  group("company-info", "자원관리", Building2, [
     ["sales-management", "매출현황"],
-    ["purchase-management", "거래처원장"],
+    ["purchase-management", "매입현황"],
     ["collection-management", "자금관리"],
     ["unit-price-standard", "단가기준정보"],
   ]),

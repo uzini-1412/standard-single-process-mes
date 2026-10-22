@@ -220,7 +220,7 @@ export const HELP_CONTENT_PART2: Record<string, HelpContent> = {
   },
 
   // ════════════════════════════════════════════════════════════
-  //  기업자원관리(ERP)
+  //  자원관리
   // ════════════════════════════════════════════════════════════
   "sales-management": {
     title: "매출현황",
@@ -232,7 +232,7 @@ export const HELP_CONTENT_PART2: Record<string, HelpContent> = {
   },
 
   "purchase-management": {
-    title: "거래처원장",
+    title: "매입현황",
     purpose: "거래처별 거래·수금 내역을 원장 형태로 조회하는 화면입니다.",
     steps: [
       { anchor: "purchase-management-search", title: "거래처 선택", description: "거래처·기간을 선택해 원장을 조회합니다." },

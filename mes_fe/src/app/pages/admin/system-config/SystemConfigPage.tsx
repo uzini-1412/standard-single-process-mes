@@ -80,7 +80,7 @@ const CATALOG: FlagGroup[] = [
       {
         key: "module.erp",
         label: "ERP 연동",
-        desc: "기업자원관리(ERP)를 내장 화면으로 쓸지, 외부 ERP로 연결할지, 사용 안 할지 선택합니다.",
+        desc: "자원관리(ERP)를 내장 화면으로 쓸지, 외부 ERP로 연결할지, 사용 안 할지 선택합니다.",
         type: "enum",
         options: [
           { value: "SELF", label: "내장 ERP 사용" },

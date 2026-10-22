@@ -21,7 +21,7 @@ export function PurchaseTrendChartPage({ pageMode, onPageModeChange }: Props) {
     <div className={PAGE_LAYOUT_STYLES.container}>
       <div className={PAGE_LAYOUT_STYLES.content}>
         <div className="flex items-center justify-between mb-3">
-          <h1 className="text-2xl font-semibold text-gray-900">거래처원장</h1>
+          <h1 className="text-2xl font-semibold text-gray-900">매입현황</h1>
         </div>
 
         <PurchaseViewModeSelect value={pageMode} onChange={onPageModeChange} />
