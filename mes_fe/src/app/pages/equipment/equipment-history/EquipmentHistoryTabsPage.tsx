@@ -1,21 +1,23 @@
-/** [설비관리 > 설비이력] 이력관리와 이력카드를 2개 탭으로 묶은 통합 화면. 각 탭은 기존 단일 화면을 그대로 렌더한다. */
+/** [설비관리 > 설비정보/이력관리] 설비정보등록·이력관리·이력카드를 3개 탭으로 묶은 통합 화면. 각 탭은 기존 단일 화면을 그대로 렌더한다. */
 import { useState } from "react";
+import EquipmentInfoPage from "../equipment-info/EquipmentInfoPage";
 import EquipmentHistoryPage from "./EquipmentHistoryPage";
 import EquipmentHistoryCardPage from "../equipment-history-card/EquipmentHistoryCardPage";
 
-type HistoryTab = "manage" | "card";
+type HistoryTab = "info" | "manage" | "card";
 
 const TABS: { key: HistoryTab; label: string }[] = [
+  { key: "info", label: "설비정보등록" },
   { key: "manage", label: "이력관리" },
   { key: "card", label: "이력카드" },
 ];
 
 export function EquipmentHistoryTabsPage() {
-  const [tab, setTab] = useState<HistoryTab>("manage");
+  const [tab, setTab] = useState<HistoryTab>("info");
 
   return (
     <div>
-      {/* 상단 탭 바 — 설비이력 관리 화면과 이력카드 보기를 전환한다 */}
+      {/* 상단 탭 바 — 설비정보등록·이력관리·이력카드 보기를 전환한다 */}
       <div className="flex gap-1 border-b border-gray-200 px-3 pt-2 bg-white">
         {TABS.map((t) => (
           <button
@@ -32,6 +34,7 @@ export function EquipmentHistoryTabsPage() {
         ))}
       </div>
 
+      {tab === "info" && <EquipmentInfoPage />}
       {tab === "manage" && <EquipmentHistoryPage />}
       {tab === "card" && <EquipmentHistoryCardPage />}
     </div>

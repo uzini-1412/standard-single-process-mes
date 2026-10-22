@@ -47,13 +47,8 @@ const ShipmentBoardPage = lazyPage(() => import("./pages/shipping/shipping-order
 const ShipmentResultListPage = lazyPage(() => import("./pages/shipping/shipping-performance/ShipmentResultListPage"), "ShipmentResultListPage");
 const ProductStockBoardPage = lazyPage(() => import("./pages/shipping/product-inventory/ProductStockBoardPage"), "ProductStockBoardPage");
 const LotTracePage = lazyPage(() => import("./pages/lot/LotTracePage"), "LotTracePage");
-const EquipmentInfoPage = lazy(() => import("./pages/equipment/equipment-info/EquipmentInfoPage"));
-const EquipmentInfoRegisterPage = lazy(() => import("./pages/equipment/equipment-info/EquipmentInfoRegisterPage"));
-const EquipmentInfoDetailPage = lazy(() => import("./pages/equipment/equipment-info/EquipmentInfoDetailPage"));
-const EquipmentInfoEditPage = lazy(() => import("./pages/equipment/equipment-info/EquipmentInfoEditPage"));
-// 설비점검: 정의서+일상점검현황+정기점검현황 탭 통합 (등록은 공용 등록 화면) / 설비이력: 이력관리+이력카드 탭 통합
+// 설비점검: 정의서+일상점검현황+정기점검현황 탭 통합 (등록은 공용 등록 화면) / 설비정보·이력: 설비정보등록+이력관리+이력카드 탭 통합
 const EquipmentInspectionTabsPage = lazy(() => import("./pages/equipment/daily-inspection/EquipmentInspectionTabsPage").then(m => ({ default: m.EquipmentInspectionTabsPage })));
-const SparePartsPage = lazy(() => import("./pages/equipment/spare-parts/SparePartsPage"));
 const EquipmentHistoryTabsPage = lazy(() => import("./pages/equipment/equipment-history/EquipmentHistoryTabsPage").then(m => ({ default: m.EquipmentHistoryTabsPage })));
 // 계측기등록+검교정이력+이력카드 탭 통합
 const InstrumentTabsPage = lazyPage(() => import("./pages/measuring-instrument/instrument-tabs/InstrumentTabsPage"), "InstrumentTabsPage");
@@ -114,12 +109,7 @@ type Page =
   // shipping-plan 은 출하지시(ShipmentBoardPage) 탭으로 통합됨
   | "shipping-performance"
   | "product-inventory"
-  | "equipment-info"
-  | "equipment-info-register"
-  | "equipment-info-detail"
-  | "equipment-info-edit"
   | "daily-inspection"
-  | "spare-parts"
   | "equipment-history"
   | "instrument-management"
   | "common-info"
@@ -162,7 +152,6 @@ export default function App() {
   const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
   const [selectedShippingInspectionId, setSelectedShippingInspectionId] = useState<string | null>(null);
   const [selectedNonConformanceItem, setSelectedNonConformanceItem] = useState<any>(null);
-  const [selectedEquipmentId, setSelectedEquipmentId] = useState<string | null>(null);
   const [selectedCollectionId, setSelectedCollectionId] = useState<number | null>(null);
 
   const isAdmin = userInfo?.role === 'ROLE_ADMIN';
@@ -502,47 +491,7 @@ export default function App() {
       {currentPage === "shipping-performance" && <ShipmentResultListPage />}
       {currentPage === "product-inventory" && <ProductStockBoardPage />}
       {currentPage === "lot-trace" && <LotTracePage />}
-      {currentPage === "equipment-info" && (
-        <EquipmentInfoPage 
-          onNavigateToRegister={() => setCurrentPage("equipment-info-register")}
-          onNavigateToDetail={(id) => {
-            setSelectedEquipmentId(id);
-            setCurrentPage("equipment-info-detail");
-          }}
-        />
-      )}
-      {currentPage === "equipment-info-register" && (
-        <EquipmentInfoRegisterPage 
-          onBack={() => setCurrentPage("equipment-info")}
-          onRegister={(data) => {
-            setCurrentPage("equipment-info");
-          }}
-        />
-      )}
-      {currentPage === "equipment-info-detail" && selectedEquipmentId && (
-        <EquipmentInfoDetailPage 
-          id={selectedEquipmentId}
-          onBack={() => setCurrentPage("equipment-info")}
-          onEdit={(id) => {
-            setSelectedEquipmentId(id);
-            setCurrentPage("equipment-info-edit");
-          }}
-          onDelete={(id) => {
-            setCurrentPage("equipment-info");
-          }}
-        />
-      )}
-      {currentPage === "equipment-info-edit" && selectedEquipmentId && (
-        <EquipmentInfoEditPage 
-          id={selectedEquipmentId}
-          onBack={() => setCurrentPage("equipment-info")}
-          onUpdate={(data) => {
-            setCurrentPage("equipment-info");
-          }}
-        />
-      )}
       {currentPage === "daily-inspection" && <EquipmentInspectionTabsPage />}
-      {currentPage === "spare-parts" && <SparePartsPage />}
       {currentPage === "equipment-history" && <EquipmentHistoryTabsPage />}
       {currentPage === "instrument-management" && <InstrumentTabsPage />}
       {currentPage === "common-info" && <CommonInfoPage />}

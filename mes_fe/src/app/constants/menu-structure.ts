@@ -95,12 +95,11 @@ export const MENU_STRUCTURE: MenuItem[] = [
     ["lot-trace", "LOT추적"],
   ]),
   // 설비가동현황: 생산관리 그룹에서 설비관리로 이동 (가동 상태는 설비 도메인 관심사)
+  // 설비정보등록·이력관리·이력카드를 탭 한 화면으로 통합 (equipment-history가 대표 메뉴)
   group("equipment", "설비관리", Settings, [
-    ["equipment-info", "설비정보관리"],
     ["facility-operation", "설비가동현황"],
     ["daily-inspection", "설비점검"],
-    ["equipment-history", "설비이력관리"],
-    ["spare-parts", "설비예비품관리"],
+    ["equipment-history", "설비정보/이력관리"],
   ]),
   // 계측기등록·검교정이력·이력카드를 탭 한 화면으로 통합 (instrument-management가 대표 메뉴)
   group("measuring", "계측기관리", Ruler, [

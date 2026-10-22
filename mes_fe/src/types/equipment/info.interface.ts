@@ -1,8 +1,3 @@
-export interface EquipmentInfoPageProps {
-  onNavigateToRegister?: () => void;
-  onNavigateToDetail?: (id: string) => void;
-}
-
 export interface EquipmentInfoRegisterPageProps {
   onBack: () => void;
   onRegister: (data: any) => void;

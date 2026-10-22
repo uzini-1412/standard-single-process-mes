@@ -1,4 +1,4 @@
-/** [설비관리 > 설비정보관리] 설비 마스터 목록/검색 + 등록·수정·상세 진입. API: facilityApi(/api/facility). */
+/** [설비관리 > 설비정보/이력관리 > 설비정보등록] 설비 마스터 목록/검색 + 등록·수정·상세 화면 전환을 담당하는 컨테이너. API: facilityApi(/api/facility). */
 import { useState, useEffect, useMemo } from "react";
 import { useSessionState } from "../../../hooks/useSessionState";
 import { Button } from "../../../components/ui/button";
@@ -11,13 +11,18 @@ import { ListTable, type ListColumn } from "../../../components/common/ListTable
 import { useClientPagedList } from "../../../hooks/useClientPagedList";
 import { Paperclip } from "lucide-react";
 import { MENU_STRUCTURE } from "../../../constants/menu-structure";
-import { EquipmentInfoPageProps, EquipmentData } from "@/types/equipment/info.interface";
+import { EquipmentData } from "@/types/equipment/info.interface";
 import { EQUIPMENT_COLUMNS } from "@/app/constants/eqipment";
 import { fetchFacilityList } from "@/app/api/facilityApi";
 import { fetchCommonInfoList, fetchDetailNamesByGroupName } from "@/app/api/commonInfoApi";
 import { showError } from "@/app/utils/toast";
 import { formatCurrency } from "@/app/utils/numberFormat";
 import { usePermission } from "../../../context/UserContext";
+import EquipmentInfoRegisterPage from "./EquipmentInfoRegisterPage";
+import EquipmentInfoDetailPage from "./EquipmentInfoDetailPage";
+import EquipmentInfoEditPage from "./EquipmentInfoEditPage";
+
+type EquipmentInfoView = "list" | "register" | "detail" | "edit";
 
 // 설비정보 목록 컬럼. 등록일자(날짜 자르기)·구입금액(₩)·첨부(아이콘)는 커스텀 렌더.
 const LIST_COLUMNS: ListColumn<EquipmentData>[] = EQUIPMENT_COLUMNS.map((c) => {
@@ -40,8 +45,10 @@ const LIST_COLUMNS: ListColumn<EquipmentData>[] = EQUIPMENT_COLUMNS.map((c) => {
   return { key: c.key, label: c.label };
 });
 
-export default function EquipmentInfoPage({ onNavigateToRegister, onNavigateToDetail }: EquipmentInfoPageProps) {
+export default function EquipmentInfoPage() {
   const perm = usePermission("equipment-info");
+  const [view, setView] = useState<EquipmentInfoView>("list");
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [facilityName, setFacilityNm] = useSessionState("equipment-info:facilityName", "");
   const [facilityType, setFacilityType] = useSessionState("equipment-info:facilityType", "");
   const [lineNm, setLineNm] = useSessionState("equipment-info:lineNm", "");
@@ -125,12 +132,40 @@ export default function EquipmentInfoPage({ onNavigateToRegister, onNavigateToDe
 
   const { pagedRows, pagination } = useClientPagedList(filteredData);
 
+  // 목록으로 복귀 + 최신 데이터 재조회 (등록/수정/삭제 완료 후 사용)
+  const goToList = () => {
+    setView("list");
+    fetchEquipmentList();
+  };
+
+  if (view === "register") {
+    return <EquipmentInfoRegisterPage onBack={goToList} onRegister={goToList} />;
+  }
+
+  if (view === "detail" && selectedId) {
+    return (
+      <EquipmentInfoDetailPage
+        id={selectedId}
+        onBack={goToList}
+        onEdit={(id) => {
+          setSelectedId(id);
+          setView("edit");
+        }}
+        onDelete={goToList}
+      />
+    );
+  }
+
+  if (view === "edit" && selectedId) {
+    return <EquipmentInfoEditPage id={selectedId} onBack={goToList} onUpdate={goToList} />;
+  }
+
   return (
     <div className={PAGE_LAYOUT_STYLES.container}>
       <div className={PAGE_LAYOUT_STYLES.content}>
         <ListPageHeader
           title={pageTitle}
-          actions={perm.createAuth && (<Button data-help="equipment-info-register" className={BUTTON_STYLES.primary} onClick={onNavigateToRegister}>등록</Button>)}
+          actions={perm.createAuth && (<Button data-help="equipment-info-register" className={BUTTON_STYLES.primary} onClick={() => setView("register")}>등록</Button>)}
         />
 
         <div data-help="equipment-info-search">
@@ -163,7 +198,10 @@ export default function EquipmentInfoPage({ onNavigateToRegister, onNavigateToDe
             rows={pagedRows}
             isLoading={loading}
             onRowClick={(row) => {
-              if (row.facilitySq && onNavigateToDetail) onNavigateToDetail(String(row.facilitySq));
+              if (row.facilitySq) {
+                setSelectedId(String(row.facilitySq));
+                setView("detail");
+              }
             }}
             pagination={pagination}
             emptyText="등록된 설비 정보가 없습니다."
