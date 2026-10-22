@@ -203,7 +203,7 @@ export function ListTable<T extends object>({
         style={{ width: column.width }}
         onClick={sortable ? () => onSort!(column.key) : undefined}
         className={cn(
-          "px-4 py-3 text-sm font-semibold text-white whitespace-nowrap border-r border-white",
+          "px-4 py-3 text-sm font-semibold text-white whitespace-pre-line break-keep border-r border-white",
           HEADER_ALIGN,
           sortable && "cursor-pointer select-none hover:bg-[#3d4eb5]",
         )}
